@@ -1,0 +1,119 @@
+//覆盖第三方组件的样式
+@import '~@/styles/theme';
+//--------------------------iview-------------------
+//弹出窗口居中
+.importThing{
+    .ivu-timeline-item-content{
+        padding: 1px 1px 1px 24px !important;
+      }
+}
+
+.vertical-center-modal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .ivu-modal-body{
+        min-height: 25vh;
+        max-height: 70vh;
+        overflow: auto;
+    }
+    .ivu-modal{
+        top:0;
+        margin:0;
+    }
+}
+//弹出窗口居中内容无边距
+.vertical-center-modal-nopadding{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .ivu-modal-body{
+        min-height: 25vh;
+        max-height: 80vh;
+        padding: 0;
+        overflow: auto;
+    }
+    .ivu-modal{
+        top:0;
+        margin:0;
+    }
+}
+//告警流水
+.vertical-center-modal-alarm-list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .ivu-modal-body{
+        min-height: 25vh;
+        overflow: auto;
+    }
+    .ivu-modal{
+        top:0;
+        margin:0;
+    }
+}
+.vertical-center-modal-top{
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .ivu-modal-body{
+        min-height: 25vh;
+        max-height: 90vh;
+        padding: 0;
+        overflow: auto;
+    }
+    .ivu-modal{
+        top:0;
+        margin:0;
+    }
+}
+.commandModal .vertical-center-modal{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10vh;
+}
+textarea.ivu-input {
+  max-width: 100%;
+  height: auto;
+  vertical-align: bottom;
+  font-size: 12px;
+}
+.ivu-tabs{
+    overflow:visible;
+}
+.authBoxGroup{
+  ul{
+    width: 150px;
+  }
+}
+
+.anchorBL{
+  display:none;
+}
+.BMap_scaleTxt{
+    color: #ffffff !important;
+}
+
+.ivu-input-group-append {
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  background-color: fade(@primary-color,50%)
+}
+
+.ivu-alert-message {
+  color: @background-color-base;
+}
+
+//弹出框右上角关闭样式
+.ivu-modal-close .ivu-icon-ios-close-empty {
+  font-size: 31px;
+  color: red;
+  transition: color 0.2s ease;
+  &:hover {
+    color: red;
+    font-weight: bold;
+  }
+  position: relative;
+  top: 1px;
+}

@@ -1,0 +1,58 @@
+@import './custom.less';
+@app-view :view;
+.app-header {
+  height: @header-height;
+  background-color: @header-menu-bg;
+  color: @header-menu-text;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.app-module {
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.app-container {
+  width: 100%;
+  // height: 100%;
+  padding: 24px;
+}
+
+.app-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-hcenter {
+  display: flex;
+  justify-content: center;
+}
+
+.app-vcenter {
+  display: flex;
+  align-items: center;
+}
+
+.app-full {
+  width: 100%;
+  height: 100%;
+}
+
+.panel {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  box-shadow:0px 0px 12px #009dfc inset;
+  background-color: rgba(4, 14, 30, 0.8);
+  border-image-source: url('/@{app-view}/static/imgs/border1.png');
+  border-image-slice: 10 fill;
+  border-image-repeat: stretch;
+  // border-image: url(/static/imgs/border1.png);
+}

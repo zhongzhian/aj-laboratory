@@ -1,0 +1,729 @@
+@app-view :view;
+@font-face {
+  font-family: 'turbo';
+  src:
+    url('/@{app-view}/static/fonts/turbo/fonts/turbo.ttf') format('truetype'),
+    url('/@{app-view}/static/fonts/turbo/fonts/turbo.woff') format('woff'),
+    url('/@{app-view}/static/fonts/turbo/fonts/turbo.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="turbo-"], [class*=" turbo-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'turbo' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.turbo-485:before {
+  content: "\e900";
+  
+}
+.turbo-ACCESS_CONTROL:before {
+  content: "\e901";
+  
+}
+.turbo-ACU:before {
+  content: "\e902";
+  
+}
+.turbo-AI:before {
+  content: "\e903";
+  
+}
+.turbo-AIR_INLET:before {
+  content: "\e904";
+  
+}
+.turbo-AIR_OUTLET:before {
+  content: "\e905";
+  
+}
+.turbo-AO:before {
+  content: "\e906";
+  
+}
+.turbo-AP_A:before {
+  content: "\e907";
+  
+}
+.turbo-AP_B:before {
+  content: "\e908";
+  
+}
+.turbo-AP_C:before {
+  content: "\e909";
+  
+}
+.turbo-AP:before {
+  content: "\e90a";
+  
+}
+.turbo-BUILD:before {
+  content: "\e90b";
+  
+}
+.turbo-BUZZER_MOD:before {
+  content: "\e90c";
+  
+}
+.turbo-CABIN_B:before {
+  content: "\e90d";
+  
+}
+.turbo-CABIN_C:before {
+  content: "\e90e";
+  
+}
+.turbo-CABIN_D:before {
+  content: "\e90f";
+  
+}
+.turbo-CABIN_E:before {
+  content: "\e910";
+  
+}
+.turbo-CABIN_F:before {
+  content: "\e911";
+  
+}
+.turbo-CABIN:before {
+  content: "\e912";
+  
+}
+.turbo-CABLETV:before {
+  content: "\e913";
+  
+}
+.turbo-CACHEMENT:before {
+  content: "\e914";
+  
+}
+.turbo-CAMERA:before {
+  content: "\e915";
+  
+}
+.turbo-CAPACITANCE_COMP:before {
+  content: "\e916";
+  
+}
+.turbo-COMBUSTIBLE_SENSOR:before {
+  content: "\e917";
+  
+}
+.turbo-COMMUNICATION_CABLE:before {
+  content: "\e918";
+  
+}
+.turbo-CONTROL_MOD:before {
+  content: "\e919";
+  
+}
+.turbo-DC_SCREEN:before {
+  content: "\e91a";
+  
+}
+.turbo-DEVICE_ROOM:before {
+  content: "\e91b";
+  
+}
+.turbo-DI:before {
+  content: "\e91c";
+  
+}
+.turbo-DO:before {
+  content: "\e91d";
+  
+}
+.turbo-DRAINAGE_SYSTEM:before {
+  content: "\e91e";
+  
+}
+.turbo-DRAINS:before {
+  content: "\e91f";
+  
+}
+.turbo-E_COVER:before {
+  content: "\e920";
+  
+}
+.turbo-e-cover-heat:before {
+  content: "\e921";
+  
+}
+.turbo-e-cover-rain:before {
+  content: "\e922";
+  
+}
+.turbo-e-cover-tv:before {
+  content: "\e923";
+  
+}
+.turbo-ELECTRICITY_PARAMETER:before {
+  content: "\e924";
+  
+}
+.turbo-EMS:before {
+  content: "\e925";
+  
+}
+.turbo-ENTRANCE:before {
+  content: "\e926";
+  
+}
+.turbo-ESCAPE_HATCH:before {
+  content: "\e927";
+  
+}
+.turbo-ETHERNET:before {
+  content: "\e928";
+  
+}
+.turbo-FAN:before {
+  content: "\e929";
+  
+}
+.turbo-FEED_PORT:before {
+  content: "\e92a";
+  
+}
+.turbo-FIREAREA_POWER:before {
+  content: "\e92b";
+  
+}
+.turbo-FIREAREA:before {
+  content: "\e92c";
+  
+}
+.turbo-FIREWARE:before {
+  content: "\e92d";
+  
+}
+.turbo-FMS:before {
+  content: "\e92e";
+  
+}
+.turbo-GAS_PIPELINE:before {
+  content: "\e92f";
+  
+}
+.turbo-GE:before {
+  content: "\e930";
+  
+}
+.turbo-H2S_SENSOR:before {
+  content: "\e931";
+  
+}
+.turbo-HOISTING_PORT:before {
+  content: "\e932";
+  
+}
+.turbo-HORN_MOD:before {
+  content: "\e933";
+  
+}
+.turbo-HOST:before {
+  content: "\e934";
+  
+}
+.turbo-HUMIDITY_SENSOR:before {
+  content: "\e935";
+  
+}
+.turbo-HUMITURE_MOD:before {
+  content: "\e936";
+  
+}
+.turbo-HV_POWER:before {
+  content: "\e937";
+  
+}
+.turbo-ICMS:before {
+  content: "\e938";
+  
+}
+.turbo-INFRARED_MOD:before {
+  content: "\e939";
+  
+}
+.turbo-INTERLAYER:before {
+  content: "\e93a";
+  
+}
+.turbo-IPTELEPHONE:before {
+  content: "\e93b";
+  
+}
+.turbo-LAMP_MOD:before {
+  content: "\e93c";
+  
+}
+.turbo-LASER_MOD:before {
+  content: "\e93d";
+  
+}
+.turbo-LED_MOD:before {
+  content: "\e93e";
+  
+}
+.turbo-led-technology:before {
+  content: "\e93f";
+  
+}
+.turbo-LINE_INLET:before {
+  content: "\e940";
+  
+}
+.turbo-LINE_OUTLET:before {
+  content: "\e941";
+  
+}
+.turbo-LINE:before {
+  content: "\e942";
+  
+}
+.turbo-LOCATION:before {
+  content: "\e943";
+  
+}
+.turbo-LV_POWER:before {
+  content: "\e944";
+  
+}
+.turbo-METHANE_SENSOR:before {
+  content: "\e945";
+  
+}
+.turbo-MIC_MOD:before {
+  content: "\e946";
+  
+}
+.turbo-MICROWAVE_MOD:before {
+  content: "\e947";
+  
+}
+.turbo-MODULE:before {
+  content: "\e948";
+  
+}
+.turbo-MONITOR_CENTER:before {
+  content: "\e949";
+  
+}
+.turbo-nav-accountMgr:before {
+  content: "\e94a";
+  
+}
+.turbo-nav-alarmConfig:before {
+  content: "\e94b";
+  
+}
+.turbo-nav-alarmMgr:before {
+  content: "\e94c";
+  
+}
+.turbo-nav-alarmStream:before {
+  content: "\e94d";
+  
+}
+.turbo-nav-applyMgr:before {
+  content: "\e94e";
+  
+}
+.turbo-nav-apReport:before {
+  content: "\e94f";
+  
+}
+.turbo-nav-auditApply:before {
+  content: "\e950";
+  
+}
+.turbo-nav-auditFault:before {
+  content: "\e951";
+  
+}
+.turbo-nav-authMgr:before {
+  content: "\e952";
+}
+.turbo-nav-authorityMgr:before {
+  content: "\e953";
+  
+}
+.turbo-nav-bigScreen:before {
+  content: "\e954";
+}
+.turbo-nav-broadcast:before {
+  content: "\e955";
+  
+}
+.turbo-nav-commandMgr:before {
+  content: "\e956";
+  
+}
+.turbo-nav-configMgr:before {
+  content: "\e957";
+  
+}
+.turbo-nav-controllCenter:before {
+  content: "\e958";
+  
+}
+.turbo-nav-createTask:before {
+  content: "\e959";
+  
+}
+.turbo-nav-dailyMgr:before {
+  content: "\e95a";
+  
+}
+.turbo-nav-dicfieldMgr:before {
+  content: "\e95b";
+  
+}
+.turbo-nav-dictMgr:before {
+  content: "\e95c";
+  
+}
+.turbo-nav-ePatrol:before {
+  content: "\e95d";
+  
+}
+.turbo-nav-faultMgr:before {
+  content: "\e95e";
+  
+}
+.turbo-nav-firmwareMgr:before {
+  content: "\e95f";
+  
+}
+.turbo-nav-help:before {
+  content: "\e960";
+  
+}
+.turbo-nav-history:before {
+  content: "\e961";
+  
+}
+.turbo-nav-immediate:before {
+  content: "\e962";
+  
+}
+.turbo-nav-kbHome:before {
+  content: "\e963";
+  
+}
+.turbo-nav-knowledgeBase:before {
+  content: "\e964";
+}
+.turbo-nav-kpiMgr:before {
+  content: "\e965";
+  
+}
+.turbo-nav-maintainMgr:before {
+  content: "\e966";
+  
+}
+.turbo-nav-maintainReport:before {
+  content: "\e967";
+  
+}
+.turbo-nav-maintainTemplate:before {
+  content: "\e968";
+  
+}
+.turbo-nav-monitorSys:before {
+  content: "\e969";
+}
+.turbo-nav-myApply:before {
+  content: "\e96a";
+  
+}
+.turbo-nav-myFault:before {
+  content: "\e96b";
+  
+}
+.turbo-nav-myTask:before {
+  content: "\e96c";
+  
+}
+.turbo-nav-myWiki:before {
+  content: "\e96d";
+  
+}
+.turbo-nav-newResMgr:before {
+  content: "\e96e";
+  
+}
+.turbo-nav-operationSys:before {
+  content: "\e96f";
+  
+}
+.turbo-nav-orgMgr:before {
+  content: "\e970";
+  
+}
+.turbo-nav-overview:before {
+  content: "\e971";
+  
+}
+.turbo-nav-patrolReport:before {
+  content: "\e972";
+  
+}
+.turbo-nav-pollingMgr:before {
+  content: "\e973";
+  
+}
+.turbo-nav-pollingReport:before {
+  content: "\e974";
+  
+}
+.turbo-nav-pollingTemplate:before {
+  content: "\e975";
+  
+}
+.turbo-nav-profile:before {
+  content: "\e976";
+  
+}
+.turbo-nav-rajectoryRracking:before {
+  content: "\e977";
+  
+}
+.turbo-nav-report:before {
+  content: "\e978";
+  
+}
+.turbo-nav-resInit:before {
+  content: "\e979";
+  
+}
+.turbo-nav-resList:before {
+  content: "\e97a";
+  
+}
+.turbo-nav-resMgr:before {
+  content: "\e97b";
+  
+}
+.turbo-nav-roleMgr:before {
+  content: "\e97c";
+  
+}
+.turbo-nav-safeProtection:before {
+  content: "\e97d";
+}
+.turbo-nav-selfMonitor:before {
+  content: "\e97e";
+  
+}
+.turbo-nav-spareBuys:before {
+  content: "\e97f";
+  
+}
+.turbo-nav-spares:before {
+  content: "\e980";
+  
+}
+.turbo-nav-stockMgr:before {
+  content: "\e981";
+  
+}
+.turbo-nav-sysMgr:before {
+  content: "\e982";
+  
+}
+.turbo-nav-sysStatus:before {
+  content: "\e983";
+  
+}
+.turbo-nav-taskMgr:before {
+  content: "\e984";
+  
+}
+.turbo-nav-videoMonitor:before {
+  content: "\e985";
+  
+}
+.turbo-NVR:before {
+  content: "\e986";
+  
+}
+.turbo-O2_SENSOR:before {
+  content: "\e987";
+  
+}
+.turbo-OBJECT:before {
+  content: "\e988";
+  
+}
+.turbo-OPTICALPORT:before {
+  content: "\e989";
+  
+}
+.turbo-PC:before {
+  content: "\e98a";
+  
+}
+.turbo-personnel-1:before {
+  content: "\e98b";
+  
+}
+.turbo-personnel:before {
+  content: "\e98c";
+  
+}
+.turbo-PHOTOSENSITIVE_MOD:before {
+  content: "\e98d";
+  
+}
+.turbo-PIPE:before {
+  content: "\e98e";
+  
+}
+.turbo-PORT:before {
+  content: "\e98f";
+  
+}
+.turbo-POWER_CABLE:before {
+  content: "\e990";
+  
+}
+.turbo-POWER_MOD:before {
+  content: "\e991";
+  
+}
+.turbo-POWER_ROOM:before {
+  content: "\e992";
+  
+}
+.turbo-power-breaker:before {
+  content: "\e993";
+  
+}
+.turbo-power-cable-1:before {
+  content: "\e994";
+  
+}
+.turbo-protected-area:before {
+  content: "\e995";
+  
+}
+.turbo-PSDS:before {
+  content: "\e996";
+  
+}
+.turbo-RAIN_CHECK:before {
+  content: "\e997";
+  
+}
+.turbo-REGION:before {
+  content: "\e998";
+  
+}
+.turbo-REGIONAL_POWER:before {
+  content: "\e999";
+  
+}
+.turbo-ROAD:before {
+  content: "\e99a";
+  
+}
+.turbo-ROOM:before {
+  content: "\e99b";
+  
+}
+.turbo-ROUTER:before {
+  content: "\e99c";
+  
+}
+.turbo-SEWAGE_CHECK:before {
+  content: "\e99d";
+  
+}
+.turbo-SEWAGE_PIPE:before {
+  content: "\e99e";
+  
+}
+.turbo-SMOKE_SENSOR:before {
+  content: "\e99f";
+  
+}
+.turbo-SOIL:before {
+  content: "\e9a0";
+  
+}
+.turbo-SUBSTATION_POWER:before {
+  content: "\e9a1";
+  
+}
+.turbo-SWITCH:before {
+  content: "\e9a2";
+  
+}
+.turbo-SYSTEM:before {
+  content: "\e9a3";
+  
+}
+.turbo-TEMPERATURE_MOD:before {
+  content: "\e9a4";
+  
+}
+.turbo-TEMPERATURE_SENSOR:before {
+  content: "\e9a5";
+  
+}
+.turbo-THERMAL_PIPELINE:before {
+  content: "\e9a6";
+  
+}
+.turbo-TRANSFORMER:before {
+  content: "\e9a7";
+  
+}
+.turbo-UPS:before {
+  content: "\e9a8";
+  
+}
+.turbo-VENTILATIOM_SYSTEM:before {
+  content: "\e9a9";
+  
+}
+.turbo-WATER_PIPE:before {
+  content: "\e9aa";
+  
+}
+.turbo-WATERLEVEL:before {
+  content: "\e9ab";
+  
+}
+.turbo-WATERPUMP:before {
+  content: "\e9ac";
+  
+}
+.turbo-WIFI_MOD:before {
+  content: "\e9ad";
+  
+}
+.turbo-wind-power:before {
+  content: "\e9ae";
+  
+}
+.turbo-WRISTBANDS:before {
+  content: "\e9af";
+  
+}
+.turbo-ZIGBEE_MOD:before {
+  content: "\e9b0";
+  
+}

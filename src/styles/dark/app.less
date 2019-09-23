@@ -1,0 +1,220 @@
+.text-omit {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow:hidden;
+}
+
+.txt-shadow {
+  text-shadow: 0 0 5px @primary-color, 0 0 10px @primary-color, 0 0 15px @primary-color, 0 0 40px @primary-color, 0 0 40px @primary-color;
+}
+
+.BMap_scaleTxt{
+  color: #ffffff !important;
+}
+.anchorBL{
+  display:none;
+}
+@app-prefix: hyz;
+html, body {
+    height: 100vh;
+    // overflow: hidden;
+}
+
+html{
+  scrollbar-face-color:fade(@primary-color,30%);
+  scrollbar-track-color:@dark-color-1;
+}
+@app-view :view;
+@font-face {
+  font-family: "Digital";
+  src: url('/@{app-view}/static/fonts/LED.ttf') format("truetype");
+}
+
+.@{app-prefix} {
+    &-module {
+        //一级模块内容
+        background-color: @content-bg-color;
+        padding-top: @header-height;
+        height: 100vh;
+        display: flex;
+        &-side {
+            //左侧菜单
+            background-color: @background-color-base;
+            height: 100%;
+            z-index: 100;
+            width: 60px;
+        }
+        &-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            overflow: hidden;
+        }
+        &-breadmenu { //面包屑导航
+            padding: 12px 20px 0;
+            font-size: 14px;
+            color: #fff;
+            //color: fade(@primary-color,80%);
+        }
+        &-breadmenu2 { //绝对面包屑导航
+            position: absolute;
+            top: 12px;
+            left: 20px;
+            z-index: 1;
+            font-size: 14px;
+            color: #fff;
+            background: fade(#333,30%);
+        }
+        &-content {
+            //右侧内容
+            width: 100%;
+            // height: 95%;
+            padding: 20px;
+            overflow: auto;
+        }
+    }
+    &-conditions {
+        // 列表页搜索条件
+        padding: 10px;
+        .ivu-row {
+            line-height: 50px;
+        }
+        .ivu-col {
+            label {
+                width: 85px;
+                text-align: right;
+                display: inline-block;
+            }
+            .ivu-input-wrapper,
+            .ivu-select {
+                width: 200px;
+            }
+            .ivu-cascader {
+                width: 200px;
+                display: inline-block;
+            }
+            .ivu-btn {
+                margin-right: 15px;
+            }
+        }
+    }
+    &-page {
+        // 分页组件样式
+        margin: 10px 0 0;
+        display: flex;
+        justify-content: flex-end;
+    }
+    &-box { //
+      border: 1px solid @primary-color;
+      border-radius: 4px;
+      box-shadow: 0 0 30px @primary-color inset;
+    }
+    &-right {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+    &-new {
+      border: 1px dashed @primary-color;
+      text-align: center;
+      padding: 4px;
+      cursor: pointer;
+    }
+    &-ellipsis { //文本一行显示，多余显示点点点
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      overflow:hidden;
+    }
+    &-row-item {
+      border: 1px solid fade(@primary-color,50%);
+      margin-bottom: -1px;
+      padding: 2px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      label {
+        font-weight: bold;
+      }
+    }
+}
+
+.lv-base {
+  border-radius: 50%;
+  width: 30px;
+  text-align: center;
+  color: #fff;
+}
+.lv1 {
+  &:extend(.lv-base);
+  background-color: #ff131d;
+  cursor:pointer;
+}
+.lv2 {
+  &:extend(.lv-base);
+  background-color: #ff8314;
+  cursor:pointer;
+}
+.lv3 {
+  &:extend(.lv-base);
+  background-color: #ffff00;
+  color: #aaa;
+  cursor:pointer;
+}
+.lv4 {
+  &:extend(.lv-base);
+  background-color: #008af0;
+  cursor:pointer;
+}
+
+//滚动条样式
+
+
+.hyz-thumb-base {
+  height: 10px;
+  background-color: fade(@primary-color,30%);
+  border:1px solid @primary-color;
+  border-radius:4px;
+}
+
+/* 滑轮的颜色 */
+::-webkit-scrollbar-thumb:vertical {
+  &:extend(.hyz-thumb-base);
+}
+
+::-webkit-scrollbar-thumb:horizontal{
+  &:extend(.hyz-thumb-base);
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+// .content {
+//   padding: 0;
+// }
+
+.panel-title {
+  text-align: center;
+  padding: 12px;
+  background-color: @table-thead-bg;
+  border-bottom: 1px solid @primary-color;
+}
+
+textarea.ivu-input {
+  font-size: 12px;
+}
+
+.flex-vcenter {
+  display: flex;
+  align-items: center;
+}
+
+.required {
+  color: red; 
+  font-size:16px; 
+  font-weight: bold;
+  margin-right:2px;
+}
