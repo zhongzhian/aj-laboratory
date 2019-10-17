@@ -1592,7 +1592,7 @@ export default {
     },
     handleSuccess(res, file, fileList) {
       console.log("handleSuccess .. res", res);
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -1600,11 +1600,21 @@ export default {
         // this.picList.unshift(file);
         // this.picList = [...this.picList];
         // console.log("handleSuccess1 .. this.picList", this.picList);
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleSuccess2(res, file, fileList) {
       console.log("handleSuccess .. res", res);
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -1612,6 +1622,16 @@ export default {
         // this.picList.unshift(file);
         // this.picList = [...this.picList];
         // console.log("handleSuccess1 .. this.picList", this.picList);
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleFormatError(file) {
@@ -1655,35 +1675,75 @@ export default {
       this.uploadData.name = file.name;
     },
     handleSuccessA(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.optionArr[0].A = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleSuccessB(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.optionArr[1].B = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleSuccessC(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.optionArr[2].C = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleSuccessD(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.optionArr[3].D = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     }
   }

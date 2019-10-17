@@ -100,6 +100,11 @@
               </FormItem>
             </Col>
           </Row>
+          <FormItem label="实验总时长" prop="timeLimit" label-position="top">
+            <Input type="number" v-model="newObj.timeLimit" size="small" placeholder="请输入实验总时长" />
+            <!-- <InputNumber v-model="newObj.timeLimit" :min="1" :step="1" size="small"></InputNumber> -->
+            <!-- <InputNumber :max="10" :min="1" :step="1.2" v-model="value2"></InputNumber> -->
+          </FormItem>
           <FormItem label="logo图" prop="logo" label-position="top">
             <div style="margin-top: 35px;">支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议300*361</div>
             <Upload
@@ -107,7 +112,7 @@
               :action="uploadAction"
               :headers="headers"
               :data="uploadData"
-              :show-upload-list="true"
+              :show-upload-list="false"
               :on-success="handleSuccess"
               :format="['jpg','jpeg','png']"
               :max-size="2048"
@@ -126,7 +131,7 @@
               :action="uploadAction"
               :headers="headers"
               :data="uploadData"
-              :show-upload-list="true"
+              :show-upload-list="false"
               :on-success="handleSuccess2"
               :format="['jpg','jpeg','png']"
               :max-size="2048"
@@ -202,6 +207,17 @@ import Cookie from "js-cookie";
 
 export default {
   data() {
+    const validateSequence = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请输入实验总时长"));
+      } else if (!Number.isInteger(+value)) {
+        callback(new Error("请输入数字"));
+      } else if (parseInt(value) < 1) {
+        callback(new Error("实验总时长不能小于1"));
+      } else {
+        callback();
+      }
+    };
     return {
       editor: null,
 
@@ -241,13 +257,17 @@ export default {
         teacherName: "",
         videoDesc: "",
         logo: "",
-        mainImg: ""
+        mainImg: "",
+        timeLimit: 1
       },
       editObj: null,
       ruleValidate: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
         logo: [{ required: true, message: "请上传logo图", trigger: "blur" }],
-        mainImg: [{ required: true, message: "请上传主图", trigger: "blur" }]
+        mainImg: [{ required: true, message: "请上传主图", trigger: "blur" }],
+        timeLimit: [
+          { required: true, validator: validateSequence, trigger: "blur" }
+        ]
         // dataType: [
         //   { required: true, message: "请选择数据类型", trigger: "change" }
         // ],
@@ -510,7 +530,8 @@ export default {
         teacherName: this.userInfo.personName || this.userInfo.userName,
         videoDesc: "",
         logo: "",
-        mainImg: ""
+        mainImg: "",
+        timeLimit: 1
       };
       this.editor.txt.html(this.newObj.description);
       // if(this.isAdmin){
@@ -551,7 +572,8 @@ export default {
       this.visible = true;
     },
     handleSuccess(res, file, fileList) {
-      if ((res.code = 20000)) {
+      //{"code":50401,"message":"用户没有登陆或Token已过期"}
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -559,14 +581,34 @@ export default {
         // this.picList.unshift(file);
         // this.picList = [...this.picList];
         // console.log("handleSuccess1 .. this.picList", this.picList);
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleSuccess2(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.newObj.mainImg = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleFormatError(file) {
@@ -582,11 +624,21 @@ export default {
       });
     },
     handleSuccess_video(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.newObj.videoDesc = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleFormatError_video(file) {

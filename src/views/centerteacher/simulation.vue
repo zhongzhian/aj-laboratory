@@ -309,19 +309,39 @@ export default {
         });
     },
     handleSuccess(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.newObj.picture = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleSuccess2(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.channelObj.picture = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleMaxSize(file) {

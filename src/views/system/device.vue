@@ -86,7 +86,7 @@
             </Col>
             <Col span="12">
               <FormItem label="实验时长" prop="duration" label-position="top">
-                <Input v-model="newObj.duration" size="small" placeholder="请输入实验时长(单位：小时)" />
+                <Input type="number" v-model="newObj.duration" size="small" placeholder="请输入实验时长(单位：小时)" />
               </FormItem>
             </Col>
           </Row>
@@ -229,6 +229,15 @@ import dateformat from "@/utils/dateformat.js";
 
 export default {
   data() {
+    const validateSequence = (rule, value, callback) => {
+      if (!Number.isInteger(+value)) {
+        callback(new Error("请输入数字"));
+      } else if (parseInt(value) < 1) {
+        callback(new Error("实验时长不能小于1"));
+      } else {
+        callback();
+      }
+    };
     return {
       picBasePath: API.picPath,
       uploadAction: API.uploadPath + API.index.upload_upload,
@@ -410,7 +419,7 @@ export default {
         picture: "",
         cameraId: 0,
         cameraName: "",
-        duration: 0,
+        duration: 1,
         description: "",
         signalChannelList: []
       },
@@ -436,6 +445,9 @@ export default {
         ],
         resourceClass: [
           { required: true, message: "请输入资源类型", trigger: "blur" }
+        ],
+        duration: [
+          { required: true, validator: validateSequence, trigger: "blur" }
         ]
       }
     };
@@ -631,7 +643,7 @@ export default {
         picture: "",
         cameraId: 0,
         cameraName: "",
-        duration: 0,
+        duration: 1,
         description: "",
         signalChannelList: []
       };
@@ -680,19 +692,39 @@ export default {
       this.visible = true;
     },
     handleSuccess(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.newObj.picture = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleSuccess2(res, file, fileList) {
-      if ((res.code = 20000)) {
+      if ((res.code === 20000)) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
         this.channelObj.picture = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      }else{
+          this.$Message.error(res.message);
       }
     },
     handleMaxSize(file) {

@@ -1,10 +1,12 @@
+// 外网
 const baseDomain = '47.93.116.221'
 const baseProtocol = 'http'
 const basePort = 8000
 
-const proDomain = '39.104.229.21'
-const proProtocol = 'http'
-const proPort = 58055
+//内网
+// const baseDomain = '172.16.38.47'
+// const baseProtocol = 'http'
+// const basePort = 8000
 
 export const REST_API = process.env.NODE_ENV === 'production' ? '' : `${baseProtocol}://${baseDomain}:${basePort}`
 // export const REST_API = ''

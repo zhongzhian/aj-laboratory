@@ -1,4 +1,6 @@
-const UPLOADPATH = 'http://47.93.116.221:8000';
+import {REST_API} from "../config";
+// const UPLOADPATH = 'http://47.93.116.221:8000';
+const UPLOADPATH = REST_API;
 export default {
   uploadPath: UPLOADPATH,
   picPath: UPLOADPATH + "/remoteLaboratory/upload/",
