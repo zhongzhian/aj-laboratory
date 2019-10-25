@@ -1,43 +1,49 @@
 /**
  * Created by liekkas on 2017/6/11.
  */
-import axios from 'axios'
-import { REST_API } from '../config'
-import { Message } from 'iview'
-import store from '../store';
-import router from '../router'
+import axios from "axios";
+import { REST_API } from "../config";
+import { Message } from "iview";
+import store from "../store";
+import router from "../router";
 
-axios.defaults.timeout = 60000
-axios.defaults.baseURL = REST_API
-axios.defaults.showSpin = true  //请求加载loading效果
-axios.defaults.showMsg = false  //请求后是否弹出消息
+axios.defaults.timeout = 60000;
+axios.defaults.baseURL = REST_API;
+axios.defaults.showSpin = true; //请求加载loading效果
+axios.defaults.showMsg = false; //请求后是否弹出消息
 
 // Add a request interceptor
-axios.interceptors.request.use(function (config) {
-  config.headers['Authorization'] = 'Bearer ' + store.getters.token
-  if (config.showSpin) {
-    document.querySelector('#global-spin').style.display = 'block'
+axios.interceptors.request.use(
+  function(config) {
+    config.headers["Authorization"] = "Bearer " + store.getters.token;
+    if (config.showSpin) {
+      document.querySelector("#global-spin").style.display = "block";
+    }
+    return config;
+  },
+  function(error) {
+    console.log(">>> 发送失败。", error);
+    document.querySelector("#global-spin").style.display = "none";
+    return Promise.reject(error);
   }
-  return config;
-}, function (error) {
-  console.log('>>> 发送失败。', error)
-  document.querySelector('#global-spin').style.display = 'none'
-  return Promise.reject(error);
-})
+);
 
 // Add a response interceptor
-axios.interceptors.response.use(function (response) {
-  document.querySelector('#global-spin').style.display = 'none'
-  // console.log(response.config.url + "--- url", response.config.url);
-  console.log(response.config.url + "--- params", response.config.data);
-  console.log(response.config.url + "--- response", response.data);
-  return check(response)
-}, function (error) {
-  check(error.response)
-  console.log('>>> 返回失败。', error.response)
-  document.querySelector('#global-spin').style.display = 'none'
-  return Promise.reject(error);
-})
+axios.interceptors.response.use(
+  function(response) {
+    document.querySelector("#global-spin").style.display = "none";
+    // console.log(response.config.url + "--- url", response.config.url);
+    console.log(response.config.url + "--- params", response.config.data);
+    console.log(response.config.url + "--- response", response.data);
+    return check(response);
+  },
+  function(error) {
+    check(error.response);
+    console.log(">>> 返回失败。", error.response);
+    document.querySelector("#global-spin").style.display = "none";
+    return Promise.reject(error);
+  }
+);
 
 /**
  * 错误分两种：
@@ -46,60 +52,71 @@ axios.interceptors.response.use(function (response) {
  */
 function check(response) {
   if (!response) {
-    Message.error('服务超时！')
-    return
+    Message.error("服务超时！");
+    return;
   }
 
   if (response.status >= 200 && response.status < 300) {
-    if (response.data && response.data.hasOwnProperty('hyz_code')) { //简单判断结果是否来自约定的后台服务
-      const { hyz_code, hyz_message, hyz_result } = response.data
+    if (response.data && response.data.hasOwnProperty("hyz_code")) {
+      //简单判断结果是否来自约定的后台服务
+      const { hyz_code, hyz_message, hyz_result } = response.data;
       if (hyz_code === 20000) {
         if (response.config.showMsg) {
-          Message.success(hyz_message)
+          Message.success(hyz_message);
         }
-        return hyz_result
+        return hyz_result;
       } else if (hyz_code === 50200) {
-        Message.error(hyz_message)
-        return hyz_result
+        Message.error(hyz_message);
+        return hyz_result;
       } else {
         if (response.config.showMsg) {
-          Message.error(hyz_message)
+          Message.error(hyz_message);
         }
-        throw new Error(hyz_message)
+        throw new Error(hyz_message);
       }
     } else {
-      const { code, message, result } = response.data
-      if(code === 50401){
-        router.push('/login')
+      const { code, message, result } = response.data;
+      if (code === 50401) {
+        router.push("/login");
+      } else if (code === 20000) {
+        // if (response.config.showMsg) {
+        //   Message.success(message)
+        // }
+        // return hyz_result;
+      } else if (code === 50200) {
+        Message.error(message);
+      } else {
+        Message.error(message);
       }
-      return response.data
+      return response.data;
     }
   }
 
-  let msg
+  let msg;
   if (response.status === 404) {
-    msg = '404, 要访问的地址找不到了, 操作失败'
+    msg = "404, 要访问的地址找不到了, 操作失败";
   } else if (response.status === 403) {
-    msg = '403, 服务器拒绝本次访问, 操作失败'
+    msg = "403, 服务器拒绝本次访问, 操作失败";
   } else if (response.status === 400) {
-    msg = '400, 本次请求无效, 操作失败'
-  } else if (response.status === 401) { //没权限的话跳回登录界面
-    msg = '未授权或授权过期，请重新登录！'
-    console.log('木有权限啊');
+    msg = "400, 本次请求无效, 操作失败";
+  } else if (response.status === 401) {
+    //没权限的话跳回登录界面
+    msg = "未授权或授权过期，请重新登录！";
+    console.log("木有权限啊");
     if (response.config.showMsg) {
-      Message.error(msg)
+      Message.error(msg);
     }
-    return
+    return;
   } else if (response.status === 405) {
-    msg = '405, 不允许的操作, 操作失败'
+    msg = "405, 不允许的操作, 操作失败";
   } else if (response.status === 500) {
-    msg = '500, 后台服务运行出错, 操作失败'
+    msg = "500, 后台服务运行出错, 操作失败";
   } else {
-    msg = '错误代码:' + response.status
+    msg = "错误代码:" + response.status;
   }
   if (response.config.showMsg) {
-    Message.error(msg)
+    Message.error(msg);
   }
 }
 
-export default axios
+export default axios;

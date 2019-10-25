@@ -3,7 +3,7 @@
     <div class="table-condition-btnbar">
       <Button @click="addItem" size="small" class="condition-btn">添加</Button>
       <!-- <Button @click="editItem" size="small" class="condition-btn">编辑</Button> -->
-      <!-- <Button @click="delItem" size="small" class="condition-btn">删除</Button> -->
+      <Button @click="delItem" size="small" class="condition-btn">删除</Button>
       <Button @click="getTableDatas" size="small" class="condition-btn">刷新</Button>
     </div>
     <div>
@@ -70,11 +70,11 @@ export default {
         pageSize: 10
       },
       columns1: [
-        // {
-        //   type: "selection",
-        //   width: 60,
-        //   align: "center"
-        // },
+        {
+          type: "selection",
+          width: 60,
+          align: "center"
+        },
         {
           title: "图片",
           width: 90,

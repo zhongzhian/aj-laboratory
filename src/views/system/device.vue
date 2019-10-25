@@ -594,7 +594,7 @@ export default {
               break;
           }
         } else {
-          this.$Message.error("Fail!");
+          this.$Message.error("表单有误!");
         }
       });
     },
