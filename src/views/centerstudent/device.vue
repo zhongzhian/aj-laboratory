@@ -180,7 +180,11 @@ export default {
           hasAudio: false,
           hasVideo: true,
           // url: "https://turbo.linkme8.cn:33000/srs1/live/3ef9e64741a74061a59c34eb1de87165.flv"
-          url: this.myDeviceDetail.camera.srsUrl
+          url:
+            this.myDeviceDetail.camera.srsUrl +
+            "/live/" +
+            this.myDeviceDetail.camera.uniqueKey +
+            ".flv"
         };
       }
 

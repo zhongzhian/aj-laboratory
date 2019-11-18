@@ -90,34 +90,24 @@
                 <Icon type="ios-trash-outline" @click.native="handleHomePhotoRemove(item)"></Icon>
               </div>
             </div>
-            <!-- <div>
-              <Upload
-                multiple
-                type="drag"
-                :action="uploadAction"
-                :before-upload="baforeUpload"
-                :data="uploadData"
-                :on-success="uploadSuccess"
-              >
-                <div style="padding: 20px 0">
-                  <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                  <p>点击或者拖拽上传</p>
-                </div>
-              </Upload>
-            </div>
-            <div style="position:relative;padding:10px;">
-              <div
-                v-for="item in settings['homePageImages']"
-                :key="item"
-                style="margin:0 10px 10px 0;float:left;width:100px;height:100px;"
-              >
-                <img :src="item" />
-              </div>
-            </div>-->
           </FormItem>
           <FormItem>
             <Button type="primary" @click="showChoosePhoto">选择图片</Button>
             <Button type="primary" @click="handleSubmit('homePageImages')">设置</Button>
+          </FormItem>
+
+          <FormItem label="首页底部轮播图片">
+            <div class="demo-upload-list" :key="item" v-for="item in homeBottomPhotoList">
+              <img :src="item.url" />
+              <div class="demo-upload-list-cover">
+                <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
+                <Icon type="ios-trash-outline" @click.native="handleHomeBottomPhotoRemove(item)"></Icon>
+              </div>
+            </div>
+          </FormItem>
+          <FormItem>
+            <Button type="primary" @click="showChooseBottomPhoto">选择图片</Button>
+            <Button type="primary" @click="handleSubmit('homePageBottomImages')">设置</Button>
           </FormItem>
         </Form>
       </div>
@@ -159,40 +149,41 @@
       </div>
     </Drawer>
 
-    <!-- <div v-show="showPhotos" class="normal-panel alarmDetail-modal">
-      <div class="mask"></div>
-      <div class="normal-panel-content" style="padding:20px;">
-        <Form ref="editValidate" :label-width="85">
-          <div class="normal-panel-title">
-            选择图片
-            <Icon @click="showPhotos = false" type="close-round"></Icon>
-          </div>
-          <FormItem label="当前选中">
-            <div class="demo-upload-list" :key="item" v-for="item in selectedPhotoList">
-              <img :src="item.url" />
-              <div class="demo-upload-list-cover">
-                <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
-                <Icon type="ios-trash-outline" @click.native="handleSelectedRemove(item)"></Icon>
+    <Drawer
+      title="选择图片"
+      v-model="showBottomPhotos"
+      width="720"
+      :mask-closable="false"
+      class-name="demo-drawer-style"
+    >
+      <div class="demo-drawer-content">
+        <Form>
+          <FormItem label="图片库">
+            <div class="demo-upload-div">
+              <div class="demo-upload-list2" :key="item" v-for="(item,index) in uploadBottomList">
+                <img :src="item.url" />
+                <div class="demo-upload-list-checkdiv">
+                  <Checkbox @on-change="picSelectBottom(item)" v-model="item.selected">{{item.name}}</Checkbox>
+                </div>
               </div>
             </div>
           </FormItem>
-          <FormItem>
-            <Button type="primary" @click="selectSubmit">确定</Button>
-            <Button type="primary" @click="showPhotos = false">返回</Button>
-          </FormItem>
-          <FormItem label="图片库">
-            <div class="demo-upload-div">
-              <div class="demo-upload-list2" :key="item" v-for="(item,index) in uploadList">
-                <img :src="item.url" />
-                <div class="demo-upload-list-checkdiv">
-                  <Checkbox @on-change="picSelect(item)" v-model="item.selected">{{item.name}}</Checkbox>
-                </div>
+          <FormItem label="当前选中">
+            <div class="demo-upload-list" :key="item" v-for="item in selectedBottomPhotoList">
+              <img :src="item.url" />
+              <div class="demo-upload-list-cover">
+                <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
+                <Icon type="ios-trash-outline" @click.native="handleSelectedBottomRemove(item)"></Icon>
               </div>
             </div>
           </FormItem>
         </Form>
       </div>
-    </div> -->
+      <div class="demo-drawer-footer">
+        <Button style="margin-right: 8px" @click="showBottomPhotos = false">取消</Button>
+        <Button type="primary" @click="selectBottomSubmit">确定</Button>
+      </div>
+    </Drawer>
 
     <Modal title="图片" v-model="visible" width="732">
       <div style="text-align:center;width:700px;">
@@ -217,13 +208,17 @@ export default {
         name: ""
       },
       showPhotos: false,
+      showBottomPhotos: false,
 
       defaultList: [],
       selectedPhotoList: [],
+      selectedBottomPhotoList: [],
       homePhotoList: [],
+      homeBottomPhotoList: [],
       imgName: "",
       visible: false,
       uploadList: [],
+      uploadBottomList: [],
       settings: {},
       formValidate: {}
     };
@@ -244,12 +239,6 @@ export default {
       const fileList = this.$refs.upload.fileList;
       this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
     },
-    handleHomePhotoRemove(file) {
-      this.homePhotoList.splice(this.homePhotoList.indexOf(file), 1);
-    },
-    handleSelectedRemove(file) {
-      this.selectedPhotoList.splice(this.selectedPhotoList.indexOf(file), 1);
-    },
     getTableDatas() {
       let params = {},
         _this = this;
@@ -260,13 +249,21 @@ export default {
             if (r.keyName === "homePageImages") {
               _this.homePhotoList = JSON.parse(r.value);
             }
+            if (r.keyName === "homePageBottomImages") {
+              _this.homeBottomPhotoList = JSON.parse(r.value);
+            }
             if (r.keyName === "deviceOpenWeekend") {
               r.value = r.value === "1" ? "开放" : "不开放";
             }
             _this.settings[r.keyName] = r.value;
           });
           this.selectedPhotoList = [...this.homePhotoList];
+          this.selectedBottomPhotoList = [...this.homeBottomPhotoList];
           console.log("this.selectedPhotoList", this.selectedPhotoList);
+          console.log(
+            "this.selectedBottomPhotoList",
+            this.selectedBottomPhotoList
+          );
           this.getPhotoDatas();
         }
       });
@@ -286,8 +283,24 @@ export default {
             return p;
           });
           console.log("this.uploadList", this.uploadList);
+          this.uploadBottomList = result.result.list.map(p => {
+            let splits = p.uploadFileName.split("|");
+            let path = splits[1] ? splits[1] : splits[0];
+            p.url = _this.picBasePath + path;
+            let isSelect =
+              _.findIndex(this.selectedBottomPhotoList, { id: p.id }) != -1;
+            p.selected = isSelect;
+            return p;
+          });
+          console.log("this.uploadBottomList", this.uploadBottomList);
         }
       });
+    },
+    handleHomePhotoRemove(file) {
+      this.homePhotoList.splice(this.homePhotoList.indexOf(file), 1);
+    },
+    handleSelectedRemove(file) {
+      this.selectedPhotoList.splice(this.selectedPhotoList.indexOf(file), 1);
     },
     showChoosePhoto() {
       this.showPhotos = true;
@@ -306,6 +319,37 @@ export default {
       this.homePhotoList = this.selectedPhotoList;
       this.showPhotos = false;
     },
+
+    // 底部
+    handleHomeBottomPhotoRemove(file) {
+      this.homeBottomPhotoList.splice(
+        this.homeBottomPhotoList.indexOf(file),
+        1
+      );
+    },
+    handleSelectedBottomRemove(file) {
+      this.selectedBottomPhotoList.splice(
+        this.selectedBottomPhotoList.indexOf(file),
+        1
+      );
+    },
+    showChooseBottomPhoto() {
+      this.showBottomPhotos = true;
+      // this.uploadList = this.$refs.upload.fileList;
+      this.selectedBottomPhotoList = this.homeBottomPhotoList;
+    },
+    picSelectBottom(item) {
+      console.log("item", item);
+      // item.selected = !item.selected;
+      this.updateSelectBottom();
+    },
+    updateSelectBottom() {
+      this.selectedBottomPhotoList = _.filter(this.uploadList, "selected");
+    },
+    selectBottomSubmit() {
+      this.homeBottomPhotoList = this.selectedBottomPhotoList;
+      this.showBottomPhotos = false;
+    },
     handleSubmit(name) {
       if (name === "homePageImages") {
         this.settings[name] = JSON.stringify(
@@ -313,6 +357,13 @@ export default {
           this.homePhotoList
         );
         console.log("homePageImages", this.settings[name]);
+      }
+      if (name === "homePageBottomImages") {
+        this.settings[name] = JSON.stringify(
+          // this.homePhotoList.map(p => p.url)
+          this.homeBottomPhotoList
+        );
+        console.log("homePageBottomImages", this.settings[name]);
       } else if (name === "deviceOpenWeekend") {
         this.settings[name] = this.settings[name] === "开放" ? "1" : "0";
         console.log("deviceOpenWeekend", this.settings[name]);

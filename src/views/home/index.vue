@@ -5,7 +5,7 @@
       <div class="banner-mask"></div>
       <div class="layout-content" style="height: 200px;">
         <div class="home-banner">
-          <img src="static/images/banner.jpg" />
+          <img src="static/images/banner1.jpg" />
         </div>
         <!-- <div class="home-bannermain">
           <div class="home-bannermain-title">东北大学</div>
@@ -50,8 +50,8 @@
           <!-- <div class="course-listitem" v-for="(item,index) in carouselData" v-bind:index="index" v-bind:key="item">{{item}}</div> -->
           <Row>
             <Col
-              v-if="index<3"
-              span="8"
+              v-if="index<4"
+              span="6"
               v-for="(item,index) in courseDatas"
               v-bind:index="index"
               v-bind:key="item"
@@ -64,7 +64,7 @@
           <Row>
             <Col
               v-if="index>2"
-              span="8"
+              span="6"
               v-for="(item,index) in courseDatas"
               v-bind:index="index"
               v-bind:key="item"
@@ -88,6 +88,19 @@
         </div>
       </div>
     </div>
+    <!-- content carousel -->
+    <div v-if="abcData.length>0" class="layout-row">
+      <div class="carousel-mask"></div>
+      <div class="layout-content">
+        <Carousel v-model="value1" loop autoplay arrow="always">
+          <CarouselItem v-for="(item,index) in abcData" v-bind:index="index" v-bind:key="item">
+            <div class="home-carousel">
+              <img class="home-carousel-img" :src="item.url" />
+            </div>
+          </CarouselItem>
+        </Carousel>
+      </div>
+    </div>
     <!-- content teachers -->
     <div v-if="teacherDatas.length>0" class="layout-row">
       <div class="teacher-mask"></div>
@@ -98,7 +111,7 @@
           <Row>
             <Col
               v-if="index<2"
-              span="12"
+              span="6"
               v-for="(item,index) in teacherDatas"
               v-bind:index="index"
               v-bind:key="item"
@@ -113,7 +126,7 @@
           <Row>
             <Col
               v-if="index>1 && index<4"
-              span="12"
+              span="6"
               v-for="(item,index) in teacherDatas"
               v-bind:index="index"
               v-bind:key="item"
@@ -165,21 +178,23 @@ export default {
       value1: 0,
       carouselData: [],
       courseDatas: [],
+      abcData: [],
       teacherDatas: [],
       pageData1: {
         total: 0,
         current: 1,
-        pageSize: 6
+        pageSize: 8
       },
       pageData2: {
         total: 0,
         current: 1,
-        pageSize: 6
+        pageSize: 8
       }
     };
   },
   mounted() {
     this.getCarouselData();
+    this.getABClData();
     this.getCourseData();
     this.getTeacherData();
     // this.proviceChart();
@@ -210,6 +225,16 @@ export default {
           let dataStr = result.result.value;
           if (dataStr) {
             this.carouselData = JSON.parse(dataStr);
+          }
+        }
+      });
+    },
+    getABClData() {
+      this.axios.get(`${API.index.getHomePageBottomImages}`).then(result => {
+        if (result.code === 20000) {
+          let dataStr = result.result.value;
+          if (dataStr) {
+            this.abcData = JSON.parse(dataStr);
           }
         }
       });
@@ -324,7 +349,7 @@ export default {
 .home-carousel {
   // height: 200px;
   height: 361px;
-  width: 1200px;
+  width: 1278px;
   text-align: center;
 }
 .home-carousel-img {
@@ -340,28 +365,33 @@ export default {
   bottom: 0;
 }
 .course-listitem {
-  padding: 0 20px 30px 0;
+  // padding: 0 20px 30px 0;
+  padding: 0 0 30px 0;
   position: relative;
+  text-align: center;
 }
 .course-listitem-img {
   width: 300px;
-  height: 361px;
+  height: 360px;
   border: 1px solid #ccc;
   cursor: pointer;
   // border-radius: 50%;
 }
 .teacher-listitem-img {
-  width: 150px;
-  height: 150px;
+  // width: 150px;
+  // height: 150px;
+  width: 100px;
+  height: 100px;
   border: 1px solid #ccc;
   border-radius: 50%;
   cursor: pointer;
 }
 .course-listitem p {
-  position: absolute;
-  left: 170px;
-  top: 15px;
-  text-align: left;
+  // position: absolute;
+  // left: 170px;
+  // top: 15px;
+  // text-align: left;
+  text-align: center;
   font-size: 14px;
 }
 .teacher-mask {

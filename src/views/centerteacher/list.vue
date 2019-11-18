@@ -106,7 +106,7 @@
             <!-- <InputNumber :max="10" :min="1" :step="1.2" v-model="value2"></InputNumber> -->
           </FormItem>
           <FormItem label="logo图" prop="logo" label-position="top">
-            <div style="margin-top: 35px;">支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议300*361</div>
+            <div style="margin-top: 35px;">支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议300*360</div>
             <Upload
               ref="upload"
               :action="uploadAction"
@@ -121,7 +121,7 @@
               :before-upload="handleBeforeUpload"
             >
               <img v-if="newObj.logo" :src="newObj.logo" class="form-course-logoimg" />
-              <img v-if="!newObj.logo" src="http://temp.im/300x361" class="form-course-logoimg" />
+              <img v-if="!newObj.logo" src="http://temp.im/300x360" class="form-course-logoimg" />
             </Upload>
           </FormItem>
           <FormItem label="主图" prop="mainImg" label-position="top">
@@ -589,8 +589,8 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleSuccess2(res, file, fileList) {
@@ -607,8 +607,8 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleFormatError(file) {
@@ -624,7 +624,7 @@ export default {
       });
     },
     handleSuccess_video(res, file, fileList) {
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -637,8 +637,8 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleFormatError_video(file) {
@@ -669,7 +669,7 @@ export default {
 <style lang="less" scoped>
 .form-course-logoimg {
   width: 300px;
-  height: 361px;
+  height: 360px;
   border: 1px solid #ccc;
   // height: 100px;
 }

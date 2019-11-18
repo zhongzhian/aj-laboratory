@@ -1,4 +1,4 @@
-import {REST_API} from "../config";
+import { REST_API } from "../config";
 // const UPLOADPATH = 'http://47.93.116.221:8000';
 const UPLOADPATH = REST_API;
 export default {
@@ -27,6 +27,7 @@ export default {
     sysSetting_list: `/remoteLaboratory/sysSetting/list`,
     sysSetting: `/remoteLaboratory/sysSetting`,
     getHomePageImages: `/remoteLaboratory/sysSetting/getHomePageImages`,
+    getHomePageBottomImages: `/remoteLaboratory/sysSetting/getHomePageBottomImages`,
 
     upload_upload: `/remoteLaboratory/uploadFile/upload`,
     upload_list: `/remoteLaboratory/uploadFile/list`,
@@ -80,8 +81,6 @@ export default {
     test_getDetail: `/remoteLaboratory/testInstance/getDetail/`,
 
     startStudy: `/remoteLaboratory/courseStudyRecord/startStudy/`,
-    study_getMy: `/remoteLaboratory/courseStudyRecord/getMy`,
-
-
+    study_getMy: `/remoteLaboratory/courseStudyRecord/getMy`
   }
-}
+};
