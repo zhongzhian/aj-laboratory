@@ -74,8 +74,8 @@
           </Row>
           <Row :gutter="32">
             <Col span="12">
-              <FormItem label="关联的摄像头" prop="cameraId" label-position="top">
-                <Select v-model="newObj.cameraId" placeholder="请选择关联的摄像头">
+              <FormItem label="关联的摄像头" label-position="top">
+                <Select v-model="cameraId" placeholder="请选择关联的摄像头">
                   <Option
                     v-for="item in cameraDatas"
                     :value="item.value"
@@ -86,7 +86,12 @@
             </Col>
             <Col span="12">
               <FormItem label="实验时长" prop="duration" label-position="top">
-                <Input type="number" v-model="newObj.duration" size="small" placeholder="请输入实验时长(单位：小时)" />
+                <Input
+                  type="number"
+                  v-model="newObj.duration"
+                  size="small"
+                  placeholder="请输入实验时长(单位：小时)"
+                />
               </FormItem>
             </Col>
           </Row>
@@ -408,6 +413,7 @@ export default {
       showEditChannel: false,
       showDelete: false,
       showChannelDelete: false,
+      cameraId: 0,
       newObj: {
         // "RESOURCETYPE": "联通专线",
         name: "",
@@ -417,7 +423,7 @@ export default {
         resourceClass: "",
         type: 1,
         picture: "",
-        cameraId: 0,
+        // cameraId: 0,
         cameraName: "",
         duration: 1,
         description: "",
@@ -641,18 +647,24 @@ export default {
         resourceClass: "",
         type: 1,
         picture: "",
-        cameraId: 0,
+        // cameraId: 0,
         cameraName: "",
         duration: 1,
         description: "",
         signalChannelList: []
       };
+
       this.showAddNew = true;
     },
     addSubmit() {
       let method = "post";
       if (this.newObj.id) {
         method = "put";
+      }
+      if (this.cameraId) {
+        this.newObj.cameraId = this.cameraId;
+      } else {
+        delete this.newObj.cameraId;
       }
       this.axios({
         method: method,
@@ -681,9 +693,12 @@ export default {
       let params = {};
       this.axios.post(`${API.index.camera_list}`, params).then(result => {
         if (result.code === 20000) {
-          this.cameraDatas = result.result.list.map(r => {
+          let cameraDatas = [{ value: 0, label: "不绑定" }];
+          let aaa = result.result.list.map(r => {
             return { ...r, value: r.id, label: r.name };
           });
+          cameraDatas.push(...aaa);
+          this.cameraDatas = cameraDatas;
         }
       });
     },
@@ -692,7 +707,7 @@ export default {
       this.visible = true;
     },
     handleSuccess(res, file, fileList) {
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -705,12 +720,12 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleSuccess2(res, file, fileList) {
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -723,8 +738,8 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleMaxSize(file) {

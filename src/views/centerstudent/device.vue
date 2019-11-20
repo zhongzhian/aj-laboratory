@@ -13,7 +13,7 @@
         </div>
       </div>
       <div v-if="isStart" class="lab-device-div-content">
-        <div class="iframe-close-div">
+        <div v-if="isDevice" class="iframe-close-div">
           <Icon
             v-show="isShowVideo"
             class="iframe-close-icon"
@@ -36,7 +36,7 @@
         ></iframe>
 
         <div
-          v-show="isShowVideo"
+          v-show="(isDevice&&isShowVideo)"
           class="lab-device-video-div"
           @mousedown="move"
           :style="'left:'+positionX+'px;top:'+positionY+'px;'"
@@ -106,6 +106,7 @@ export default {
       myDevice: null,
       myDeviceDetail: null,
       isStart: false,
+      isDevice: false,
       isShowVideo: true,
       errorMsg: "",
       video: null,
@@ -136,9 +137,11 @@ export default {
       this.player = null;
     },
     showVideo() {
-      this.isShowVideo = true;
-      // this.player.play();
-      this.createVideo();
+      if (this.isDevice) {
+        this.isShowVideo = true;
+        // this.player.play();
+        this.createVideo();
+      }
     },
     move(e) {
       let odiv = window.screen; //获取目标元素
@@ -173,6 +176,7 @@ export default {
       };
     },
     createVideo() {
+      if (!this.isDevice) return;
       if (flvjs.isSupported()) {
         var mediaDataSource = {
           type: "flv",
@@ -186,9 +190,9 @@ export default {
             this.myDeviceDetail.camera.uniqueKey +
             ".flv"
         };
-      }
 
-      this.flv_load_mds(mediaDataSource);
+        this.flv_load_mds(mediaDataSource);
+      }
     },
     flv_load_mds(mediaDataSource) {
       var element = document.getElementById("example_video_1");
@@ -218,6 +222,11 @@ export default {
           if (result.code === 20000) {
             this.errorMsg = "";
             this.myDeviceDetail = result.result;
+            if (this.myDeviceDetail.camera) {
+              this.isDevice = true;
+            } else {
+              this.isDevice = false;
+            }
             // this.createVideo();
           } else if (result.code === 40010) {
             this.errorMsg = "抱歉,您的预约还未到时间或已过期";

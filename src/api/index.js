@@ -7,6 +7,7 @@ export default {
   login: {
     register: `/remoteLaboratory/user/register`,
     token: `/remoteLaboratory/user/login`,
+    modifyPassword: `/remoteLaboratory/user/modifyPassword`,
     logout: `/remoteLaboratory/user/loginout`,
     account: `/remoteLaboratory/user/current`
   },

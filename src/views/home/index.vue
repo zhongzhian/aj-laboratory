@@ -25,7 +25,7 @@
     <div v-if="carouselData.length>0" class="layout-row">
       <div class="carousel-mask"></div>
       <div class="layout-content">
-        <Carousel v-model="value1" loop autoplay arrow="always">
+        <Carousel v-model="value1" loop autoplay arrow="always" dots="none">
           <CarouselItem v-for="(item,index) in carouselData" v-bind:index="index" v-bind:key="item">
             <div class="home-carousel">
               <img class="home-carousel-img" :src="item.url" />
@@ -92,7 +92,7 @@
     <div v-if="abcData.length>0" class="layout-row">
       <div class="carousel-mask"></div>
       <div class="layout-content">
-        <Carousel v-model="value1" loop autoplay arrow="always">
+        <Carousel v-model="value1" loop autoplay arrow="always" dots="none">
           <CarouselItem v-for="(item,index) in abcData" v-bind:index="index" v-bind:key="item">
             <div class="home-carousel">
               <img class="home-carousel-img" :src="item.url" />

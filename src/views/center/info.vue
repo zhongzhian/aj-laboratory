@@ -3,11 +3,14 @@
     <div class="layout-row">
       <div class="layout-content2">
         <div>
-          <Form ref="formValidate" :model="userInfo" :rules="ruleValidate" :label-width="200">
+          <Form ref="formValidate" :model="userInfop" :rules="ruleValidate" :label-width="200">
             <div class="layout-content-title">账号信息</div>
             <FormItem label="用户名" label-position="top">
               <Input v-model="userInfo.userName" disabled size="small" style="width:400px;" />
             </FormItem>
+            <!-- <FormItem label="密码" prop="ppassword" label-position="top">
+              <Input v-model="userInfop.ppassword" size="small" style="width:400px;" />
+            </FormItem>-->
             <FormItem label="头像" label-position="top">
               <Upload
                 ref="upload"
@@ -75,8 +78,37 @@
               <Input v-model="userInfo.class1" placeholder="请输入班" style="width:400px;"></Input>
             </FormItem>
             <FormItem>
-              <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
+              <Button type="primary" @click="infoSubmit">保存</Button>
               <!-- <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button> -->
+            </FormItem>
+
+            <div class="layout-content-title">修改密码</div>
+            <FormItem label="旧密码" prop="oldpassword" label-position="top">
+              <Input
+                v-model="userInfop.oldpassword"
+                type="password"
+                size="small"
+                style="width:400px;"
+              />
+            </FormItem>
+            <FormItem label="新密码" prop="newpassword1" label-position="top">
+              <Input
+                v-model="userInfop.newpassword1"
+                type="password"
+                size="small"
+                style="width:400px;"
+              />
+            </FormItem>
+            <FormItem label="确认新密码" prop="newpassword2" label-position="top">
+              <Input
+                v-model="userInfop.newpassword2"
+                type="password"
+                size="small"
+                style="width:400px;"
+              />
+            </FormItem>
+            <FormItem>
+              <Button type="primary" @click="handleSubmit('formValidate')">确定</Button>
             </FormItem>
           </Form>
         </div>
@@ -88,6 +120,8 @@
 <script>
 import API from "@/api";
 import dateformat from "@/utils/dateformat.js";
+import jsSHA from "jssha";
+import qs from "qs";
 
 export default {
   data() {
@@ -101,9 +135,18 @@ export default {
       },
       showPhotos: false,
 
+      userInfop: { oldpassword: "", newpassword1: "", newpassword2: "" },
       userInfo: {},
       ruleValidate: {
-        name: [{ required: true, message: "请输入名称", trigger: "blur" }]
+        oldpassword: [
+          { required: true, message: "请输入原密码", trigger: "blur" }
+        ],
+        newpassword1: [
+          { required: true, message: "请输入新密码", trigger: "blur" }
+        ],
+        newpassword2: [
+          { required: true, message: "请确认新密码", trigger: "blur" }
+        ]
       }
     };
   },
@@ -126,6 +169,7 @@ export default {
         .then(result => {
           if (result.code === 20000) {
             this.$store.dispatch("fetchAccount");
+            this.$Message.success("保存成功");
           }
         })
         .catch(err => {
@@ -133,13 +177,71 @@ export default {
         });
     },
     handleSubmit(name) {
+      if (this.userInfop.newpassword1 !== this.userInfop.newpassword2) {
+        this.$Message.error("请确认一致的新密码!");
+        return;
+      }
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.infoSubmit();
+          this.checkPwd();
         } else {
-          // this.$Message.error("Fail!");
+          this.$Message.error("您的输入有误!");
         }
       });
+    },
+    checkPwd() {
+      const shaObj = new jsSHA("SHA-1", "TEXT");
+      let pppassword = this.userInfop.oldpassword;
+      shaObj.update(pppassword);
+      const para = {
+        password: shaObj.getHash("HEX"),
+        username: this.userInfo.userName
+      };
+      this.axios({
+        method: "post",
+        url: API.login.token,
+        data: qs.stringify(para),
+        showSpin: false
+      })
+        .then(result => {
+          if (result.code === 20000) {
+            this.modifyPwd();
+          } else {
+            this.$Message.error("旧密码有误！");
+          }
+        })
+        .catch(err => {
+          this.$Message.error("旧密码有误！");
+        });
+    },
+    modifyPwd() {
+      const shaObj = new jsSHA("SHA-1", "TEXT");
+      let pppassword = this.userInfop.newpassword1;
+      shaObj.update(pppassword);
+      const para = {
+        password: shaObj.getHash("HEX")
+      };
+      this.axios({
+        method: "post",
+        url: API.login.modifyPassword,
+        data: qs.stringify(para),
+        showSpin: false
+      })
+        .then(result => {
+          if (result.code === 20000) {
+            this.$Message.success("修改成功！");
+            this.userInfop = {
+              oldpassword: "",
+              newpassword1: "",
+              newpassword2: ""
+            };
+          } else {
+            this.$Message.error("修改失败！");
+          }
+        })
+        .catch(err => {
+          this.$Message.error("修改失败！");
+        });
     },
     handleSuccess(res, file, fileList) {
       console.log("handleSuccess .. res", res);
