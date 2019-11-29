@@ -10,7 +10,7 @@
       <b-table
         :height="tableheight"
         @on-select="rowSelect"
-        @on-row-click="rowClick" 
+        @on-row-click="rowClick"
         @page-data-change="currentChange"
         :pageData="pageData1"
         :columns="columns1"
@@ -67,8 +67,37 @@
               </FormItem>
             </Col>
             <Col span="12">
+              <FormItem label="电话" label-position="top">
+                <Input v-model="newObj.telphone" placeholder="请输入电话" />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row v-if="newObj.id" :gutter="32">
+            <Col span="12">
+              <FormItem label="密码" label-position="top">
+                <div style="margin-top: 35px;">如果不填，则不会修改</div>
+                <Input v-model="passwordd" type="password" placeholder="请输入密码" />
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem label="确认密码" label-position="top">
+                <div style="margin-top: 35px;">确认密码必须与密码一致</div>
+                <Input v-model="passwordd2" type="password" placeholder="请再次输入密码" />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row :gutter="32">
+            <Col span="12">
               <FormItem label="姓名" prop="personName" label-position="top">
                 <Input v-model="newObj.personName" placeholder="请输入姓名" />
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem label="性别" label-position="top">
+                <Select v-model="newObj.sex" placeholder="请选择用户类型">
+                  <Option value="男">男</Option>
+                  <Option value="女">女</Option>
+                </Select>
               </FormItem>
             </Col>
           </Row>
@@ -81,21 +110,6 @@
             <Col span="12">
               <FormItem label="籍贯" label-position="top">
                 <Input v-model="newObj.nativePlace" placeholder="请输入籍贯" />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row :gutter="32">
-            <Col span="12">
-              <FormItem label="性别" label-position="top">
-                <Select v-model="newObj.sex" placeholder="请选择用户类型">
-                  <Option value="男">男</Option>
-                  <Option value="女">女</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span="12">
-              <FormItem label="电话" label-position="top">
-                <Input v-model="newObj.telphone" placeholder="请输入电话" />
               </FormItem>
             </Col>
           </Row>
@@ -322,6 +336,8 @@ export default {
       selection: [],
       showAddNew: false,
       showDelete: false,
+      passwordd: "",
+      passwordd2: "",
       newObj: {
         class1: "",
         college: "",
@@ -378,14 +394,14 @@ export default {
         });
     },
     currentChange(v) {
-      console.log("v",v);
+      console.log("v", v);
       this.pageData1.current = v;
       this.getTableDatas();
     },
     getTableDatas() {
       let params = {
         page: this.pageData1.current - 1,
-        pageSize: this.pageData1.pageSize,
+        pageSize: this.pageData1.pageSize
       };
       this.axios.post(`${API.index.user_list}`, params).then(result => {
         if (result.code === 20000) {
@@ -464,6 +480,15 @@ export default {
       let method = "post";
       if (this.newObj.id) {
         method = "put";
+        if (this.passwordd) {
+          if (this.passwordd !== this.passwordd2) {
+            this.$Message.error("请确认一致的新密码!");
+            return;
+          }
+          const shaObj = new jsSHA("SHA-1", "TEXT");
+          shaObj.update(this.passwordd);
+          this.newObj.password = shaObj.getHash("HEX");
+        }
       }
       this.axios({
         method: method,
@@ -493,7 +518,7 @@ export default {
       this.visible = true;
     },
     handleSuccess(res, file, fileList) {
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -506,8 +531,8 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleMaxSize(file) {

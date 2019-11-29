@@ -51,7 +51,7 @@
                     class="form-user-img"
                   />
                 </Upload>
-              </FormItem> -->
+              </FormItem>-->
               <FormItem label="用户名" prop="userName" label-position="top">
                 <Input
                   v-model="formValidate.userName"
@@ -171,7 +171,7 @@
                     <div class="footer-desc">在线内容教学与在线实验的混合式教学平台，不限时间地点的综合性学习平台</div>
                   </div>
                 </Col>
-                <Col span="5">
+                <!-- <Col span="5">
                   <h4 class="footer-title">关于我们</h4>
                   <div class="footer-desc">
                     <span>关于我们</span>
@@ -198,16 +198,16 @@
                   <div class="footer-desc">网易卡搭编程</div>
                   <div class="footer-desc">网易云课堂</div>
                   <div class="footer-desc">网易100分</div>
-                </Col>
+                </Col>-->
               </Row>
-              <div class="footer-copyright" style="margin-top:50px;">
+              <!-- <div class="footer-copyright" style="margin-top:50px;">
                 <span
                   style="font-size:10px;"
                 >粤B2-20090191-26 | 京ICP备12020669号-2 | 京公网安备44010602000207</span>
               </div>
               <div class="footer-copyright">
                 <span style="font-size:10px;">2014-2019 icourse163.org</span>
-              </div>
+              </div>-->
             </div>
           </div>
         </div>
@@ -258,6 +258,41 @@ export default {
           {
             required: true,
             message: "请输入密码",
+            trigger: "blur"
+          }
+        ],
+        userKey: [
+          {
+            required: true,
+            message: "请输入学号",
+            trigger: "blur"
+          }
+        ],
+        college: [
+          {
+            required: true,
+            message: "请输入学院",
+            trigger: "blur"
+          }
+        ],
+        major: [
+          {
+            required: true,
+            message: "请输入专业",
+            trigger: "blur"
+          }
+        ],
+        grade: [
+          {
+            required: true,
+            message: "请输入年级",
+            trigger: "blur"
+          }
+        ],
+        class1: [
+          {
+            required: true,
+            message: "请输入班",
             trigger: "blur"
           }
         ]

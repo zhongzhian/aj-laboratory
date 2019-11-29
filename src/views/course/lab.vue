@@ -71,9 +71,9 @@
                   <div class="lab-orderchoose-content">
                     <span
                       class="lab-device-order-span"
-                      :class="{'active':(chooseOrderId === item2.id)}"
+                      :class="{'active':(chooseOrderId === item2.id),'disabled':item2.isDisabled}"
                       @click="orderClick(item2)"
-                      :disabled="item2.status===1"
+                      :disabled="item2.isDisabled"
                       v-for="(item2,key2) in item"
                       :key="key2"
                     >{{key2}}</span>
@@ -154,7 +154,7 @@ export default {
         {
           title: "资源类型",
           key: "resourceClass"
-        },
+        }
         // {
         //   title: "页面url",
         //   key: "pageUrl"
@@ -200,7 +200,7 @@ export default {
         {
           title: "资源类型",
           key: "resourceClass"
-        },
+        }
         // {
         //   title: "页面url",
         //   key: "pageUrl"
@@ -227,7 +227,10 @@ export default {
   methods: {
     orderDevice() {
       this.axios
-        .post(`${API.index.deviceOrder}` + this.courseId + '/' + this.chooseOrderId, null)
+        .post(
+          `${API.index.deviceOrder}` + this.courseId + "/" + this.chooseOrderId,
+          null
+        )
         .then(result => {
           if (result.code === 20000) {
             this.myDevice = result.result;
@@ -236,7 +239,9 @@ export default {
         });
     },
     orderClick(item) {
-      this.chooseOrderId = item.id;
+      if (!item.isDisabled) {
+        this.chooseOrderId = item.id;
+      }
     },
     getTableDatas() {
       this.axios.get(`${API.index.deviceOrder_getmy}`).then(result => {
@@ -332,11 +337,13 @@ export default {
           result.result.list.forEach(o => {
             let odate = o.year + "-" + o.month + "-" + o.day;
             let duration = o.startHour + "-" + o.endHour;
+            o.isDisabled = o.status === 1;
             if (!orderDatas[odate]) {
               orderDatas[odate] = {};
             }
             orderDatas[odate][duration] = o;
           });
+          console.log("orderDatas", orderDatas);
           this.orderDatas = orderDatas;
           this.showDeviceList = false;
         }
@@ -426,6 +433,11 @@ export default {
 }
 .lab-device-order-span.disabled {
   //   background: #f1f2f3;
+  border: #fff 1px solid !important;
+  cursor: default;
+  color: #ccc;
+}
+.lab-device-order-span.disabled:hover {
   border: #fff 1px solid !important;
   cursor: default;
   color: #ccc;

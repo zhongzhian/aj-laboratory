@@ -2,7 +2,33 @@
   <div class="course-component-content">
     <!-- <Input style="margin-right:20px;width:400px;" v-model="value1" placeholder="请输入答案内容"></Input> -->
     <div>
+      <template v-if="isPic">
+        <template v-if="disabled">
+          <div>作答：</div>
+          <img v-if="value1" :src="value1" class="test-content-img" />
+        </template>
+        <template v-else>
+          <div>支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议不小于300*150</div>
+          <Upload
+            ref="upload"
+            :action="uploadAction"
+            :headers="headers"
+            :data="uploadData"
+            :show-upload-list="false"
+            :on-success="handleSuccessXA"
+            :format="['jpg','jpeg','png']"
+            :max-size="2048"
+            :on-format-error="handleFormatErrorABCD"
+            :on-exceeded-size="handleMaxSizeABCD"
+            :before-upload="handleBeforeUpload"
+          >
+            <img v-if="value1" :src="value1" class="test-content-img" />
+            <img v-if="!value1" src="http://temp.im/300x150" class="test-content-img" />
+          </Upload>
+        </template>
+      </template>
       <Input
+        v-else
         :disabled="disabled"
         style="margin-right:20px;width:400px;margin-bottom: 10px;"
         type="textarea"
@@ -15,7 +41,11 @@
       <Button :loading="loginLoading" size="small" type="primary" @click="valueSubmit">确定</Button>
     </div>
     <div v-if="grade" class="course-component-grade">
-      <div>正确答案：{{testobj.correctAnswer}}</div>
+      <div v-if="isPic">
+        正确答案：
+        <img :src="testobj.correctAnswer" class="test-content-img" />
+      </div>
+      <div v-else>正确答案：{{testobj.correctAnswer}}</div>
       <div>
         得分：
         <template v-if="testobj.scored">
@@ -42,7 +72,12 @@
     </div>
     <template v-else>
       <div v-if="finish" class="course-component-grade">
-        <div>正确答案：{{testobj.correctAnswer}}</div>
+        <div v-if="isPic">
+          正确答案：
+          <img :src="testobj.correctAnswer" class="test-content-img" />
+        </div>
+        <div v-else>正确答案：{{testobj.correctAnswer}}</div>
+
         <div>
           得分：
           <span>{{testobj.scored}}</span>
@@ -59,8 +94,16 @@ export default {
   props: ["testobj", "status", "grade"],
   data() {
     return {
+      picBasePath: API.picPath,
+      uploadAction: API.uploadPath + API.index.upload_upload,
+      headers: null,
+      uploadData: {
+        file: null,
+        name: ""
+      },
       loginLoading: false,
-      value1: ""
+      value1: "",
+      isPic: false
     };
   },
   computed: {
@@ -76,7 +119,13 @@ export default {
   },
   mounted() {
     console.log("this.testobj", this.testobj);
+    this.headers = {
+      Authorization: "Bearer " + this.$store.getters.token
+    };
     if (this.testobj) {
+      this.isPic = this.testobj.exerciseContent.indexOf("http://") === 0;
+      console.log(this.testobj.exerciseContent);
+      console.log(this.isPic);
       if (this.testobj.answer) {
         this.value1 = this.testobj.answer;
       }
@@ -113,6 +162,40 @@ export default {
           this.loginLoading = false;
         }
       });
+    },
+    handleSuccessXA(res, file, fileList) {
+      if (res.code === 20000) {
+        let splits = res.result.uploadFileName.split("|");
+        let path = splits[1] ? splits[1] : splits[0];
+        file.url = this.picBasePath + path;
+        this.value1 = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    handleFormatErrorABCD(file) {
+      this.$Notice.warning({
+        title: "文件格式错误",
+        desc: "文件 " + file.name + " 格式错误, 目前仅支持jpg,jpeg,png格式."
+      });
+    },
+    handleMaxSizeABCD(file) {
+      this.$Notice.warning({
+        title: "文件过大",
+        desc: "上传的答案图片不能大于1M."
+      });
+    },
+    handleBeforeUpload(file) {
+      this.uploadData.file = file;
+      this.uploadData.name = file.name;
     }
   }
 };

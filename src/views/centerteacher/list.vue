@@ -100,8 +100,8 @@
               </FormItem>
             </Col>
           </Row>
-          <FormItem label="实验总时长" prop="timeLimit" label-position="top">
-            <Input type="number" v-model="newObj.timeLimit" size="small" placeholder="请输入实验总时长" />
+          <FormItem label="实验时长限制（小时）" prop="timeLimit" label-position="top">
+            <Input type="number" v-model="newObj.timeLimit" size="small" placeholder="请输入实验时长限制" />
             <!-- <InputNumber v-model="newObj.timeLimit" :min="1" :step="1" size="small"></InputNumber> -->
             <!-- <InputNumber :max="10" :min="1" :step="1.2" v-model="value2"></InputNumber> -->
           </FormItem>
@@ -258,7 +258,7 @@ export default {
         videoDesc: "",
         logo: "",
         mainImg: "",
-        timeLimit: 1
+        timeLimit: 10
       },
       editObj: null,
       ruleValidate: {
@@ -531,7 +531,7 @@ export default {
         videoDesc: "",
         logo: "",
         mainImg: "",
-        timeLimit: 1
+        timeLimit: 10
       };
       this.editor.txt.html(this.newObj.description);
       // if(this.isAdmin){

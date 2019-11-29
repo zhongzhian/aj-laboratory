@@ -49,6 +49,14 @@
           >
             <!-- <p class="course-exam-test-title"></p> -->
             <div
+              v-if="test.exerciseContent.indexOf('http://') === 0"
+              class="course-exam-test-content"
+            >
+              <div>{{test.serialNumber}}.（{{test.score}}分）</div>
+              <img v-if="test.exerciseContent" :src="test.exerciseContent" class="test-content-img" />
+            </div>
+            <div
+              v-else
               class="course-exam-test-content"
             >{{test.serialNumber}}.{{test.exerciseContent}}（{{test.score}}分）</div>
             <div class="course-exam-test-answer">

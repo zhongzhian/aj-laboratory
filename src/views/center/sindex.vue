@@ -5,7 +5,8 @@
       <div class="manage-content-left">
         <!-- <img class="manage-content-img" src="static/images/logo1.png" /> -->
         <div class="manage-content-header-left">
-          <img class="manage-header-img" src="static/images/logo1.png" />
+          <!-- <img class="manage-header-img" src="static/images/logo1.png" /> -->
+          <img class="manage-header-img" src="static/images/logo.jpg" />
         </div>
         <div class="manage-sider">
           <ul class="manage-sider-ul">

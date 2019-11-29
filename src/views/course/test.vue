@@ -84,6 +84,18 @@
               >
                 <!-- <p class="course-exam-test-title"></p> -->
                 <div
+                  v-if="test.exerciseContent.indexOf('http://') === 0"
+                  class="course-exam-test-content"
+                >
+                  <div>{{test.serialNumber}}.（{{test.score}}分）</div>
+                  <img
+                    v-if="test.exerciseContent"
+                    :src="test.exerciseContent"
+                    class="test-content-img"
+                  />
+                </div>
+                <div
+                  v-else
                   class="course-exam-test-content"
                 >{{test.serialNumber}}.{{test.exerciseContent}}（{{test.score}}分）</div>
                 <div class="course-exam-test-answer">
@@ -124,7 +136,7 @@
               @click="submitTest"
             >交卷</Button>
           </div>
-          <div v-else class="submit-btn-div">您已交卷</div> -->
+          <div v-else class="submit-btn-div">您已交卷</div>-->
         </div>
         <div v-else>
           <div class="submit-btn-div">本小节没有测验内容</div>

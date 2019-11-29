@@ -4,8 +4,8 @@
       <div class="table-condition-btnbar">
         <Cascader
           style="width:400px;display:inline-block;"
-          @on-change="selectSections" 
-          clearable 
+          @on-change="selectSections"
+          clearable
           :data="chapterDatas"
           :load-data="loadData"
         ></Cascader>
@@ -67,8 +67,22 @@
                 v-for="(test,sindex) in item.testExerciseInstanceList"
                 class="course-exam-test"
               >
-                <!-- <p class="course-exam-test-title"></p> -->
+                <!-- <div
+                  class="course-exam-test-content"
+                >{{test.serialNumber}}.{{test.exerciseContent}}（{{test.score}}分）</div>-->
                 <div
+                  v-if="test.exerciseContent.indexOf('http://') === 0"
+                  class="course-exam-test-content"
+                >
+                  <div>{{test.serialNumber}}.（{{test.score}}分）</div>
+                  <img
+                    v-if="test.exerciseContent"
+                    :src="test.exerciseContent"
+                    class="test-content-img"
+                  />
+                </div>
+                <div
+                  v-else
                   class="course-exam-test-content"
                 >{{test.serialNumber}}.{{test.exerciseContent}}（{{test.score}}分）</div>
                 <div class="course-exam-test-answer">

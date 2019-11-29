@@ -128,14 +128,15 @@
                   <div class="footer-desc">网易100分</div>-->
                 </Col>
               </Row>
-              <div class="footer-copyright" style="margin-top:50px;">
+
+              <!-- <div class="footer-copyright" style="margin-top:50px;">
                 <span
                   style="font-size:10px;"
                 >粤B2-20090191-26 | 京ICP备12020669号-2 | 京公网安备44010602000207</span>
               </div>
               <div class="footer-copyright">
                 <span style="font-size:10px;">2014-2019 icourse163.org</span>
-              </div>
+              </div>-->
             </div>
           </div>
         </div>

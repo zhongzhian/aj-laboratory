@@ -3,7 +3,8 @@
     <!-- header -->
     <div class="manage-header">
       <div class="manage-header-left">
-        <img class="manage-header-img" src="static/images/logo1.png" />
+        <!-- <img class="manage-header-img" src="static/images/logo1.png" /> -->
+        <img class="manage-header-img" src="static/images/logo.jpg" />
       </div>
       <div class="manage-header-right">
         <div class="manage-header-title">{{courseInfo.name}}</div>

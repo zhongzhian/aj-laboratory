@@ -33,7 +33,11 @@
           {{item.name+" - "+item.title}}
         </div>
         <div class="course-chapter-item-content">
-          <div :key="section" v-for="(section,sindex) in item.sectionList" class="manage-collapse-p">
+          <div
+            :key="section"
+            v-for="(section,sindex) in item.sectionList"
+            class="manage-collapse-p"
+          >
             <!-- <Icon
               class="course-chapter-item-icon"
               @click.stop="configTest(section,item)"
@@ -209,7 +213,49 @@
     >
       <div class="demo-drawer-content">
         <Form ref="channelValidate" :model="channelObj" :rules="ruleValidate">
-          <FormItem label="内容" prop="content" label-position="top">
+          <FormItem
+            v-if="(channelObj.exercisesType === 5) || (channelObj.exercisesType === 6)"
+            label="内容"
+            prop="content"
+            label-position="top"
+          >
+            <RadioGroup v-model="optionType">
+              <Radio :disabled="channelObj.id" label="文字"></Radio>
+              <Radio :disabled="channelObj.id" label="图片"></Radio>
+            </RadioGroup>
+            <template v-if="optionType==='文字'">
+              <Input type="textarea" v-model="channelObj.content" :rows="4" placeholder="请输入内容" />
+            </template>
+            <template v-if="optionType==='图片'">
+              <div>支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议不小于300*150</div>
+              <Upload
+                ref="upload"
+                :action="uploadAction"
+                :headers="headers"
+                :data="uploadData"
+                :show-upload-list="false"
+                :on-success="handleSuccessX"
+                :format="['jpg','jpeg','png']"
+                :max-size="2048"
+                :on-format-error="handleFormatErrorABCD"
+                :on-exceeded-size="handleMaxSizeABCD"
+                :before-upload="handleBeforeUpload"
+              >
+                <img v-if="channelObj.content" :src="channelObj.content" class="test-content-img" />
+                <img
+                  v-if="!channelObj.content"
+                  src="http://temp.im/300x150"
+                  class="test-content-img"
+                />
+              </Upload>
+            </template>
+          </FormItem>
+          <FormItem
+            v-else-if="(channelObj.exercisesType === 1) || (channelObj.exercisesType === 2) || (channelObj.exercisesType === 3) || (channelObj.exercisesType === 4)"
+            label="内容"
+            prop="content"
+            label-position="top"
+          >
             <Input type="textarea" v-model="channelObj.content" :rows="4" placeholder="请输入内容" />
           </FormItem>
           <FormItem label="题目类型" prop="exercisesType">
@@ -370,12 +416,36 @@
               <Radio label="错误"></Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem
-            v-else
-            label="正确答案"
-            prop="answer"
-          >
+          <FormItem v-else-if="channelObj.exercisesType === 3" label="正确答案" prop="answer">
             <Input v-model="channelObj.answer" size="small" placeholder="请输入正确答案" />
+          </FormItem>
+          <FormItem v-else label="正确答案" prop="answer">
+            <template v-if="optionType==='文字'">
+              <Input type="textarea" v-model="channelObj.answer" :rows="4" placeholder="请输入正确答案" />
+            </template>
+            <template v-if="optionType==='图片'">
+              <div>支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议至少300*150</div>
+              <Upload
+                ref="upload"
+                :action="uploadAction"
+                :headers="headers"
+                :data="uploadData"
+                :show-upload-list="false"
+                :on-success="handleSuccessXA"
+                :format="['jpg','jpeg','png']"
+                :max-size="2048"
+                :on-format-error="handleFormatErrorABCD"
+                :on-exceeded-size="handleMaxSizeABCD"
+                :before-upload="handleBeforeUpload"
+              >
+                <img v-if="channelObj.answer" :src="channelObj.answer" class="test-content-img" />
+                <img
+                  v-if="!channelObj.answer"
+                  src="http://temp.im/300x150"
+                  class="test-content-img"
+                />
+              </Upload>
+            </template>
           </FormItem>
         </Form>
       </div>
@@ -1301,6 +1371,14 @@ export default {
         this.channelObj.answer =
           this.channelObj.answer === "A" ? "正确" : "错误";
       }
+      if (
+        this.channelObj.exercisesType === 3 ||
+        this.channelObj.exercisesType === 5 ||
+        this.channelObj.exercisesType === 6
+      ) {
+        this.optionType =
+          this.channelObj.content.indexOf("http://") === 0 ? "图片" : "文字";
+      }
       this.showEditChannel = true;
     },
     getChannelDatas(type) {
@@ -1592,7 +1670,7 @@ export default {
     },
     handleSuccess(res, file, fileList) {
       console.log("handleSuccess .. res", res);
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -1608,13 +1686,13 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleSuccess2(res, file, fileList) {
       console.log("handleSuccess .. res", res);
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -1630,8 +1708,8 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleFormatError(file) {
@@ -1674,8 +1752,44 @@ export default {
       this.uploadData.file = file;
       this.uploadData.name = file.name;
     },
+    handleSuccessX(res, file, fileList) {
+      if (res.code === 20000) {
+        let splits = res.result.uploadFileName.split("|");
+        let path = splits[1] ? splits[1] : splits[0];
+        file.url = this.picBasePath + path;
+        this.channelObj.content = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    handleSuccessXA(res, file, fileList) {
+      if (res.code === 20000) {
+        let splits = res.result.uploadFileName.split("|");
+        let path = splits[1] ? splits[1] : splits[0];
+        file.url = this.picBasePath + path;
+        this.channelObj.answer = file.url;
+      } else if (res.code === 50401) {
+        console.log("this.$route.name....", this.$route.name);
+        this.$router.push({
+          name: "login",
+          query: {
+            name: this.$route.name
+          }
+        });
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     handleSuccessA(res, file, fileList) {
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -1688,12 +1802,12 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleSuccessB(res, file, fileList) {
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -1706,12 +1820,12 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleSuccessC(res, file, fileList) {
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -1724,12 +1838,12 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleSuccessD(res, file, fileList) {
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -1742,8 +1856,8 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     }
   }
@@ -1808,5 +1922,11 @@ export default {
   background: #58b736;
   color: #fff;
   border-radius: 3px;
+}
+.test-content-img {
+  min-width: 400;
+  // min-height: 150;
+  width: 100%;
+  height: 100%;
 }
 </style>

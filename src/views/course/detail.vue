@@ -38,22 +38,29 @@
             <div
               style="margin-top:30px;color:#ccc;line-height: 32px;"
             >已有 {{courseInfo.studentNumber}} 人参加</div>
-            <template v-if="userInfo.userType === '3'">
-              <div v-if="!hasCourse">
-                <Button @click="gotoStart" class="detail-confirm-btn">立即参加</Button>
-              </div>
-              <div v-if="hasCourse">
-                <Button @click="gotoCourse" class="detail-confirm-btn">进入课程</Button>
-              </div>
-            </template>
-            <template v-else-if="userInfo.userType === '0'">
-              <div>
-                <Button @click="gotoCourse" class="detail-confirm-btn">进入课程</Button>
-              </div>
+            <template v-if="userInfo">
+              <template v-if="userInfo.userType === '3'">
+                <div v-if="!hasCourse">
+                  <Button @click="gotoStart" class="detail-confirm-btn">立即参加</Button>
+                </div>
+                <div v-if="hasCourse">
+                  <Button @click="gotoCourse" class="detail-confirm-btn">进入课程</Button>
+                </div>
+              </template>
+              <template v-else-if="userInfo.userType === '0'">
+                <div>
+                  <Button @click="gotoCourse" class="detail-confirm-btn">进入课程</Button>
+                </div>
+              </template>
+              <template v-else>
+                <div>
+                  <Button disabled class="detail-confirm-btn">无法参加</Button>
+                </div>
+              </template>
             </template>
             <template v-else>
-              <div>
-                <Button disabled class="detail-confirm-btn">无法参加</Button>
+              <div v-if="!hasCourse">
+                <Button @click="gotoStart" class="detail-confirm-btn">立即参加</Button>
               </div>
             </template>
             <!-- <div style="line-height:25px;line-height: 32px;">怕错过精彩内容？报名下一次开课</div> -->
@@ -76,6 +83,7 @@
                     :class="tabindex === '1' ? 'active':''"
                   >课程详情</div>
                   <div
+                    v-if="showTopic"
                     @click="tabindex = '2'"
                     class="normal-tabs-header-title"
                     :class="tabindex === '2' ? 'active':''"
@@ -144,7 +152,7 @@
           <Col span="6">
             <div class="detail-content">
               <div class="detail-content-schoollogo">
-                <img class="detail-content-schoollogo-img" src="static/images/logo1.png" />
+                <img class="detail-content-schoollogo-img" src="static/images/logo.jpg" />
               </div>
               <div class="detail-content-schoolteachers">
                 <div class="detail-content-schoolteachers-title">授课老师</div>
@@ -212,23 +220,27 @@ export default {
       teacherDatas: [],
       courseDatas2: [],
       hasCourse: false,
+      showTopic: false,
       data1: []
     };
   },
   mounted() {
     this.userInfo = this.$store.getters.user;
-    if (this.userInfo.userType === "0") {
-      this.isGuest = true;
-    } else {
-      this.isGuest = false;
-    }
     let courseId = this.$route.query.id;
     if (courseId) {
       this.courseId = courseId;
       // this.getChapters();
       this.getCourse();
       // this.getMyCourse();
-      this.getSubjectDatas();
+      if (this.userInfo) {
+        if (this.userInfo.userType === "0") {
+          this.isGuest = true;
+        } else {
+          this.isGuest = false;
+        }
+        this.showTopic = true;
+        this.getSubjectDatas();
+      }
     }
     this.getTableDatas2();
   },
