@@ -83,10 +83,7 @@
                 class="course-exam-test"
               >
                 <!-- <p class="course-exam-test-title"></p> -->
-                <div
-                  v-if="test.exerciseContent.indexOf('http://') === 0"
-                  class="course-exam-test-content"
-                >
+                <div v-if="test.displayType === 2" class="course-exam-test-content">
                   <div>{{test.serialNumber}}.（{{test.score}}分）</div>
                   <img
                     v-if="test.exerciseContent"

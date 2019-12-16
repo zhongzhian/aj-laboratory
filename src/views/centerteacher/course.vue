@@ -219,7 +219,7 @@
             prop="content"
             label-position="top"
           >
-            <RadioGroup v-model="optionType">
+            <RadioGroup v-model="optionType" @on-change="optionTypeChange">
               <Radio :disabled="channelObj.id" label="文字"></Radio>
               <Radio :disabled="channelObj.id" label="图片"></Radio>
             </RadioGroup>
@@ -1030,6 +1030,11 @@ export default {
     this.addEditor("course_editor");
   },
   methods: {
+    optionTypeChange(e) {
+      console.log("e", e);
+      this.channelObj.content = "";
+      this.channelObj.answer = "";
+    },
     addEditor(div) {
       let editor = new E("#" + div);
       // editor.customConfig.uploadImgShowBase64 = true; // 使用 base64 保存图片
@@ -1259,6 +1264,7 @@ export default {
         content: "",
         courseId: this.courseInfo.id,
         courseName: this.courseInfo.name,
+        displayType: 1,
         exercisesType: 1,
         options: '[{"A":""},{"B":""},{"C":""},{"D":""}]',
         sectionId: this.newSection.id,
@@ -1309,6 +1315,7 @@ export default {
       if (this.channelObj.exercisesType === 4) {
         this.channelObj.answer = this.channelObj.answer === "正确" ? "A" : "B";
       }
+      this.channelObj.displayType = this.optionType === "文字" ? 1 : 2;
       // return;
       this.axios({
         method: method,
@@ -1362,8 +1369,8 @@ export default {
     channelrowClick(item, index) {
       this.channelObj = item;
       this.optionArr = JSON.parse(this.channelObj.options);
-      this.optionType =
-        this.optionArr[0].A.indexOf("http://") === 0 ? "图片" : "文字";
+      this.optionType = this.channelObj.displayType === 1 ? "文字" : "图片";
+      //  this.optionType =  this.optionArr[0].A.indexOf("http://") === 0 ? "图片" : "文字";
       if (this.channelObj.exercisesType === 2) {
         this.channelObj.mulAnswer = this.channelObj.answer.split(",");
       }
@@ -1371,14 +1378,14 @@ export default {
         this.channelObj.answer =
           this.channelObj.answer === "A" ? "正确" : "错误";
       }
-      if (
-        this.channelObj.exercisesType === 3 ||
-        this.channelObj.exercisesType === 5 ||
-        this.channelObj.exercisesType === 6
-      ) {
-        this.optionType =
-          this.channelObj.content.indexOf("http://") === 0 ? "图片" : "文字";
-      }
+      // if (
+      //   this.channelObj.exercisesType === 3 ||
+      //   this.channelObj.exercisesType === 5 ||
+      //   this.channelObj.exercisesType === 6
+      // ) {
+      //   this.optionType =
+      //     this.channelObj.content.indexOf("http://") === 0 ? "图片" : "文字";
+      // }
       this.showEditChannel = true;
     },
     getChannelDatas(type) {

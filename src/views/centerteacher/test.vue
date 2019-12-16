@@ -70,10 +70,7 @@
                 <!-- <div
                   class="course-exam-test-content"
                 >{{test.serialNumber}}.{{test.exerciseContent}}（{{test.score}}分）</div>-->
-                <div
-                  v-if="test.exerciseContent.indexOf('http://') === 0"
-                  class="course-exam-test-content"
-                >
+                <div v-if="test.displayType === 2" class="course-exam-test-content">
                   <div>{{test.serialNumber}}.（{{test.score}}分）</div>
                   <img
                     v-if="test.exerciseContent"

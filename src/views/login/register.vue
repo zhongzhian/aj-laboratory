@@ -261,6 +261,13 @@ export default {
             trigger: "blur"
           }
         ],
+        personName: [
+          {
+            required: true,
+            message: "请输入姓名",
+            trigger: "blur"
+          }
+        ],
         userKey: [
           {
             required: true,

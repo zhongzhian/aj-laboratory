@@ -3,31 +3,19 @@
     <!-- banner -->
     <div class="layout-row">
       <div class="banner-mask"></div>
-      <div class="layout-content" style="height: 200px;">
+      <!-- <div class="layout-content" style="height: 200px;">
         <div class="home-banner">
           <img src="static/images/banner1.jpg" />
         </div>
-        <!-- <div class="home-bannermain">
-          <div class="home-bannermain-title">东北大学</div>
-          <div class="home-bannermain-desc">
-            东北大学始建于1923年4月。1928年8月至1937年1月，著名爱国将领张学良将军兼任校长。1949年3月，在东北大学工学院和理学院（部分）的基础上成立沈阳工学院。1950年8月，定名为东北工学院，1993年3月，复名为东北大学，1997年1月原沈阳黄金学院并入东北大学。东大先后研发出国内第一台模拟电子计算机、第一台国产CT、第一块超级钢等科研成果，兴办了中国第一个大学科技园、第一个软件园、第一家上市的校办企业。
-            截至2018年12月，学校占地总面积255万平方米，建筑面积180万平方米；教职工4472人；全日制在校生46000余人，其中本科生29931人，硕士研究生12166人，博士研究生3986人。
-            东北大学始建于1923年4月。1928年8月至1937年1月，著名爱国将领张学良将军兼任校长。1949年3月，在东北大学工学院和理学院（部分）的基础上成立沈阳工学院。1950年8月，定名为东北工学院，1993年3月，复名为东北大学，1997年1月原沈阳黄金学院并入东北大学。东大先后研发出国内第一台模拟电子计算机、第一台国产CT、第一块超级钢等科研成果，兴办了中国第一个大学科技园、第一个软件园、第一家上市的校办企业。
-            截至2018年12月，学校占地总面积255万平方米，建筑面积180万平方米；教职工4472人；全日制在校生46000余人，其中本科生29931人，硕士研究生12166人，博士研究生3986人。
-          </div>
-        </div>
-        <div class="home-bannerlogo">
-          <img class="home-bannerlogo-img" src="static/images/logo.png" />
-        </div>-->
-      </div>
+      </div>-->
     </div>
     <!-- content carousel -->
     <div v-if="carouselData.length>0" class="layout-row">
-      <div class="carousel-mask"></div>
-      <div class="layout-content">
+      <!-- <div class="carousel-mask"></div> -->
+      <div class="layout-content" style="left:0;margin-left:0;width:100%;">
         <Carousel v-model="value1" loop autoplay arrow="always" dots="none">
           <CarouselItem v-for="(item,index) in carouselData" v-bind:index="index" v-bind:key="item">
-            <div class="home-carousel">
+            <div class="home-carousel" style="width:100%;height:auto;">
               <img class="home-carousel-img" :src="item.url" />
             </div>
           </CarouselItem>

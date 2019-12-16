@@ -123,8 +123,9 @@ export default {
       Authorization: "Bearer " + this.$store.getters.token
     };
     if (this.testobj) {
-      this.isPic = this.testobj.exerciseContent.indexOf("http://") === 0;
+      this.isPic = this.testobj.displayType === 2;
       console.log(this.testobj.exerciseContent);
+      console.log("this.testobj.displayType", this.testobj.displayType);
       console.log(this.isPic);
       if (this.testobj.answer) {
         this.value1 = this.testobj.answer;
