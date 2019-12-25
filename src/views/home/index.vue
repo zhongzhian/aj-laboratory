@@ -36,22 +36,8 @@
         </div>-->
         <div class="normallist-content" style="padding-top: 30px;">
           <!-- <div class="course-listitem" v-for="(item,index) in carouselData" v-bind:index="index" v-bind:key="item">{{item}}</div> -->
-          <Row>
+          <Row :gutter="30">
             <Col
-              v-if="index<4"
-              span="6"
-              v-for="(item,index) in courseDatas"
-              v-bind:index="index"
-              v-bind:key="item"
-            >
-              <div class="course-listitem" @click="itemClick(item)">
-                <img class="course-listitem-img" :src="item.logo" />
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col
-              v-if="index>2"
               span="6"
               v-for="(item,index) in courseDatas"
               v-bind:index="index"
@@ -96,40 +82,9 @@
       <div class="layout-content" style="padding:0px 30px 30px;">
         <div class="normallist-title">老师列表</div>
         <div class="normallist-content" style="margin-top:30px;">
-          <Row>
+          <Row :gutter="30">
             <Col
-              v-if="index<2"
               span="6"
-              v-for="(item,index) in teacherDatas"
-              v-bind:index="index"
-              v-bind:key="item"
-            >
-              <div class="course-listitem">
-                <img class="teacher-listitem-img" :src="item.userImage" @click="teacherClick(item)" />
-                <p>{{item.personName}}</p>
-                <p style="font-size:12px;top:40px;">{{item.title}}</p>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col
-              v-if="index>1 && index<4"
-              span="6"
-              v-for="(item,index) in teacherDatas"
-              v-bind:index="index"
-              v-bind:key="item"
-            >
-              <div class="course-listitem">
-                <img class="teacher-listitem-img" :src="item.userImage" @click="teacherClick(item)" />
-                <p>{{item.personName}}</p>
-                <p style="font-size:12px;top:40px;">{{item.title}}</p>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col
-              v-if="index>3"
-              span="12"
               v-for="(item,index) in teacherDatas"
               v-bind:index="index"
               v-bind:key="item"
@@ -353,8 +308,7 @@ export default {
   bottom: 0;
 }
 .course-listitem {
-  // padding: 0 20px 30px 0;
-  padding: 0 0 30px 0;
+  // padding: 0 0 30px 0;
   position: relative;
   text-align: center;
 }

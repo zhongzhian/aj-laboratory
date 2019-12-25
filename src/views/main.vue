@@ -1,76 +1,52 @@
 <template>
   <div class="layout">
     <Layout>
-      <Header>
+      <Header style="height:80px;background: #fff;color:#70ac1f;">
         <div>
           <div class="layout-row">
-            <div class="layout-content">
-              <h4 @click="gotoHome" class="header-title">东北大学智慧在线实验课程平台</h4>
-              <!-- <h4 class="header-title">东北大学智慧在线实验课程平台</h4> -->
-              <!-- <Select
-                class="header-select"
-                v-model="selectValue"
-                @on-change="selectClick"
-                size="small"
-              >
-                <Option v-for="item in selectDatas" :value="item" :key="item">{{ item }}</Option>
-              </Select>-->
-
+            <div class="layout-content" style="padding: 10px 0;">
+              <h4
+                @click="gotoHome"
+                style="font-size:30px;font-style:italic;line-height: 60px;color:#000;"
+                class="header-title"
+              >东北大学智慧在线实验课程平台</h4>
               <Button
                 @click="gotoCourses"
                 size="small"
                 class="condition-btn"
-                style="border-radius: 5px;margin-left: 10px;"
+                style="border-radius: 5px;margin-left: 20px;margin-top: 14px;"
               >探索</Button>
-              <div v-if="userInfo" style="float:right;position:relative;">
-                <Menu @on-select="menuSelect" mode="horizontal" theme="dark" active-name="1">
-                  <Submenu name="1">
-                    <template slot="title">
-                      <!-- <Icon class="header-span" type="android-arrow-dropdown" /> -->
-                      <span
-                        v-if="userInfo"
-                        class="header-span"
-                        style="margin-right:10px;font-weight:400;"
-                      >{{userInfo.personName || userInfo.userName}}</span>
-                      <div class="header-adavor">
-                        <img
-                          v-if="userInfo.userImage"
-                          class="header-adavor-img"
-                          :src="userInfo.userImage"
-                        />
-                        <img v-else class="header-adavor-img" src="static/images/noperson.png" />
-                      </div>
-                    </template>
-                    <MenuItem name="logout">退出</MenuItem>
-                  </Submenu>
-                </Menu>
-              </div>
-              <span v-if="userInfo" @click="gotoCenter()" class="header-span">个人中心</span>
-              <div v-if="!userInfo" style="float:right;position:relative;">
-                <span v-if="!userInfo" @click="gotoPage('login')" class="header-span">登录</span>
-                <span v-if="!userInfo" class="header-span" style="margin:0 5px;cursor:default;">|</span>
-                <span v-if="!userInfo" @click="gotoPage('register')" class="header-span">注册</span>
-              </div>
-              <!-- <div style="float:right;margin-left:20px;padding:0 20px;cursor:pointer;position:relative;">
-                <Icon class="header-span" type="android-arrow-dropdown" />
-                <span
-                  v-if="userInfo"
-                  class="header-span"
-                  style="margin-right:10px;font-weight:400;"
-                >{{userInfo.personName || userInfo.userName}}</span>
-                <div class="header-adavor">
-                  <img
-                    v-if="userInfo.userImage"
-                    class="header-adavor-img"
-                    :src="userInfo.userImage"
-                  />
-                  <img v-else class="header-adavor-img" src="static/images/noperson.png" />
+              <div style="position:absolute;right:20px;top:41px;">
+                <div v-if="userInfo" style="float:right;position:relative;">
+                  <Menu @on-select="menuSelect" mode="horizontal" active-name="1">
+                    <Submenu name="1">
+                      <template slot="title">
+                        <!-- <Icon class="header-span" type="android-arrow-dropdown" /> -->
+                        <span
+                          v-if="userInfo"
+                          class="header-span"
+                          style="margin-right:10px;font-weight:400;"
+                        >{{userInfo.personName || userInfo.userName}}</span>
+                        <div class="header-adavor">
+                          <img
+                            v-if="userInfo.userImage"
+                            class="header-adavor-img"
+                            :src="userInfo.userImage"
+                          />
+                          <img v-else class="header-adavor-img" src="static/images/noperson.png" />
+                        </div>
+                      </template>
+                      <MenuItem name="logout">退出</MenuItem>
+                    </Submenu>
+                  </Menu>
+                </div>
+                <span v-if="userInfo" @click="gotoCenter()" class="header-span">个人中心</span>
+                <div v-if="!userInfo" style="float:right;position:relative;">
+                  <span v-if="!userInfo" @click="gotoPage('login')" class="header-span">登录</span>
+                  <span v-if="!userInfo" class="header-span" style="margin:0 5px;cursor:default;">|</span>
+                  <span v-if="!userInfo" @click="gotoPage('register')" class="header-span">注册</span>
                 </div>
               </div>
-              <span v-if="userInfo" class="header-span">个人中心</span>
-              <span v-if="!userInfo" @click="gotoPage('login')" class="header-span">登录</span>
-              <span v-if="!userInfo" class="header-span" style="margin:0 5px;cursor:default;">|</span>
-              <span v-if="!userInfo" @click="gotoPage('register')" class="header-span">注册</span>-->
               <Input
                 v-model="searchText"
                 class="header-search"
@@ -276,6 +252,7 @@ export default {
   float: right;
   width: 300px;
   margin: 4px 20px;
+  z-index: 900;
 }
 .ivu-layout-footer {
   background: #323334;
