@@ -1,7 +1,9 @@
-import { REST_API } from "../config";
+import { REST_API, WS_BASE } from "../config";
 // const UPLOADPATH = 'http://47.93.116.221:8000';
 const UPLOADPATH = REST_API;
+const WS_PATH = WS_BASE;
 export default {
+  wsPath: WS_PATH,
   uploadPath: UPLOADPATH,
   picPath: UPLOADPATH + "/remoteLaboratory/upload/",
   login: {

@@ -6,37 +6,47 @@
           <div
             @click="tabindex = '1'"
             class="normal-tabs-header-title"
-            :class="tabindex === '1' ? 'active':''"
-          >仿真实验</div>
+            :class="tabindex === '1' ? 'active' : ''"
+          >
+            仿真实验
+          </div>
           <div
             @click="tabindex = '2'"
             class="normal-tabs-header-title"
-            :class="tabindex === '2' ? 'active':''"
-          >在线实验</div>
+            :class="tabindex === '2' ? 'active' : ''"
+          >
+            在线实验
+          </div>
           <div
             @click="tabindex = '3'"
             class="normal-tabs-header-title"
-            :class="tabindex === '3' ? 'active':''"
-          >信号观测</div>
+            :class="tabindex === '3' ? 'active' : ''"
+          >
+            信号观测
+          </div>
         </div>
         <div v-show="tabindex === '1'" class="normal-tabs-content">
           <div v-if="!simulationObj">
             <div class="lab-orderchoose-div">
               <div
                 @click="simulationObj = item"
-                v-for="(item,key) in simulationList"
+                v-for="(item, key) in simulationList"
                 :key="key"
                 class="lab-orderchoose-day"
                 style="text-align: center;border: 1px solid #ccc;cursor:pointer;"
               >
                 <img :src="item.picture" height="150" style="width: 100%;" />
-                <p>{{item.name}}</p>
+                <p>{{ item.name }}</p>
               </div>
             </div>
           </div>
           <template v-else>
             <div class="iframe-close-div">
-              <Icon class="iframe-close-icon" @click.stop="simulationObj = null" type="ios-undo" />
+              <Icon
+                class="iframe-close-icon"
+                @click.stop="simulationObj = null"
+                type="ios-undo"
+              />
             </div>
             <iframe
               :src="simulationObj.pageUrl"
@@ -50,33 +60,54 @@
         <div v-show="tabindex === '2'" class="normal-tabs-content">
           <div v-if="hasDevice">
             <p>已预约实验</p>
-            <p>设备：{{myDevice.deviceName}}</p>
-            <p>时间：{{myDevice.startTime}} - {{myDevice.endTime}}</p>
+            <p>设备：{{ myDevice.deviceName }}</p>
+            <p>时间：{{ myDevice.startTime }} - {{ myDevice.endTime }}</p>
             <div>
-              <Button @click="gotoPage" size="small" class="condition-btn">我的预约</Button>
+              <Button @click="gotoPage" size="small" class="condition-btn"
+                >我的预约</Button
+              >
             </div>
           </div>
           <div v-else>
             <div v-show="showDeviceList">
-              <f-table @on-row-click="rowClick" :columns="columns1" :dataSource="data1"></f-table>
+              <f-table
+                @on-row-click="rowClick"
+                :columns="columns1"
+                :dataSource="data1"
+              ></f-table>
             </div>
             <div v-show="!showDeviceList">
               <div class="table-condition-btnbar">
-                <Button @click="showDeviceList = true" size="small" class="condition-btn">返回</Button>
-                <Button @click="orderDevice" size="small" class="condition-btn">预约</Button>
+                <Button
+                  @click="showDeviceList = true"
+                  size="small"
+                  class="condition-btn"
+                  >返回</Button
+                >
+                <Button @click="orderDevice" size="small" class="condition-btn"
+                  >预约</Button
+                >
               </div>
               <div class="lab-orderchoose-div">
-                <div v-for="(item,key) in orderDatas" :key="key" class="lab-orderchoose-day">
-                  <p>{{key}}</p>
+                <div
+                  v-for="(item, key) in orderDatas"
+                  :key="key"
+                  class="lab-orderchoose-day"
+                >
+                  <p>{{ key }}</p>
                   <div class="lab-orderchoose-content">
                     <span
                       class="lab-device-order-span"
-                      :class="{'active':(chooseOrderId === item2.id),'disabled':item2.isDisabled}"
+                      :class="{
+                        active: chooseOrderId === item2.id,
+                        disabled: item2.isDisabled
+                      }"
                       @click="orderClick(item2)"
                       :disabled="item2.isDisabled"
-                      v-for="(item2,key2) in item"
+                      v-for="(item2, key2) in item"
                       :key="key2"
-                    >{{key2}}</span>
+                      >{{ key2 }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -84,7 +115,84 @@
           </div>
         </div>
         <div v-show="tabindex === '3'" class="normal-tabs-content">
-          <div>暂时没有信号观测实验</div>
+          <div v-show="!wsObj">
+            <div v-if="data3.length === 0">暂时没有信号观测实验</div>
+            <div v-else>
+              <div
+                v-for="(item, key) in data3"
+                :key="key"
+                class="lab-orderchoose-day lab-tab3-item"
+              >
+                <img
+                  v-if="item.picture"
+                  :src="item.picture"
+                  class="form-user-img lab-tab3-item-img"
+                />
+                <img
+                  v-if="!item.picture"
+                  src="static/images/noperson.png"
+                  class="form-user-img lab-tab3-item-img"
+                />
+                <div class="lab-tab3-item-main">
+                  <p class="lab-tab3-item-main-title">
+                    {{ item.experimenteName }}
+                  </p>
+                  <p>{{ item.deviceName }}</p>
+                </div>
+                <div class="lab-tab3-item-toolbar">
+                  <Button
+                    v-for="(channel, ckey) in item.signalChannelList"
+                    :key="ckey"
+                    type="info"
+                    @click="doSent(item, channel)"
+                    class="lab-tab3-item-toolbar-btn"
+                    ghost
+                  >
+                    <span>{{
+                      channel.channelId + ":" + channel.dataType
+                    }}</span>
+                    <Icon style="margin-left:5px;" type="ios-play" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-show="wsObj" style="width:100%;height:100%;">
+            <div class="iframe-close-div" style="z-index:1;">
+              <Icon
+                class="iframe-close-icon"
+                @click.stop="doClose"
+                type="ios-undo"
+              />
+            </div>
+            <div style="width:100%;height:100%;">
+              <div
+                v-show="wstype === 'AI'"
+                id="myChart"
+                style="width:1200px;height:400px;"
+              ></div>
+              <div v-show="wstype === 'DI'" class="di-div">
+                <div
+                  v-for="(item, key) in diData"
+                  :key="key"
+                  :class="{
+                    'di-div-item': true,
+                    'di-div-item0': item === '0',
+                    'di-div-item1': item === '1'
+                  }"
+                ></div>
+              </div>
+              <div v-show="wstype != 'AI' && wstype != 'DI'" class="spi-div">
+                <div
+                  v-for="(item, key) in textData"
+                  :key="key"
+                  class="spi-div-item"
+                >
+                  {{ item }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -211,7 +319,18 @@ export default {
         // }
       ],
       data2: [],
-      orderDatas: {}
+      orderDatas: {},
+      data3: [],
+      ws: null,
+      wsObj: null,
+      wstype: "",
+      myChart: null,
+      diData: ["0", "0", "1", "0", "0", "0", "0", "0"],
+      textData: [
+        "asdfdsafdasf",
+        "this.userInfo = this.$store.getters.user;",
+        "this.getSimulationDatas();"
+      ]
     };
   },
   mounted() {
@@ -225,6 +344,79 @@ export default {
     }
   },
   methods: {
+    setChart(obj) {
+      let xdata = [],
+        ydata = [],
+        xlength = 1024,
+        title = "";
+      if (obj) {
+        let { t0, type, dataSet } = obj[0];
+        ydata = dataSet;
+        // title = type + " " + new Date(t0).toDateString;
+      }
+
+      if (!this.myChart) {
+        var dom = document.getElementById("myChart");
+        // var myChartp = document.getElementById("myChartp");
+        // console.log(myChartp.style.width);
+        // dom.style.width = myChartp.innerWidth + "px";
+        this.myChart = echarts.init(dom);
+      }
+      if (ydata && ydata.length > 0) {
+        xlength = ydata.length;
+        for (var i = 0; i < xlength; i++) {
+          xdata.push(i + 1 + "/" + xlength);
+          ydata.push(ydata[i]);
+        }
+      } else {
+        for (var i = 0; i < xlength; i++) {
+          xdata.push(i + 1 + "/" + xlength);
+          ydata.push("0");
+        }
+      }
+      let option = {
+        title: { text: title, show: title },
+        // grid: {
+        //   left: 0,
+        //   right: 0,
+        //   top: 0,
+        //   bottom: 0
+        // },
+        xAxis: {
+          type: "category",
+          data: xdata,
+          show: false
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            data: ydata,
+            type: "line"
+          }
+        ]
+      };
+      this.myChart.setOption(option);
+    },
+    doSent(device, channel) {
+      this.wsObj = [
+        {
+          index: channel.channelId,
+          type: channel.dataType,
+          elvisId: device.relationKey
+        }
+      ];
+      console.log("params", this.wsObj);
+      this.wstype = channel.dataType;
+      this.ws.send(JSON.stringify(this.wsObj));
+      this.setChart();
+    },
+    doClose() {
+      this.wsObj = null;
+      this.wstype = "";
+      this.ws.close();
+    },
     orderDevice() {
       this.axios
         .post(
@@ -242,6 +434,43 @@ export default {
       if (!item.isDisabled) {
         this.chooseOrderId = item.id;
       }
+    },
+    wsInit() {
+      this.ws = wsjs.getWebSocket(`${API.wsPath}`);
+      console.log("ws");
+      console.log(this.ws);
+      let _this = this;
+
+      // this.ws.send(JSON.stringify(obj));
+
+      this.ws.onopen = function(event) {
+        console.log("webSocket链接已打开...");
+      };
+
+      //websocket连接错误回调函数
+      this.ws.onerror = function(event) {
+        console.log("webSocket链接失败...event");
+        console.log(JSON.stringify(event));
+      };
+
+      //websocket连接关闭回调函数
+      this.ws.onclose = function(event) {
+        console.log("webSocket链接关闭...event");
+        console.log(JSON.stringify(event));
+      };
+
+      //websocket收到后台消息回调函数
+      this.ws.onmessage = function(event) {
+        let data = null;
+        let datastr = event.data;
+        console.log(event);
+        if (datastr && datastr != "connection success") {
+          let dataobj = JSON.parse(datastr);
+          if (dataobj) {
+            _this.setChart(dataobj);
+          }
+        }
+      };
     },
     getTableDatas() {
       this.axios.get(`${API.index.deviceOrder_getmy}`).then(result => {
@@ -266,23 +495,29 @@ export default {
               op: "eq",
               type: "int",
               value: this.courseId
-            },
-            {
-              name: "type",
-              op: "eq",
-              type: "int",
-              value: 1
             }
+            // {
+            //   name: "type",
+            //   op: "eq",
+            //   type: "int",
+            //   value: 1
+            // }
           ],
           logic: "and"
         }
       };
       this.axios.post(`${API.index.courseDevice_list}`, params).then(result => {
         if (result.code === 20000) {
-          this.data1 = result.result.list.map(d => {
-            let typeStr = d.type === 1 ? "在线实验设备" : "实时数据设备";
-            return { ...d, typeStr: typeStr };
-          });
+          this.data1 = result.result.list
+            .filter(d => d.type === 1)
+            .map(d => {
+              let typeStr = d.type === 1 ? "在线实验设备" : "实时数据设备";
+              return { ...d, typeStr: typeStr };
+            });
+          this.data3 = result.result.list.filter(d => d.type === 2);
+          if (this.data3.length > 0) {
+            this.wsInit();
+          }
         }
       });
     },
@@ -364,8 +599,7 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
 
 <style lang="less" scoped>
 .normal-tabs {
@@ -513,5 +747,66 @@ export default {
 .iframe-close-icon {
   font-size: 30px;
   color: #fff;
+}
+.lab-tab3-item {
+  border: 1px solid #70ac1f;
+  width: 300px;
+  position: relative;
+  border-radius: 5px;
+  &-img {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+  }
+  &-main {
+    padding: 10px 10px 10px 80px;
+    & p {
+      text-align: left;
+      background: #fff;
+    }
+    &-title {
+      line-height: 20px;
+      color: #70ac1f;
+      font-weight: 500;
+      font-size: 14px;
+    }
+  }
+  &-toolbar {
+    padding: 10px;
+    &-btn {
+      background: #70ac1f;
+      border-color: #70ac1f;
+      // background: transparent;
+      // color: #70ac1f;
+      margin-bottom: 2px;
+    }
+  }
+}
+.di-div {
+  text-align: center;
+  &-item {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    border: 1px solid #222;
+    border-radius: 50%;
+    margin: 20px;
+  }
+  &-item1 {
+    background: red;
+  }
+  &-item0 {
+    background: #70ac1f;
+  }
+}
+.spi-div {
+  text-align: left;
+  padding: 20px;
+  background: #242424;
+  color: #70ac1f;
+  &-item {
+    line-height: 22px;
+    font-size: 14px;
+  }
 }
 </style>

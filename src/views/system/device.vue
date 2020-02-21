@@ -4,7 +4,9 @@
       <Button @click="addItem" size="small" class="condition-btn">添加</Button>
       <!-- <Button @click="editItem" size="small" class="condition-btn">编辑</Button> -->
       <Button @click="delItem" size="small" class="condition-btn">删除</Button>
-      <Button @click="getTableDatas" size="small" class="condition-btn">刷新</Button>
+      <Button @click="getTableDatas" size="small" class="condition-btn"
+        >刷新</Button
+      >
     </div>
     <div>
       <!-- <f-table @on-select="rowSelect" :columns="columns1" :dataSource="data1"></f-table> -->
@@ -29,13 +31,22 @@
           <Row :gutter="32">
             <Col span="12">
               <FormItem label="名称" prop="name" label-position="top">
-                <Input v-model="newObj.name" size="small" placeholder="请输入名称" />
+                <Input
+                  v-model="newObj.name"
+                  size="small"
+                  placeholder="请输入名称"
+                />
               </FormItem>
             </Col>
             <Col span="12">
               <FormItem label="类型" prop="type" label-position="top">
                 <Select v-model="newObj.type" placeholder="请选择类型">
-                  <Option v-for="item in typedata" :value="item.value" :key="item">{{ item.label }}</Option>
+                  <Option
+                    v-for="item in typedata"
+                    :value="item.value"
+                    :key="item"
+                    >{{ item.label }}</Option
+                  >
                 </Select>
               </FormItem>
             </Col>
@@ -51,13 +62,17 @@
                   :data="uploadData"
                   :show-upload-list="false"
                   :on-success="handleSuccess"
-                  :format="['jpg','jpeg','png']"
+                  :format="['jpg', 'jpeg', 'png']"
                   :max-size="2048"
                   :on-exceeded-size="handleMaxSize"
                   :before-upload="handleBeforeUpload"
                   style="display: inline-block;vertical-align: top;"
                 >
-                  <img v-if="newObj.picture" :src="newObj.picture" class="form-user-img" />
+                  <img
+                    v-if="newObj.picture"
+                    :src="newObj.picture"
+                    class="form-user-img"
+                  />
                   <img
                     v-if="!newObj.picture"
                     src="static/images/noperson.png"
@@ -67,8 +82,16 @@
               </FormItem>
             </Col>
             <Col span="12">
-              <FormItem label="资源类型" prop="resourceClass" label-position="top">
-                <Input v-model="newObj.resourceClass" size="small" placeholder="请输入资源类型" />
+              <FormItem
+                label="资源类型"
+                prop="resourceClass"
+                label-position="top"
+              >
+                <Input
+                  v-model="newObj.resourceClass"
+                  size="small"
+                  placeholder="请输入资源类型"
+                />
               </FormItem>
             </Col>
           </Row>
@@ -80,7 +103,8 @@
                     v-for="item in cameraDatas"
                     :value="item.value"
                     :key="item"
-                  >{{ item.label }}</Option>
+                    >{{ item.label }}</Option
+                  >
                 </Select>
               </FormItem>
             </Col>
@@ -98,19 +122,32 @@
           <Row :gutter="32">
             <Col span="12">
               <FormItem label="页面url" prop="pageUrl" label-position="top">
-                <Input v-model="newObj.pageUrl" size="small" placeholder="请输入页面url" />
+                <Input
+                  v-model="newObj.pageUrl"
+                  size="small"
+                  placeholder="请输入页面url"
+                />
               </FormItem>
             </Col>
             <Col span="12">
-              <FormItem label="关联的key" prop="relationKey" label-position="top">
-                <Input v-model="newObj.relationKey" size="small" placeholder="请输入关联的key" />
+              <FormItem label="设备ID" prop="relationKey" label-position="top">
+                <Input
+                  v-model="newObj.relationKey"
+                  size="small"
+                  placeholder="请输入关联的key"
+                />
               </FormItem>
             </Col>
           </Row>
           <Row :gutter="32">
             <Col span="12">
               <FormItem label="描述" prop="description" label-position="top">
-                <Input type="textarea" v-model="newObj.description" :rows="4" placeholder="请输入描述" />
+                <Input
+                  type="textarea"
+                  v-model="newObj.description"
+                  :rows="4"
+                  placeholder="请输入描述"
+                />
               </FormItem>
             </Col>
             <Col span="12"></Col>
@@ -118,8 +155,12 @@
         </Form>
       </div>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="showAddNew = false">取消</Button>
-        <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
+        <Button style="margin-right: 8px" @click="showAddNew = false"
+          >取消</Button
+        >
+        <Button type="primary" @click="handleSubmit('formValidate')"
+          >保存</Button
+        >
       </div>
     </Drawer>
 
@@ -132,9 +173,15 @@
     >
       <div class="demo-drawer-content">
         <div class="table-condition-btnbar">
-          <Button @click="addChannel" size="small" class="condition-btn">添加</Button>
-          <Button @click="delChannel" size="small" class="condition-btn">删除</Button>
-          <Button @click="getChannelDatas" size="small" class="condition-btn">刷新</Button>
+          <Button @click="addChannel" size="small" class="condition-btn"
+            >添加</Button
+          >
+          <Button @click="delChannel" size="small" class="condition-btn"
+            >删除</Button
+          >
+          <Button @click="getChannelDatas" size="small" class="condition-btn"
+            >刷新</Button
+          >
         </div>
         <Table
           size="small"
@@ -167,13 +214,17 @@
               :data="uploadData"
               :show-upload-list="false"
               :on-success="handleSuccess2"
-              :format="['jpg','jpeg','png']"
+              :format="['jpg', 'jpeg', 'png']"
               :max-size="2048"
               :on-exceeded-size="handleMaxSize"
               :before-upload="handleBeforeUpload"
               style="display: inline-block;vertical-align: top;"
             >
-              <img v-if="channelObj.picture" :src="channelObj.picture" class="form-user-img" />
+              <img
+                v-if="channelObj.picture"
+                :src="channelObj.picture"
+                class="form-user-img"
+              />
               <img
                 v-if="!channelObj.picture"
                 src="static/images/noperson.png"
@@ -182,21 +233,58 @@
             </Upload>
           </FormItem>
           <FormItem label="名称" prop="name">
-            <Input v-model="channelObj.name" size="small" placeholder="请输入名称" />
+            <Input
+              v-model="channelObj.name"
+              size="small"
+              placeholder="请输入名称"
+            />
           </FormItem>
           <FormItem label="信道编号" prop="channelId">
-            <Input v-model="channelObj.channelId" size="small" placeholder="请输入信道编号" />
+            <!-- <Input
+              v-model="channelObj.channelId"
+              size="small"
+              placeholder="请输入信道编号"
+            /> -->
+            <Select v-model="channelObj.channelId" placeholder="请输入信道编号">
+              <Option value="0">0</Option>
+              <Option value="1">1</Option>
+              <Option value="2">2</Option>
+              <Option value="3">3</Option>
+              <Option value="4">4</Option>
+              <Option value="5">5</Option>
+              <Option value="6">6</Option>
+              <Option value="7">7</Option>
+            </Select>
           </FormItem>
           <FormItem label="数据类型" prop="dataType">
-            <Input v-model="channelObj.dataType" size="small" placeholder="请输入数据类型" />
+            <!-- <Input
+              v-model="channelObj.dataType"
+              size="small"
+              placeholder="请输入数据类型"
+            /> -->
+            <Select v-model="channelObj.dataType" placeholder="请输入数据类型">
+              <Option
+                v-for="item in channelTypes"
+                :value="item.value"
+                :key="item"
+                >{{ item.label }}</Option
+              >
+            </Select>
           </FormItem>
           <FormItem label="描述" prop="description" label-position="top">
-            <Input type="textarea" v-model="channelObj.description" :rows="4" placeholder="请输入描述" />
+            <Input
+              type="textarea"
+              v-model="channelObj.description"
+              :rows="4"
+              placeholder="请输入描述"
+            />
           </FormItem>
         </Form>
       </div>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="showEditChannel = false">取消</Button>
+        <Button style="margin-right: 8px" @click="showEditChannel = false"
+          >取消</Button
+        >
         <Button type="primary" @click="addChannelSubmit">保存</Button>
       </div>
     </Drawer>
@@ -210,7 +298,14 @@
         <p>确定删除所选设备吗？</p>
       </div>
       <div slot="footer">
-        <Button type="error" size="large" long :loading="modal_loading" @click="delSubmit">删除</Button>
+        <Button
+          type="error"
+          size="large"
+          long
+          :loading="modal_loading"
+          @click="delSubmit"
+          >删除</Button
+        >
       </div>
     </Modal>
     <Modal v-model="showChannelDelete" width="360">
@@ -222,7 +317,14 @@
         <p>确定删除所选信号通道吗？</p>
       </div>
       <div slot="footer">
-        <Button type="error" size="large" long :loading="modal_loading" @click="delChannelSubmit">删除</Button>
+        <Button
+          type="error"
+          size="large"
+          long
+          :loading="modal_loading"
+          @click="delChannelSubmit"
+          >删除</Button
+        >
       </div>
     </Modal>
   </div>
@@ -257,6 +359,12 @@ export default {
       typedata: [
         { value: 1, label: "在线实验设备" },
         { value: 2, label: "实时数据设备" }
+      ],
+      channelTypes: [
+        { value: "AI", label: "模拟输入" },
+        { value: "DI", label: "数字输入" },
+        { value: "SPI", label: "SPI" },
+        { value: "I2C", label: "I2C" }
       ],
       pageData1: {
         total: 0,
@@ -415,7 +523,6 @@ export default {
       showChannelDelete: false,
       cameraId: 0,
       newObj: {
-        // "RESOURCETYPE": "联通专线",
         name: "",
         dataType: "",
         pageUrl: "",
@@ -431,7 +538,7 @@ export default {
       },
       editObj: null,
       channelObj: {
-        channelId: "",
+        channelId: "0",
         dataType: "",
         description: "",
         deviceId: 0,
@@ -455,7 +562,8 @@ export default {
         duration: [
           { required: true, validator: validateSequence, trigger: "blur" }
         ]
-      }
+      },
+      ws: null
     };
   },
   mounted() {
@@ -755,8 +863,6 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

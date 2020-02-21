@@ -4,10 +4,16 @@
       <Button @click="addItem" size="small" class="condition-btn">添加</Button>
       <!-- <Button @click="editItem" size="small" class="condition-btn">编辑</Button> -->
       <Button @click="delItem" size="small" class="condition-btn">删除</Button>
-      <Button @click="getTableDatas" size="small" class="condition-btn">刷新</Button>
+      <Button @click="getTableDatas" size="small" class="condition-btn"
+        >刷新</Button
+      >
     </div>
     <div>
-      <f-table @on-select="rowSelect" :columns="columns1" :dataSource="data1"></f-table>
+      <f-table
+        @on-select="rowSelect"
+        :columns="columns1"
+        :dataSource="data1"
+      ></f-table>
       <!-- <Table height="200" size="small" :columns="columns1" :data="data1" @on-select="rowSelect"></Table> -->
     </div>
 
@@ -45,7 +51,14 @@
         <p>确定删除所选设备吗？</p>
       </div>
       <div slot="footer">
-        <Button type="error" size="large" long :loading="modal_loading" @click="delSubmit">删除</Button>
+        <Button
+          type="error"
+          size="large"
+          long
+          :loading="modal_loading"
+          @click="delSubmit"
+          >删除</Button
+        >
       </div>
     </Modal>
   </div>
@@ -185,7 +198,7 @@ export default {
         },
         {
           title: "名称",
-          key: "name"
+          key: "deviceName"
         },
         {
           title: "类型",
@@ -445,8 +458,6 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>
