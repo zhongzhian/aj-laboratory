@@ -8,9 +8,9 @@
     <div v-if="!isGuest" class="center-course-list" style="top: 25px;">
       <div
         :key="item"
-        v-for="(item,index) in courseDatas"
+        v-for="(item, index) in courseDatas"
         class="center-course-item"
-        :class="item.id === activeItemid?'center-course-item-active':''"
+        :class="item.id === activeItemid ? 'center-course-item-active' : ''"
         @click="itemClick(item)"
       >
         <div v-if="item.id === activeItemid" class="center-course-item-mask">
@@ -32,24 +32,33 @@
           </div>
         </div>
         <div class="center-course-item-header">
-          <img class="center-course-item-header-img" :src="item.courseMainImg" />
+          <img
+            class="center-course-item-header-img"
+            :src="item.courseMainImg"
+          />
         </div>
         <div class="center-course-item-content">
-          <div class="center-course-item-content-title">{{item.courseName}}</div>
+          <div class="center-course-item-content-title">
+            {{ item.courseName }}
+          </div>
           <!-- <div class="center-course-item-content-process">进度 {{item.studiedStr}}</div> -->
           <div
             v-if="item.chapterTitle"
             :style="textEllipsis"
             class="center-course-item-content-process text-ellipsis"
-          >{{item.chapterName+'-'+item.chapterTitle}}</div>
+          >
+            {{ item.chapterName + "-" + item.chapterTitle }}
+          </div>
           <div
             v-if="item.sectionTitle"
             :style="textEllipsis"
             class="center-course-item-content-process text-ellipsis"
-          >{{item.sectionName+'-'+item.sectionTitle}}</div>
+          >
+            {{ item.sectionName + "-" + item.sectionTitle }}
+          </div>
           <div class="center-course-item-content-desc">
-            <span style="float:left;">得分 {{item.score}}</span>
-            <span style="float:right;">进度 {{item.studiedStr}}</span>
+            <span style="float:left;">得分 {{ item.score }}</span>
+            <span style="float:right;">进度 {{ item.studiedStr }}</span>
             <!-- <Icon
               style="float:right;margin-right:2px;line-height:35px;"
               color="#ccc"
@@ -64,7 +73,7 @@
     <div v-if="isGuest" class="center-course-list" style="top: 25px;">
       <div
         :key="item"
-        v-for="(item,index) in courseDatas"
+        v-for="(item, index) in courseDatas"
         class="center-course-item"
         @click="itemClick(item)"
       >
@@ -72,11 +81,13 @@
           <img class="center-course-item-header-img" :src="item.mainImg" />
         </div>
         <div class="center-course-item-content">
-          <div class="center-course-item-content-title">{{item.name}}</div>
-          <div class="center-course-item-content-process">{{item.teacherName}}</div>
+          <div class="center-course-item-content-title">{{ item.name }}</div>
+          <div class="center-course-item-content-process">
+            {{ item.teacherName }}
+          </div>
           <div class="center-course-item-content-desc">
-            <span style="float:left;">{{item.statusStr}}</span>
-            <span style="float:right;">{{item.studentNumber}}</span>
+            <span style="float:left;">{{ item.statusStr }}</span>
+            <span style="float:right;">{{ item.studentNumber }}</span>
             <Icon
               style="float:right;margin-right:2px;line-height:35px;"
               color="#ccc"
@@ -97,7 +108,11 @@
       <div class="demo-drawer-content">
         <Form ref="formValidate" :model="newObj" :rules="ruleValidate">
           <FormItem label="名称" prop="name" label-position="top">
-            <Input v-model="newObj.name" size="small" placeholder="请输入标题" />
+            <Input
+              v-model="newObj.name"
+              size="small"
+              placeholder="请输入标题"
+            />
           </FormItem>
           <Row :gutter="32">
             <Col span="12">
@@ -109,13 +124,17 @@
                   :data="uploadData"
                   :show-upload-list="false"
                   :on-success="handleSuccess"
-                  :format="['jpg','jpeg','png']"
+                  :format="['jpg', 'jpeg', 'png']"
                   :max-size="2048"
                   :on-format-error="handleFormatError"
                   :on-exceeded-size="handleMaxSize"
                   :before-upload="handleBeforeUpload"
                 >
-                  <img v-if="newObj.logo" :src="newObj.logo" class="form-course-logoimg" />
+                  <img
+                    v-if="newObj.logo"
+                    :src="newObj.logo"
+                    class="form-course-logoimg"
+                  />
                   <img
                     v-if="!newObj.logo"
                     src="static/images/noperson.png"
@@ -133,13 +152,17 @@
                   :data="uploadData"
                   :show-upload-list="false"
                   :on-success="handleSuccess2"
-                  :format="['jpg','jpeg','png']"
+                  :format="['jpg', 'jpeg', 'png']"
                   :max-size="2048"
                   :on-format-error="handleFormatError"
                   :on-exceeded-size="handleMaxSize"
                   :before-upload="handleBeforeUpload"
                 >
-                  <img v-if="newObj.mainImg" :src="newObj.mainImg" class="form-course-mainImg" />
+                  <img
+                    v-if="newObj.mainImg"
+                    :src="newObj.mainImg"
+                    class="form-course-mainImg"
+                  />
                   <img
                     v-if="!newObj.mainImg"
                     src="static/images/noperson.png"
@@ -150,16 +173,30 @@
             </Col>
           </Row>
           <FormItem label="简介" prop="introduction" label-position="top">
-            <Input type="textarea" v-model="newObj.introduction" :rows="4" placeholder="请输入简介" />
+            <Input
+              type="textarea"
+              v-model="newObj.introduction"
+              :rows="4"
+              placeholder="请输入简介"
+            />
           </FormItem>
           <FormItem label="描述" prop="description" label-position="top">
-            <Input type="textarea" v-model="newObj.description" :rows="4" placeholder="请输入描述" />
+            <Input
+              type="textarea"
+              v-model="newObj.description"
+              :rows="4"
+              placeholder="请输入描述"
+            />
           </FormItem>
         </Form>
       </div>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="showAddNew = false">取消</Button>
-        <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
+        <Button style="margin-right: 8px" @click="showAddNew = false"
+          >取消</Button
+        >
+        <Button type="primary" @click="handleSubmit('formValidate')"
+          >保存</Button
+        >
       </div>
     </Drawer>
     <Modal v-model="showDelete" width="360">
@@ -171,13 +208,24 @@
         <p>确定删除所选课程吗？</p>
       </div>
       <div slot="footer">
-        <Button type="error" size="large" long :loading="modal_loading" @click="delSubmit">删除</Button>
+        <Button
+          type="error"
+          size="large"
+          long
+          :loading="modal_loading"
+          @click="delSubmit"
+          >删除</Button
+        >
       </div>
     </Modal>
 
     <Modal title="View Image" v-model="visible" width="732">
       <div style="text-align:center;width:700px;">
-        <img :src="imgName" v-if="visible" style="max-width: 700px;max-height:500px;" />
+        <img
+          :src="imgName"
+          v-if="visible"
+          style="max-width: 700px;max-height:500px;"
+        />
       </div>
     </Modal>
   </div>
@@ -196,7 +244,8 @@ export default {
       headers: null,
       uploadData: {
         file: null,
-        name: ""
+        name: "",
+        type: "normal"
       },
       imgName: "",
       visible: false,
@@ -289,6 +338,12 @@ export default {
               op: "eq",
               type: "int",
               value: 1
+            },
+            {
+              name: "isDeleted",
+              op: "eq",
+              type: "boolean",
+              value: false
             }
           ],
           logic: "and"
@@ -395,7 +450,7 @@ export default {
     },
     handleSuccess(res, file, fileList) {
       console.log("handleSuccess .. res", res);
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -411,13 +466,13 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleSuccess2(res, file, fileList) {
       console.log("handleSuccess .. res", res);
-      if ((res.code === 20000)) {
+      if (res.code === 20000) {
         let splits = res.result.uploadFileName.split("|");
         let path = splits[1] ? splits[1] : splits[0];
         file.url = this.picBasePath + path;
@@ -433,8 +488,8 @@ export default {
             name: this.$route.name
           }
         });
-      }else{
-          this.$Message.error(res.message);
+      } else {
+        this.$Message.error(res.message);
       }
     },
     handleFormatError(file) {
@@ -459,8 +514,7 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
 
 <style lang="less" scoped>
 .form-course-logoimg {

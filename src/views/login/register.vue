@@ -5,7 +5,7 @@
         <div>
           <div class="layout-row">
             <div class="layout-content">
-              <h4 @click="gotoHome" class="header-title">东北大学智慧在线实验课程平台</h4>
+              <h4 @click="gotoHome" class="header-title">东北大学智慧在线</h4>
               <!-- <Select
                 class="header-select"
                 v-model="selectValue"
@@ -25,7 +25,12 @@
       <Content>
         <div class="layout-row">
           <div class="layout-content" style="padding:30px;">
-            <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+            <Form
+              ref="formValidate"
+              :model="formValidate"
+              :rules="ruleValidate"
+              :label-width="80"
+            >
               <div class="layout-content-title">账号信息</div>
               <!-- <FormItem label="头像" label-position="top">
                 <Upload
@@ -83,35 +88,71 @@
                 />
               </FormItem>
               <FormItem label="性别" prop="sex">
-                <Select v-model="formValidate.sex" placeholder="请选择性别" style="width:400px;">
+                <Select
+                  v-model="formValidate.sex"
+                  placeholder="请选择性别"
+                  style="width:400px;"
+                >
                   <Option value="男">男</Option>
                   <Option value="女">女</Option>
                 </Select>
               </FormItem>
               <FormItem label="电话" prop="telphone">
-                <Input v-model="formValidate.telphone" placeholder="请输入电话" style="width:400px;"></Input>
+                <Input
+                  v-model="formValidate.telphone"
+                  placeholder="请输入电话"
+                  style="width:400px;"
+                ></Input>
               </FormItem>
               <FormItem label="民族" prop="minzu">
-                <Input v-model="formValidate.minzu" placeholder="请输入民族" style="width:400px;"></Input>
+                <Input
+                  v-model="formValidate.minzu"
+                  placeholder="请输入民族"
+                  style="width:400px;"
+                ></Input>
               </FormItem>
               <FormItem label="籍贯" prop="nativePlace">
-                <Input v-model="formValidate.nativePlace" placeholder="请输入籍贯" style="width:400px;"></Input>
+                <Input
+                  v-model="formValidate.nativePlace"
+                  placeholder="请输入籍贯"
+                  style="width:400px;"
+                ></Input>
               </FormItem>
               <div class="layout-content-title">学籍信息</div>
               <FormItem label="学号" prop="userKey">
-                <Input v-model="formValidate.userKey" placeholder="请输入学号" style="width:400px;"></Input>
+                <Input
+                  v-model="formValidate.userKey"
+                  placeholder="请输入学号"
+                  style="width:400px;"
+                ></Input>
               </FormItem>
               <FormItem label="学院" prop="college">
-                <Input v-model="formValidate.college" placeholder="请输入学院" style="width:400px;"></Input>
+                <Input
+                  v-model="formValidate.college"
+                  placeholder="请输入学院"
+                  style="width:400px;"
+                ></Input>
               </FormItem>
               <FormItem label="专业" prop="major">
-                <Input v-model="formValidate.major" placeholder="请输入专业" style="width:400px;"></Input>
+                <Input
+                  v-model="formValidate.major"
+                  placeholder="请输入专业"
+                  style="width:400px;"
+                ></Input>
               </FormItem>
               <FormItem label="年级" prop="grade">
-                <Input v-model="formValidate.grade" placeholder="请输入年级" style="width:400px;"></Input>
+                <Input
+                  v-model="formValidate.grade"
+                  placeholder="请输入年级"
+                  style="width:400px;"
+                ></Input>
               </FormItem>
               <FormItem label="班" prop="class1">
-                <Input v-model="formValidate.class1" placeholder="请输入班" style="width:400px;"></Input>
+                <Input
+                  v-model="formValidate.class1"
+                  placeholder="请输入班"
+                  style="width:400px;"
+                ></Input>
               </FormItem>
               <!-- <FormItem label="用户账号" prop="userName">
                 <Input v-model="formValidate.userName" placeholder="Enter your name"></Input>
@@ -153,8 +194,14 @@
                 <Input v-model="formValidate.nativePlace" placeholder="Enter your e-mail"></Input>
               </FormItem>-->
               <FormItem>
-                <Button type="primary" @click="handleSubmit('formValidate')">确定</Button>
-                <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
+                <Button type="primary" @click="handleSubmit('formValidate')"
+                  >确定</Button
+                >
+                <Button
+                  @click="handleReset('formValidate')"
+                  style="margin-left: 8px"
+                  >重置</Button
+                >
               </FormItem>
             </Form>
           </div>
@@ -167,8 +214,10 @@
               <Row>
                 <Col span="12">
                   <div>
-                    <h4 class="footer-title">东北大学智慧在线实验课程平台</h4>
-                    <div class="footer-desc">在线内容教学与在线实验的混合式教学平台，不限时间地点的综合性学习平台</div>
+                    <h4 class="footer-title">东北大学智慧在线</h4>
+                    <div class="footer-desc">
+                      在线内容教学与在线实验的混合式教学平台，不限时间地点的综合性学习平台
+                    </div>
                   </div>
                 </Col>
                 <!-- <Col span="5">
@@ -226,7 +275,8 @@ export default {
       headers: null,
       uploadData: {
         file: null,
-        name: ""
+        name: "",
+        type: "normal"
       },
       formValidate: {
         class1: "",
@@ -424,4 +474,3 @@ export default {
   text-align: center;
 }
 </style>
-

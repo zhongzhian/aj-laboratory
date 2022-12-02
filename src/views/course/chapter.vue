@@ -2,17 +2,28 @@
   <div>
     <div class="table-condition-btnbar">
       <div class="manage-content-breadcrumb">
-        <span v-if="isGuest" class="manage-content-breadcrumb-span">{{courseInfo.name}}</span>
-        <span v-else class="manage-content-breadcrumb-span">{{recordInfo.courseName}}</span>
-        <span class="manage-content-breadcrumb-span" v-if="sectionTitle">></span>
+        <span v-if="isGuest" class="manage-content-breadcrumb-span">{{
+          courseInfo.name
+        }}</span>
+        <span v-else class="manage-content-breadcrumb-span">{{
+          recordInfo.courseName
+        }}</span>
+        <span class="manage-content-breadcrumb-span" v-if="sectionTitle"
+          >></span
+        >
         <span
           class="manage-content-breadcrumb-span"
           style="cursor:pointer;"
           v-if="sectionTitle"
           @click="sectionTitle = ''"
-        >{{chapterTitle}}</span>
-        <span class="manage-content-breadcrumb-span" v-if="sectionTitle">></span>
-        <span class="manage-content-breadcrumb-span" v-if="sectionTitle">{{sectionTitle}}</span>
+          >{{ chapterTitle }}</span
+        >
+        <span class="manage-content-breadcrumb-span" v-if="sectionTitle"
+          >></span
+        >
+        <span class="manage-content-breadcrumb-span" v-if="sectionTitle">{{
+          sectionTitle
+        }}</span>
       </div>
     </div>
     <div class="manage-content-right-content">
@@ -20,24 +31,25 @@
         <div v-if="!sectionTitle">
           <div
             :key="item"
-            v-for="(item,index) in courseInfo.chapterList"
+            v-for="(item, index) in courseInfo.chapterList"
             class="course-chapter-item"
           >
             <div class="course-chapter-item-header" style="cursor:default;">
-              <span>{{item.name+" - "+item.title}}</span>
+              <span>{{ item.name + " - " + item.title }}</span>
             </div>
             <div class="course-chapter-item-content">
               <p
                 :key="section"
-                v-for="(section,sindex) in item.sectionList"
+                v-for="(section, sindex) in item.sectionList"
                 class="manage-collapse-p"
               >
                 <Button
                   @click="selectSections(section)"
                   size="small"
                   class="condition-btn"
-                >查看内容</Button>
-                <span>{{section.name+" - "+section.title}}</span>
+                  >查看内容</Button
+                >
+                <span>{{ section.name + " - " + section.title }}</span>
               </p>
             </div>
           </div>
@@ -47,17 +59,17 @@
         <div v-if="!sectionTitle">
           <div
             :key="item"
-            v-for="(item,index) in recordInfo.chapterStudyRecordPublicVoList"
+            v-for="(item, index) in recordInfo.chapterStudyRecordPublicVoList"
             class="course-chapter-item"
           >
             <div class="course-chapter-item-header" style="cursor:default;">
-              <span>{{item.chapterName+" - "+item.chapterTitle}}</span>
-              <span style="float:right;">{{"进度："+item.studiedStr}}</span>
+              <span>{{ item.chapterName + " - " + item.chapterTitle }}</span>
+              <span style="float:right;">{{ "进度：" + item.studiedStr }}</span>
             </div>
             <div class="course-chapter-item-content">
               <p
                 :key="section"
-                v-for="(section,sindex) in item.sectionStudyRecordList"
+                v-for="(section, sindex) in item.sectionStudyRecordList"
                 class="manage-collapse-p"
               >
                 <Button
@@ -65,16 +77,22 @@
                   @click="startStudy(section)"
                   size="small"
                   class="condition-btn"
-                >开始学习</Button>
+                  >开始学习</Button
+                >
                 <Button
                   v-if="section.studyStatus > 0"
                   @click="selectSections(section)"
                   size="small"
                   class="condition-btn"
                   style="border:1px solid #dddee1;background:#f7f7f7;color:#495060;"
-                >再次学习</Button>
-                <span>{{section.sectionName+" - "+section.sectionTitle}}</span>
-                <span style="float:right;">{{"进度："+section.studiedStr}}</span>
+                  >再次学习</Button
+                >
+                <span>{{
+                  section.sectionName + " - " + section.sectionTitle
+                }}</span>
+                <span style="float:right;">{{
+                  "进度：" + section.studiedStr
+                }}</span>
               </p>
             </div>
           </div>
@@ -89,24 +107,38 @@
               @click="endStudy"
               size="small"
               class="condition-btn"
-            >完成学习</Button>
+              >完成学习</Button
+            >
           </div>
           <div class="normal-tabs-header">
             <div
               @click="tabindex = '1'"
               class="normal-tabs-header-title"
-              :class="tabindex === '1' ? 'active':''"
-            >内容</div>
+              :class="tabindex === '1' ? 'active' : ''"
+            >
+              内容
+            </div>
             <div
               @click="tabindex = '2'"
               class="normal-tabs-header-title"
-              :class="tabindex === '2' ? 'active':''"
-            >视频</div>
+              :class="tabindex === '2' ? 'active' : ''"
+            >
+              视频
+            </div>
             <div
               @click="tabindex = '3'"
               class="normal-tabs-header-title"
-              :class="tabindex === '3' ? 'active':''"
-            >PDF</div>
+              :class="tabindex === '3' ? 'active' : ''"
+            >
+              学习文档
+            </div>
+            <div
+              @click="tabindex = '4'"
+              class="normal-tabs-header-title"
+              :class="tabindex === '4' ? 'active' : ''"
+            >
+              学习课件
+            </div>
           </div>
           <div v-show="tabindex === '1'" class="normal-tabs-content">
             <!-- <div class="manage-content-html" v-html="sectionInfo.content"></div> -->
@@ -123,15 +155,44 @@
               该浏览器无法支持PDF，请点击查看：
               <a href="PDF地址">下载 PDF</a>
             </iframe>-->
-            <template v-if="sectionInfo.pdf">
-              <object :data="sectionInfo.pdf" type="application/pdf" width="100%" height="100%">
+            <template v-if="sectionInfo.docPdf">
+              <object
+                :data="sectionInfo.docPdf"
+                type="application/pdf"
+                width="100%"
+                height="100%"
+              >
                 <p>
                   <b>返回内容</b>: 该浏览器不支持PDFs.请点击查看:
                   <a href="PDF地址">Download PDF</a>.
                 </p>
               </object>
             </template>
-            <template v-else>无</template>
+            <template v-else
+              >无</template
+            >
+          </div>
+          <div v-show="tabindex === '4'" class="normal-tabs-content">
+            <!-- <iframe :src="sectionInfo.pdf" width="100%" height="100%">
+              该浏览器无法支持PDF，请点击查看：
+              <a href="PDF地址">下载 PDF</a>
+            </iframe>-->
+            <template v-if="sectionInfo.coursewarePdf">
+              <object
+                :data="sectionInfo.coursewarePdf"
+                type="application/pdf"
+                width="100%"
+                height="100%"
+              >
+                <p>
+                  <b>返回内容</b>: 该浏览器不支持PDFs.请点击查看:
+                  <a href="PDF地址">Download PDF</a>.
+                </p>
+              </object>
+            </template>
+            <template v-else
+              >无</template
+            >
           </div>
         </div>
       </div>
@@ -263,8 +324,7 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
 
 <style lang="less" scoped>
 .normal-tabs {

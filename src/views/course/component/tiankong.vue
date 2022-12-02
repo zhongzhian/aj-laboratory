@@ -12,7 +12,8 @@
       size="small"
       type="primary"
       @click="valueSubmit"
-    >确定</Button>
+      >确定</Button
+    >
     <!-- <Form :label-width="80">
       <FormItem label="答案">
         <Input v-model="value1" placeholder="请输入答案内容"></Input>
@@ -36,37 +37,43 @@
       </div>
     </div>-->
     <div v-if="grade" class="course-component-grade">
-      <div>正确答案：{{testobj.correctAnswer}}</div>
+      <div>正确答案：{{ testobj.correctAnswer }}</div>
       <div>
         得分：
         <template v-if="testobj.scored">
-          <span>{{testobj.scored}}</span>
+          <span>{{ testobj.scored }}</span>
           <Button
             v-if="!finish"
             :loading="loginLoading"
             size="small"
             type="primary"
             @click="testobj.scored = ''"
-          >改分</Button>
+            >改分</Button
+          >
         </template>
         <template v-else>
-          <InputNumber :max="testobj.score" :min="0" v-model="score"></InputNumber>
+          <InputNumber
+            :max="testobj.score"
+            :min="0"
+            v-model="score"
+          ></InputNumber>
           <Button
             v-if="!finish"
             :loading="loginLoading"
             size="small"
             type="primary"
             @click="scoreSubmit"
-          >打分</Button>
+            >打分</Button
+          >
         </template>
       </div>
     </div>
     <template v-else>
       <div v-if="finish" class="course-component-grade">
-        <div>正确答案：{{testobj.correctAnswer}}</div>
+        <div>正确答案：{{ testobj.correctAnswer }}</div>
         <div>
           得分：
-          <span>{{testobj.scored}}</span>
+          <span>{{ testobj.scored }}</span>
         </div>
       </div>
     </template>
@@ -130,7 +137,8 @@ export default {
     scoreSubmit() {
       let params = {
         scored: this.score,
-        testExerciseInstanceId: this.testobj.id
+        testExerciseInstanceId: this.testobj.id,
+        type: 1
       };
       this.loginLoading = true;
       this.axios.post(`${API.index.test_grade}`, params).then(result => {
@@ -143,8 +151,7 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
 
 <style lang="less" scoped>
 .course-component-result {

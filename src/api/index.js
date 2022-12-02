@@ -1,4 +1,7 @@
-import { REST_API, WS_BASE } from "../config";
+import {
+  REST_API,
+  WS_BASE
+} from "../config";
 // const UPLOADPATH = 'http://47.93.116.221:8000';
 const UPLOADPATH = REST_API;
 const WS_PATH = WS_BASE;
@@ -6,10 +9,12 @@ export default {
   wsPath: WS_PATH,
   uploadPath: UPLOADPATH,
   picPath: UPLOADPATH + "/remoteLaboratory/upload/",
+  // picPath: "/Users/iamdoerzhan/Downloads/06_work/000remoteLaboratory/git/remotepic/",
   login: {
     register: `/remoteLaboratory/user/register`,
     token: `/remoteLaboratory/user/login`,
     modifyPassword: `/remoteLaboratory/user/modifyPassword`,
+    admin_modifyPassword: `/remoteLaboratory/user/adminModifyPassword`,
     logout: `/remoteLaboratory/user/loginout`,
     account: `/remoteLaboratory/user/current`
   },
@@ -17,6 +22,7 @@ export default {
     user_list: `/remoteLaboratory/user/list`,
     teacher_list: `/remoteLaboratory/user/teacherList`,
     user: `/remoteLaboratory/user`,
+    import_user: `/remoteLaboratory/user/importStudent`,
     user_forumForbidden: `/remoteLaboratory/user/forumForbidden/`,
     user_modify: `/remoteLaboratory/user/modifyUserInfo`,
     device_list: `/remoteLaboratory/device/list`,
@@ -36,13 +42,18 @@ export default {
     upload_list: `/remoteLaboratory/uploadFile/list`,
     upload_mylist: `/remoteLaboratory/uploadFile/myList`,
     upload_deleteById: `/remoteLaboratory/uploadFile/deleteById/`,
+    upload_delete: `/remoteLaboratory/uploadFile`,
 
     course_list: `/remoteLaboratory/course/list`,
     course: `/remoteLaboratory/course`,
+    course_setscore: `/remoteLaboratory/course/setScore`,
     course_getDetail: `/remoteLaboratory/course/getDetail`,
-    course_getmy: `/remoteLaboratory/courseStudyRecord/getMy`,
-    course_detail_getmy: `/remoteLaboratory/courseStudyRecord/getMyDetailByCourseId/`,
+    course_setStudentGrade: `/remoteLaboratory/course/setStudentGradeSwitch/`,
+    coursecomment_list: `/remoteLaboratory/courseComment/list`,
+    coursecomment: `/remoteLaboratory/courseComment`,
+    coursecomment_setdefault: `/remoteLaboratory/courseComment/setMainPageDisplay/`,
     updateStatus: `/remoteLaboratory/course/updateStatus/`,
+    startExperiment: `/remoteLaboratory/course/startExperiment/`,
     chapter_list: `/remoteLaboratory/chapter/list`,
     chapter: `/remoteLaboratory/chapter`,
     section_list: `/remoteLaboratory/section/list`,
@@ -53,9 +64,12 @@ export default {
     exercise: `/remoteLaboratory/exercise`,
     testTemplate_bySid: `/remoteLaboratory/testTemplate/getDetailBySectionId/`,
     testTemplate: `/remoteLaboratory/testTemplate`,
+    testTemplate_detail: `/remoteLaboratory/testTemplate/getDetail`,
+    testTemplate_list: `/remoteLaboratory/testTemplate/list`,
     courseDevice_list: `/remoteLaboratory/courseDevice/list`,
     courseDevice: `/remoteLaboratory/courseDevice`,
     courseDevice_listadd: `/remoteLaboratory/courseDevice/listAdd`,
+    courseDevice_listadd2: `/remoteLaboratory/courseDevice/listAdd2`,
     courseDevice: `/remoteLaboratory/courseDevice`,
     announcement_list: `/remoteLaboratory/announcement/list`,
     announcement: `/remoteLaboratory/announcement`,
@@ -71,19 +85,39 @@ export default {
     deviceOrder_getmy: `/remoteLaboratory/deviceOrder/getMy`,
     deviceOrder_getDetail: `/remoteLaboratory/deviceOrder/getOrderDeviceDetail/`,
 
+    test_list: `/remoteLaboratory/testInstance/list`,
     test_submit: `/remoteLaboratory/testInstance/submit/`,
     test_finish: `/remoteLaboratory/testInstance/finish/`,
     test_getMy: `/remoteLaboratory/testInstance/getMy`,
+    test_start: `/remoteLaboratory/testInstance/startTest/`,
     test_answer: `/remoteLaboratory/testInstance/answer`,
     test_grade: `/remoteLaboratory/testInstance/grade`,
-    getMyBySectionId: `/remoteLaboratory/testInstance/getMyBySectionId/`,
+    test_getMyByCourseId: `/remoteLaboratory/testInstance/getMyByCourseId/`,
     startTestBySectionId: `/remoteLaboratory/testInstance/startTestBySectionId/`,
     test_listByCourseId: `/remoteLaboratory/testInstance/listByCourseId/`,
     test_listByChapterId: `/remoteLaboratory/testInstance/listByChapterId/`,
     test_listBySectionId: `/remoteLaboratory/testInstance/listBySectionId/`,
     test_getDetail: `/remoteLaboratory/testInstance/getDetail/`,
+    test_questionresult_getbycourseid: `/remoteLaboratory/testTemplate/getQuestionnaire`,
+    test_export: `/remoteLaboratory/testInstance/exportByCourseId/`,
+    test_instance_list: `/remoteLaboratory/testInstance/list`,
 
+    test_instance_getmygrade: `/remoteLaboratory/testInstance/getMyGrade/`,
+    test_instance_getonetograde: `/remoteLaboratory/testInstance/getOneToGrade/`,
+
+    course_getmy: `/remoteLaboratory/courseStudyRecord/getMy`,
+    course_detail_getmy: `/remoteLaboratory/courseStudyRecord/getMyDetailByCourseId/`,
     startStudy: `/remoteLaboratory/courseStudyRecord/startStudy/`,
-    study_getMy: `/remoteLaboratory/courseStudyRecord/getMy`
+    study_listByCourseId: `/remoteLaboratory/courseStudyRecord/listByCourseId/`,
+    study_getMy: `/remoteLaboratory/courseStudyRecord/getMy`,
+
+    study_statistics: `/remoteLaboratory/courseStudyRecord/getScoreStatistics`,
+    class_getgradebycourseid: `/remoteLaboratory/class/getGradeByCourseId`,
+    major_getbycourseid: `/remoteLaboratory/class/getMajorByCourseId`,
+    grade_getbycourseid: `/remoteLaboratory/class/getGradeByCourseId`,
+    class_getbycourseid: `/remoteLaboratory/class/getByCourseId`,
+    major_get: `/remoteLaboratory/class/getMajor`,
+    grade_get: `/remoteLaboratory/class/getGrade`,
+    class_get: `/remoteLaboratory/class/getClass`,
   }
 };

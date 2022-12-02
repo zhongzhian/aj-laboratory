@@ -5,7 +5,7 @@
         <div>
           <div class="layout-row">
             <div class="layout-content">
-              <h4 @click="gotoHome" class="header-title">东北大学智慧在线实验课程平台</h4>
+              <h4 @click="gotoHome" class="header-title">东北大学智慧在线</h4>
               <!-- <Select
                 class="header-select"
                 v-model="selectValue"
@@ -34,7 +34,11 @@
                 :label-width="80"
               >
                 <FormItem label="用户名" prop="username">
-                  <Input v-model="formValidate.username" autofocus placeholder="请输入用户名"></Input>
+                  <Input
+                    v-model="formValidate.username"
+                    autofocus
+                    placeholder="请输入用户名"
+                  ></Input>
                 </FormItem>
                 <FormItem label="密码" prop="password">
                   <Input
@@ -49,8 +53,14 @@
                     :loading="loginLoading"
                     type="primary"
                     @click="handleSubmit('formValidate')"
-                  >登录</Button>
-                  <Button style="margin-left:20px;" type="primary" @click="gotoRegister">注册新账号</Button>
+                    >登录</Button
+                  >
+                  <!-- <Button
+                    style="margin-left:20px;"
+                    type="primary"
+                    @click="gotoRegister"
+                    >注册新账号</Button
+                  > -->
                 </FormItem>
               </Form>
             </div>
@@ -64,8 +74,10 @@
               <Row>
                 <Col span="12">
                   <div>
-                    <h4 class="footer-title">东北大学智慧在线实验课程平台</h4>
-                    <div class="footer-desc">在线内容教学与在线实验的混合式教学平台，不限时间地点的综合性学习平台</div>
+                    <h4 class="footer-title">东北大学智慧在线</h4>
+                    <div class="footer-desc">
+                      在线内容教学与在线实验的混合式教学平台，不限时间地点的综合性学习平台
+                    </div>
                   </div>
                 </Col>
                 <!-- <Col span="5">
@@ -251,4 +263,3 @@ export default {
   text-align: center;
 }
 </style>
-

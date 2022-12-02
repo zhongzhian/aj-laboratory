@@ -21,7 +21,7 @@ store.commit('SET_APP_MENUS', appRouter.children)
 //   store.dispatch('fetchAccount')
 // }
 
-const whiteList = ['login', 'register', 'error-403', 'error-404', 'error-500', 'home-index', 'home-search', 'home-course'];// 不重定向白名单
+const whiteList = ['login', 'register', 'error-403', 'error-404', 'error-500', 'home-index', 'home-search', 'home-course', 'home-teachers', 'home-network'];// 不重定向白名单
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()

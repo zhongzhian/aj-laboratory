@@ -1,21 +1,13 @@
 <template>
   <div class="notice-content">
     <div class="notice-content-left">
-      <!-- <div class="notice-content-left-box">
-        <p>亲爱的 {{userInfo.personName || userInfo.userName}}</p>
-        <p>欢迎您加入课程，赶快开启学习之旅吧～</p>
-        <Button @click="gotoPage" class="notice-content-left-box-btn" type="warning">开始学习</Button>
-      </div>-->
       <div class="layout-content-title">数据统计</div>
-      <div>无</div>
+      <div v-if="showChart">
+        <div id="main" style="width: 600px;height:400px;"></div>
+      </div>
+      <div v-if="!showChart">无</div>
     </div>
-    <div class="notice-content-right">
-      <!-- <div class="notice-content-right-box">
-        <p style="font-size:16px;line-height:30px;">即将到期</p>
-        <p style="font-size:12px;color:#70ac1f;">非线性系统的描述单元测试</p>
-        <p style="font-size:8px ;">截止提交时间：2019年07月14日 00:00</p>
-      </div>-->
-    </div>
+    <div class="notice-content-right"></div>
   </div>
 </template>
 
@@ -38,33 +30,91 @@ export default {
   },
   mounted() {
     this.userInfo = this.$store.getters.user;
-    let courseId = this.$route.query.id;
-    if (courseId) {
-      this.courseId = courseId;
-      //   this.getTableDatas();
-      this.getCourse();
-    }
+    this.getTableDatas();
   },
   methods: {
-    getTableDatas() {
-      let params = {
-        searchParas: {
-          conditions: [
-            {
-              name: "courseId",
-              op: "eq",
-              type: "int",
-              value: this.courseId
+    initChart(_data) {
+      var myChart = echarts.init(document.getElementById("main"));
+
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+          text: "课程成绩统计",
+          // subtext: "纯属虚构",
+          left: "center"
+        },
+        tooltip: {
+          trigger: "item"
+        },
+        legend: {
+          orient: "vertical",
+          left: "left"
+        },
+        series: [
+          {
+            name: "课程成绩统计",
+            type: "pie",
+            radius: "50%",
+            data: _data,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)"
+              }
             }
-          ],
-          logic: "and"
-        }
+          }
+        ]
       };
-      this.axios.post(`${API.index.announcement_list}`, params).then(result => {
-        if (result.code === 20000) {
-          this.data1 = result.result.list;
-        }
-      });
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    },
+    getTableDatas() {
+      this.axios
+        .post(`${API.index.test_list}`, {
+          searchParas: {
+            conditions: [
+              {
+                name: "testType",
+                op: "eq",
+                type: "int",
+                value: 1
+                // },
+                // {
+                //   name: "status",
+                //   op: "eq",
+                //   type: "int",
+                //   value: 2
+              }
+            ],
+            logic: "and"
+          }
+        })
+        .then(result => {
+          if (result.code === 20000) {
+            let d90 = 0,
+              d80 = 0,
+              d70 = 0,
+              d60 = 0,
+              d50 = 0;
+            result.result.list.forEach(r => {
+              if (r.scored < 60) d50++;
+              else if (r.scored < 70) d60++;
+              else if (r.scored < 80) d70++;
+              else if (r.scored < 90) d80++;
+              else d90++;
+            });
+            let _data = [
+              { value: d90, name: "优（90）" },
+              { value: d80, name: "良（80）" },
+              { value: d70, name: "中（70）" },
+              { value: d60, name: "及格（60）" },
+              { value: d50, name: "不及格（60以下）" }
+            ];
+            this.initChart(_data);
+          }
+        });
     },
     gotoPage() {
       this.$router.push({
@@ -86,8 +136,7 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
 
 <style lang="less" scoped>
 .notice-content {

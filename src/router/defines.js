@@ -44,6 +44,20 @@ export const appRouter = {
           label: '话题',
           component: () => import('../views/course/subject.vue')
         },
+        {
+          path: 'teachers',
+          name: 'home-teachers',
+          icon: 'home',
+          label: '名师专栏',
+          component: () => import('../views/home/teachers.vue')
+        },
+        {
+          path: 'network',
+          name: 'home-network',
+          icon: 'home',
+          label: '网络相关要求',
+          component: () => import('../views/home/network.vue')
+        },
       ]
     },
     {
@@ -59,50 +73,64 @@ export const appRouter = {
           name: 'manage-index',
           icon: 'ios-bell',
           label: '课程首页',
-          redirect: '/manage/index/notice',
+          redirect: '/manage/index/course',
           component: () => import('../views/course/index.vue'),
           children: [
             {
-              path: 'notice',
-              name: 'manage-index-notice',
+              path: 'course',
+              name: 'manage-index-course',
               icon: 'ios-bell',
-              label: '课程公告',
-              component: () => import('../views/course/notice.vue')
-            },
-            {
-              path: 'standard',
-              name: 'manage-index-standard',
-              icon: 'ios-bell',
-              label: '评分标准',
-              component: () => import('../views/course/standard.vue')
+              label: '课程信息',
+              component: () => import('../views/course/student/index.vue')
             },
             {
               path: 'chapter',
               name: 'manage-index-chapter',
               icon: 'ios-bell',
               label: '课程学习',
-              component: () => import('../views/course/chapter.vue')
+              component: () => import('../views/course/student/chapter.vue')
             },
             {
               path: 'lab',
               name: 'manage-index-lab',
               icon: 'ios-bell',
               label: '在线实验',
-              component: () => import('../views/course/lab.vue')
+              component: () => import('../views/course/student/lab.vue')
             },
             {
               path: 'exam',
               name: 'manage-index-exam',
               icon: 'ios-bell',
               label: '实验报告',
-              component: () => import('../views/course/test.vue')
+              component: () => import('../views/course/student/test.vue')
+            },
+            {
+              path: 'statistics',
+              name: 'manage-index-statistics',
+              icon: 'ios-bell',
+              label: '课程成绩',
+              component: () => import('../views/course/student/statistics.vue')
+            },
+            {
+              path: 'studentgrade',
+              name: 'manage-index-studentgrade',
+              icon: 'ios-bell',
+              label: '学生评分',
+              component: () => import('../views/course/student/studentgrade.vue')
+            },
+            {
+              path: 'question',
+              name: 'manage-index-question',
+              icon: 'ios-bell',
+              label: '问卷调查',
+              component: () => import('../views/course/student/question.vue')
             },
             {
               path: 'discuss',
               name: 'manage-index-discuss',
               icon: 'ios-bell',
-              label: '讨论区',
-              component: () => import('../views/course/discuss.vue')
+              label: '话题讨论',
+              component: () => import('../views/course/student/discuss.vue')
             },
           ]
         },
@@ -188,13 +216,6 @@ export const appRouter = {
               component: () => import('../views/centerstudent/device.vue')
             },
             {
-              path: 'test',
-              name: 'manage-center-test',
-              icon: 'ios-bell',
-              label: '作业与测验',
-              component: () => import('../views/centerstudent/test.vue')
-            },
-            {
               path: 'reply',
               name: 'manage-center-reply',
               icon: 'ios-bell',
@@ -233,13 +254,6 @@ export const appRouter = {
               component: () => import('../views/centerstudent/reply.vue')
             },
             {
-              path: 'statistics',
-              name: 'manage-config-statistics',
-              icon: 'ios-bell',
-              label: '数据统计',
-              component: () => import('../views/centerteacher/statistics.vue')
-            },
-            {
               path: 'info',
               name: 'manage-config-info',
               icon: 'ios-bell',
@@ -264,24 +278,31 @@ export const appRouter = {
           component: () => import('../views/centerteacher/index.vue'),
           children: [
             {
-              path: 'notice',
-              name: 'manage-course-notice',
-              icon: 'ios-bell',
-              label: '公告',
-              component: () => import('../views/centerteacher/notice.vue')
-            },
-            {
               path: 'index',
               name: 'manage-course-index',
               icon: 'ios-bell',
-              label: '章节',
-              component: () => import('../views/centerteacher/course.vue')
+              label: '课程设置',
+              component: () => import('../views/course/teacher/index.vue')
+            },
+            {
+              path: 'statistics',
+              name: 'manage-course-statistics',
+              icon: 'ios-bell',
+              label: '成绩统计',
+              component: () => import('../views/course/teacher/statistics.vue')
+            },
+            {
+              path: 'chapter',
+              name: 'manage-course-chapter',
+              icon: 'ios-bell',
+              label: '章节编辑',
+              component: () => import('../views/course/teacher/chapter.vue')
             },
             {
               path: 'device',
               name: 'manage-course-device',
               icon: 'ios-bell',
-              label: '设备',
+              label: '实验设备',
               component: () => import('../views/centerteacher/device.vue')
             },
             {
@@ -292,18 +313,53 @@ export const appRouter = {
               component: () => import('../views/centerteacher/simulation.vue')
             },
             {
+              path: 'testlib',
+              name: 'manage-course-testlib',
+              icon: 'ios-bell',
+              label: '题库配置',
+              component: () => import('../views/course/teacher/testlib.vue')
+            },
+            {
+              path: 'testtemplate',
+              name: 'manage-course-testtemplate',
+              icon: 'ios-bell',
+              label: '报告与问卷配置',
+              component: () => import('../views/course/teacher/testtemplate.vue')
+            },
+            {
               path: 'test',
               name: 'manage-course-test',
               icon: 'ios-bell',
-              label: '作业与测验',
-              component: () => import('../views/centerteacher/test.vue')
+              label: '实验报告评分',
+              component: () => import('../views/course/teacher/test.vue')
+            },
+            {
+              path: 'question',
+              name: 'manage-course-question',
+              icon: 'ios-bell',
+              label: '问卷调查结果',
+              component: () => import('../views/course/teacher/question.vue')
+            },
+            {
+              path: 'comment',
+              name: 'manage-course-comment',
+              icon: 'ios-bell',
+              label: '课程评价',
+              component: () => import('../views/course/teacher/comment.vue')
+            },
+            {
+              path: 'notice',
+              name: 'manage-course-notice',
+              icon: 'ios-bell',
+              label: '公告设置',
+              component: () => import('../views/course/teacher/notice.vue')
             },
             {
               path: 'discuss',
               name: 'manage-course-discuss',
               icon: 'ios-bell',
-              label: '讨论区',
-              component: () => import('../views/centerteacher/discuss.vue')
+              label: '话题讨论',
+              component: () => import('../views/course/teacher/discuss.vue')
             }
           ]
         }

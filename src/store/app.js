@@ -18,6 +18,7 @@ const app = {
   state: {
     token: Cookie.get('app_token'),
     isAdmin: Cookie.get('app_isAdmin'),
+    isGuest: Cookie.get('app_isGuest'),
     appMenus: Cookie.get('app_menus'),
     authMenus: Cookie.get('auth_menus'),
     user: Cookie.getJSON('app_user'),
@@ -35,6 +36,7 @@ const app = {
     REMOVE_MSG: (state, payload) => state.loginMsg = payload,
     SET_THEME: (state, payload) => state.themeSwitch = payload,
     SET_IS_ADMIN: (state, payload) => state.isAdmin = payload,
+    SET_IS_GUEST: (state, payload) => state.isGuest = payload,
   },
   actions: {
     fetchToken({ commit, dispatch }, payload) {
@@ -160,6 +162,18 @@ const app = {
     },
     removeMsg({ commit }, payload) {
       commit('REMOVE_MSG', payload)
+    },
+    updateGuest({ commit }, payload) {
+      Cookie.remove('app_token')
+      Cookie.remove('app_isAdmin')
+      Cookie.remove('auth_menus')
+      Cookie.remove('app_user')
+      commit('SET_TOKEN', '')
+      commit('SET_IS_ADMIN', '')
+      commit('SET_USER', '')
+      
+          commit('SET_IS_GUEST', payload)
+          Cookie.set('app_isGuest', payload)
     },
   }
 };

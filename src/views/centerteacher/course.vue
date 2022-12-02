@@ -1,14 +1,24 @@
 <template>
   <div>
     <div class="table-condition-btnbar">
-      <Button @click="addItem" size="small" class="condition-btn">新建章</Button>
+      <Button @click="addItem" size="small" class="condition-btn"
+        >新建章</Button
+      >
       <!-- <Button @click="editItem" size="small" class="condition-btn">编辑</Button> -->
       <!-- <Button @click="delItem" size="small" class="condition-btn">删除</Button> -->
     </div>
     <div class="manage-content-right-content">
-      <div :key="item" v-for="(item,index) in chapterDatas" class="course-chapter-item">
+      <div
+        :key="item"
+        v-for="(item, index) in chapterDatas"
+        class="course-chapter-item"
+      >
         <div class="course-chapter-item-header">
-          <Icon class="course-chapter-item-icon" @click.stop="addSection(item)" type="android-add" />
+          <Icon
+            class="course-chapter-item-icon"
+            @click.stop="addSection(item)"
+            type="android-add"
+          />
           <Icon
             class="course-chapter-item-icon"
             style="background:#2d8cf0;"
@@ -19,7 +29,7 @@
             v-if="courseInfo.status === 0"
             class="course-chapter-item-icon"
             style="background:#e83b46;"
-            @click.stop="delItem('chapter',item,index)"
+            @click.stop="delItem('chapter', item, index)"
             type="android-delete"
           />
           <!-- <Button icon="android-add" @click.stop="addSection(item)" size="small" ghost>新增节</Button>
@@ -30,12 +40,12 @@
             size="small"
             ghost
           >删除章</Button>-->
-          {{item.name+" - "+item.title}}
+          {{ item.name + " - " + item.title }}
         </div>
         <div class="course-chapter-item-content">
           <div
             :key="section"
-            v-for="(section,sindex) in item.sectionList"
+            v-for="(section, sindex) in item.sectionList"
             class="manage-collapse-p"
           >
             <!-- <Icon
@@ -46,14 +56,14 @@
             <Icon
               class="course-chapter-item-icon"
               style="background:#2d8cf0;"
-              @click.stop="editSection(section,item,sindex)"
+              @click.stop="editSection(section, item, sindex)"
               type="edit"
             />
             <Icon
               v-if="courseInfo.status === 0"
               class="course-chapter-item-icon"
               style="background:#e83b46;"
-              @click.stop="delItem('section',section,sindex)"
+              @click.stop="delItem('section', section, sindex)"
               type="android-delete"
             />
             <!-- <Button icon="android-add" @click="editSection(section,item)" size="small" ghost>编辑节</Button>
@@ -63,10 +73,20 @@
               size="small"
               ghost
             >删除节</Button>-->
-            {{section.name+" - "+section.title}}
+            {{ section.name + " - " + section.title }}
             <p>
-              <Button @click="configTest(section,item)" size="small" class="condition-btn">习题列表</Button>
-              <Button @click="configTemplate(section,item)" size="small" class="condition-btn">试卷模版</Button>
+              <Button
+                @click="configTest(section, item)"
+                size="small"
+                class="condition-btn"
+                >习题列表</Button
+              >
+              <Button
+                @click="configTemplate(section, item)"
+                size="small"
+                class="condition-btn"
+                >试卷模版</Button
+              >
             </p>
           </div>
         </div>
@@ -84,22 +104,34 @@
           <Row>
             <Col span="24">
               <FormItem label="名称" prop="name">
-                <Input v-model="newChapter.name" size="small" placeholder="请输入名称" />
+                <Input
+                  v-model="newChapter.name"
+                  size="small"
+                  placeholder="请输入名称"
+                />
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span="24">
               <FormItem label="标题" prop="title">
-                <Input v-model="newChapter.title" size="small" placeholder="请输入标题" />
+                <Input
+                  v-model="newChapter.title"
+                  size="small"
+                  placeholder="请输入标题"
+                />
               </FormItem>
             </Col>
           </Row>
         </Form>
       </div>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="showAddNew = false">取消</Button>
-        <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
+        <Button style="margin-right: 8px" @click="showAddNew = false"
+          >取消</Button
+        >
+        <Button type="primary" @click="handleSubmit('formValidate')"
+          >保存</Button
+        >
       </div>
     </Drawer>
     <Drawer
@@ -114,12 +146,66 @@
           <Row :gutter="32">
             <Col span="12">
               <FormItem label="名称" prop="name">
-                <Input v-model="newSection.name" size="small" placeholder="请输入名称" />
+                <Input
+                  v-model="newSection.name"
+                  size="small"
+                  placeholder="请输入名称"
+                />
               </FormItem>
             </Col>
             <Col span="12">
               <FormItem label="标题" prop="title">
-                <Input v-model="newSection.title" size="small" placeholder="请输入标题" />
+                <Input
+                  v-model="newSection.title"
+                  size="small"
+                  placeholder="请输入标题"
+                />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row :gutter="32">
+            <Col span="12">
+              <FormItem label="学习文档PDF">
+                <Input v-model="newSection.docPdf" size="small" readonly />
+                <Upload
+                  ref="upload"
+                  :action="uploadAction"
+                  :headers="headers"
+                  :data="uploadData"
+                  :show-upload-list="true"
+                  :on-success="handleSuccess2"
+                  :format="['pdf']"
+                  :max-size="1024 * 50"
+                  :on-format-error="handleFormatError2"
+                  :on-exceeded-size="handleMaxSize2"
+                  :before-upload="handleBeforeUpload"
+                >
+                  <Button icon="ios-cloud-upload-outline">上传PDF文件</Button>
+                </Upload>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem label="学习课件PDF">
+                <Input
+                  v-model="newSection.coursewarePdf"
+                  size="small"
+                  readonly
+                />
+                <Upload
+                  ref="upload"
+                  :action="uploadAction"
+                  :headers="headers"
+                  :data="uploadData"
+                  :show-upload-list="true"
+                  :on-success="handleSuccess2"
+                  :format="['pdf']"
+                  :max-size="1024 * 50"
+                  :on-format-error="handleFormatError2"
+                  :on-exceeded-size="handleMaxSize2"
+                  :before-upload="handleBeforeUpload"
+                >
+                  <Button icon="ios-cloud-upload-outline">上传PDF文件</Button>
+                </Upload>
               </FormItem>
             </Col>
           </Row>
@@ -135,7 +221,7 @@
                   :show-upload-list="true"
                   :on-success="handleSuccess"
                   :format="['mp4']"
-                  :max-size="1024*500"
+                  :max-size="1024 * 500"
                   :on-format-error="handleFormatError"
                   :on-exceeded-size="handleMaxSize"
                   :before-upload="handleBeforeUpload"
@@ -144,26 +230,7 @@
                 </Upload>
               </FormItem>
             </Col>
-            <Col span="12">
-              <FormItem label="PDF文件">
-                <Input v-model="newSection.pdf" size="small" readonly />
-                <Upload
-                  ref="upload"
-                  :action="uploadAction"
-                  :headers="headers"
-                  :data="uploadData"
-                  :show-upload-list="true"
-                  :on-success="handleSuccess2"
-                  :format="['pdf']"
-                  :max-size="1024*50"
-                  :on-format-error="handleFormatError2"
-                  :on-exceeded-size="handleMaxSize2"
-                  :before-upload="handleBeforeUpload"
-                >
-                  <Button icon="ios-cloud-upload-outline">上传PDF文件</Button>
-                </Upload>
-              </FormItem>
-            </Col>
+            <Col span="12"> </Col>
           </Row>
           <FormItem label="内容" label-position="top">
             <!-- <Input v-show="false" type="textarea" v-model="newSection.content" :rows="4" /> -->
@@ -172,8 +239,12 @@
         </Form>
       </div>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="showAddSection = false">取消</Button>
-        <Button type="primary" @click="handleSubmit('sectionValidate')">保存</Button>
+        <Button style="margin-right: 8px" @click="showAddSection = false"
+          >取消</Button
+        >
+        <Button type="primary" @click="handleSubmit('sectionValidate')"
+          >保存</Button
+        >
       </div>
     </Drawer>
 
@@ -186,9 +257,15 @@
     >
       <div class="demo-drawer-content">
         <div class="table-condition-btnbar">
-          <Button @click="addChannel" size="small" class="condition-btn">添加</Button>
-          <Button @click="delChannel" size="small" class="condition-btn">删除</Button>
-          <Button @click="getChannelDatas" size="small" class="condition-btn">刷新</Button>
+          <Button @click="addChannel" size="small" class="condition-btn"
+            >添加</Button
+          >
+          <Button @click="delChannel" size="small" class="condition-btn"
+            >删除</Button
+          >
+          <Button @click="getChannelDatas" size="small" class="condition-btn"
+            >刷新</Button
+          >
         </div>
         <Table
           size="small"
@@ -199,7 +276,9 @@
         ></Table>
       </div>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="showChannel = false">取消</Button>
+        <Button style="margin-right: 8px" @click="showChannel = false"
+          >取消</Button
+        >
         <Button type="primary" @click="showChannel = false">确定</Button>
       </div>
     </Drawer>
@@ -214,7 +293,9 @@
       <div class="demo-drawer-content">
         <Form ref="channelValidate" :model="channelObj" :rules="ruleValidate">
           <FormItem
-            v-if="(channelObj.exercisesType === 5) || (channelObj.exercisesType === 6)"
+            v-if="
+              channelObj.exercisesType === 5 || channelObj.exercisesType === 6
+            "
             label="内容"
             prop="content"
             label-position="top"
@@ -223,11 +304,18 @@
               <Radio :disabled="channelObj.id" label="文字"></Radio>
               <Radio :disabled="channelObj.id" label="图片"></Radio>
             </RadioGroup>
-            <template v-if="optionType==='文字'">
-              <Input type="textarea" v-model="channelObj.content" :rows="4" placeholder="请输入内容" />
+            <template v-if="optionType === '文字'">
+              <Input
+                type="textarea"
+                v-model="channelObj.content"
+                :rows="4"
+                placeholder="请输入内容"
+              />
             </template>
-            <template v-if="optionType==='图片'">
-              <div>支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议不小于300*150</div>
+            <template v-if="optionType === '图片'">
+              <div>
+                支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议不小于300*150
+              </div>
               <Upload
                 ref="upload"
                 :action="uploadAction"
@@ -235,13 +323,17 @@
                 :data="uploadData"
                 :show-upload-list="false"
                 :on-success="handleSuccessX"
-                :format="['jpg','jpeg','png']"
+                :format="['jpg', 'jpeg', 'png']"
                 :max-size="2048"
                 :on-format-error="handleFormatErrorABCD"
                 :on-exceeded-size="handleMaxSizeABCD"
                 :before-upload="handleBeforeUpload"
               >
-                <img v-if="channelObj.content" :src="channelObj.content" class="test-content-img" />
+                <img
+                  v-if="channelObj.content"
+                  :src="channelObj.content"
+                  class="test-content-img"
+                />
                 <img
                   v-if="!channelObj.content"
                   src="http://temp.im/300x150"
@@ -251,12 +343,22 @@
             </template>
           </FormItem>
           <FormItem
-            v-else-if="(channelObj.exercisesType === 1) || (channelObj.exercisesType === 2) || (channelObj.exercisesType === 3) || (channelObj.exercisesType === 4)"
+            v-else-if="
+              channelObj.exercisesType === 1 ||
+                channelObj.exercisesType === 2 ||
+                channelObj.exercisesType === 3 ||
+                channelObj.exercisesType === 4
+            "
             label="内容"
             prop="content"
             label-position="top"
           >
-            <Input type="textarea" v-model="channelObj.content" :rows="4" placeholder="请输入内容" />
+            <Input
+              type="textarea"
+              v-model="channelObj.content"
+              :rows="4"
+              placeholder="请输入内容"
+            />
           </FormItem>
           <FormItem label="题目类型" prop="exercisesType">
             <Select
@@ -268,11 +370,14 @@
                 v-for="item in exercisesTypeDatas"
                 :value="item.value"
                 :key="item"
-              >{{ item.label }}</Option>
+                >{{ item.label }}</Option
+              >
             </Select>
           </FormItem>
           <FormItem
-            v-if="(channelObj.exercisesType === 1) || (channelObj.exercisesType === 2)"
+            v-if="
+              channelObj.exercisesType === 1 || channelObj.exercisesType === 2
+            "
             label="选项"
             prop="options"
           >
@@ -280,25 +385,41 @@
               <Radio :disabled="channelObj.id" label="文字"></Radio>
               <Radio :disabled="channelObj.id" label="图片"></Radio>
             </RadioGroup>
-            <template v-if="optionType==='文字'">
+            <template v-if="optionType === '文字'">
               <div>
                 A:
-                <Input v-model="optionArr[0].A" size="small" placeholder="请输入A选项" />
+                <Input
+                  v-model="optionArr[0].A"
+                  size="small"
+                  placeholder="请输入A选项"
+                />
               </div>
               <div>
                 B:
-                <Input v-model="optionArr[1].B" size="small" placeholder="请输入B选项" />
+                <Input
+                  v-model="optionArr[1].B"
+                  size="small"
+                  placeholder="请输入B选项"
+                />
               </div>
               <div>
                 C:
-                <Input v-model="optionArr[2].C" size="small" placeholder="请输入C选项" />
+                <Input
+                  v-model="optionArr[2].C"
+                  size="small"
+                  placeholder="请输入C选项"
+                />
               </div>
               <div>
                 D:
-                <Input v-model="optionArr[3].D" size="small" placeholder="请输入D选项" />
+                <Input
+                  v-model="optionArr[3].D"
+                  size="small"
+                  placeholder="请输入D选项"
+                />
               </div>
             </template>
-            <template v-if="optionType==='图片'">
+            <template v-if="optionType === '图片'">
               <div>
                 A:
                 <Upload
@@ -308,13 +429,17 @@
                   :data="uploadData"
                   :show-upload-list="false"
                   :on-success="handleSuccessA"
-                  :format="['jpg','jpeg','png']"
+                  :format="['jpg', 'jpeg', 'png']"
                   :max-size="1024"
                   :on-format-error="handleFormatErrorABCD"
                   :on-exceeded-size="handleMaxSizeABCD"
                   :before-upload="handleBeforeUpload"
                 >
-                  <img v-if="optionArr[0].A" :src="optionArr[0].A" class="form-user-img" />
+                  <img
+                    v-if="optionArr[0].A"
+                    :src="optionArr[0].A"
+                    class="form-user-img"
+                  />
                   <img
                     v-if="!optionArr[0].A"
                     src="static/images/noperson.png"
@@ -331,13 +456,17 @@
                   :data="uploadData"
                   :show-upload-list="false"
                   :on-success="handleSuccessB"
-                  :format="['jpg','jpeg','png']"
+                  :format="['jpg', 'jpeg', 'png']"
                   :max-size="1024"
                   :on-format-error="handleFormatErrorABCD"
                   :on-exceeded-size="handleMaxSizeABCD"
                   :before-upload="handleBeforeUpload"
                 >
-                  <img v-if="optionArr[1].B" :src="optionArr[1].B" class="form-user-img" />
+                  <img
+                    v-if="optionArr[1].B"
+                    :src="optionArr[1].B"
+                    class="form-user-img"
+                  />
                   <img
                     v-if="!optionArr[1].B"
                     src="static/images/noperson.png"
@@ -354,13 +483,17 @@
                   :data="uploadData"
                   :show-upload-list="false"
                   :on-success="handleSuccessC"
-                  :format="['jpg','jpeg','png']"
+                  :format="['jpg', 'jpeg', 'png']"
                   :max-size="1024"
                   :on-format-error="handleFormatErrorABCD"
                   :on-exceeded-size="handleMaxSizeABCD"
                   :before-upload="handleBeforeUpload"
                 >
-                  <img v-if="optionArr[2].C" :src="optionArr[2].C" class="form-user-img" />
+                  <img
+                    v-if="optionArr[2].C"
+                    :src="optionArr[2].C"
+                    class="form-user-img"
+                  />
                   <img
                     v-if="!optionArr[2].C"
                     src="static/images/noperson.png"
@@ -377,13 +510,17 @@
                   :data="uploadData"
                   :show-upload-list="false"
                   :on-success="handleSuccessD"
-                  :format="['jpg','jpeg','png']"
+                  :format="['jpg', 'jpeg', 'png']"
                   :max-size="1024"
                   :on-format-error="handleFormatErrorABCD"
                   :on-exceeded-size="handleMaxSizeABCD"
                   :before-upload="handleBeforeUpload"
                 >
-                  <img v-if="optionArr[3].D" :src="optionArr[3].D" class="form-user-img" />
+                  <img
+                    v-if="optionArr[3].D"
+                    :src="optionArr[3].D"
+                    class="form-user-img"
+                  />
                   <img
                     v-if="!optionArr[3].D"
                     src="static/images/noperson.png"
@@ -394,7 +531,11 @@
             </template>
             <!-- <Input v-model="channelObj.options" size="small" placeholder="请输入选项" /> -->
           </FormItem>
-          <FormItem v-if="channelObj.exercisesType === 1" label="正确答案" prop="answer">
+          <FormItem
+            v-if="channelObj.exercisesType === 1"
+            label="正确答案"
+            prop="answer"
+          >
             <RadioGroup v-model="channelObj.answer">
               <Radio label="A"></Radio>
               <Radio label="B"></Radio>
@@ -402,29 +543,55 @@
               <Radio label="D"></Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem v-else-if="channelObj.exercisesType === 2" label="正确答案" prop="mulAnswer">
-            <CheckboxGroup v-if="channelObj.exercisesType === 2" v-model="channelObj.mulAnswer">
+          <FormItem
+            v-else-if="channelObj.exercisesType === 2"
+            label="正确答案"
+            prop="mulAnswer"
+          >
+            <CheckboxGroup
+              v-if="channelObj.exercisesType === 2"
+              v-model="channelObj.mulAnswer"
+            >
               <Checkbox label="A"></Checkbox>
               <Checkbox label="B"></Checkbox>
               <Checkbox label="C"></Checkbox>
               <Checkbox label="D"></Checkbox>
             </CheckboxGroup>
           </FormItem>
-          <FormItem v-else-if="channelObj.exercisesType === 4" label="正确答案" prop="answer">
+          <FormItem
+            v-else-if="channelObj.exercisesType === 4"
+            label="正确答案"
+            prop="answer"
+          >
             <RadioGroup v-model="channelObj.answer">
               <Radio label="正确"></Radio>
               <Radio label="错误"></Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem v-else-if="channelObj.exercisesType === 3" label="正确答案" prop="answer">
-            <Input v-model="channelObj.answer" size="small" placeholder="请输入正确答案" />
+          <FormItem
+            v-else-if="channelObj.exercisesType === 3"
+            label="正确答案"
+            prop="answer"
+          >
+            <Input
+              v-model="channelObj.answer"
+              size="small"
+              placeholder="请输入正确答案"
+            />
           </FormItem>
           <FormItem v-else label="正确答案" prop="answer">
-            <template v-if="optionType==='文字'">
-              <Input type="textarea" v-model="channelObj.answer" :rows="4" placeholder="请输入正确答案" />
+            <template v-if="optionType === '文字'">
+              <Input
+                type="textarea"
+                v-model="channelObj.answer"
+                :rows="4"
+                placeholder="请输入正确答案"
+              />
             </template>
-            <template v-if="optionType==='图片'">
-              <div>支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议至少300*150</div>
+            <template v-if="optionType === '图片'">
+              <div>
+                支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议至少300*150
+              </div>
               <Upload
                 ref="upload"
                 :action="uploadAction"
@@ -432,13 +599,17 @@
                 :data="uploadData"
                 :show-upload-list="false"
                 :on-success="handleSuccessXA"
-                :format="['jpg','jpeg','png']"
+                :format="['jpg', 'jpeg', 'png']"
                 :max-size="2048"
                 :on-format-error="handleFormatErrorABCD"
                 :on-exceeded-size="handleMaxSizeABCD"
                 :before-upload="handleBeforeUpload"
               >
-                <img v-if="channelObj.answer" :src="channelObj.answer" class="test-content-img" />
+                <img
+                  v-if="channelObj.answer"
+                  :src="channelObj.answer"
+                  class="test-content-img"
+                />
                 <img
                   v-if="!channelObj.answer"
                   src="http://temp.im/300x150"
@@ -450,8 +621,12 @@
         </Form>
       </div>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="showEditChannel = false">取消</Button>
-        <Button type="primary" @click="handleSubmit('channelValidate')">保存</Button>
+        <Button style="margin-right: 8px" @click="showEditChannel = false"
+          >取消</Button
+        >
+        <Button type="primary" @click="handleSubmit('channelValidate')"
+          >保存</Button
+        >
       </div>
     </Drawer>
 
@@ -467,21 +642,37 @@
           <Row :gutter="32">
             <Col span="12">
               <FormItem label="名称" prop="name">
-                <Input v-model="templateObj.name" size="small" placeholder="请输入名称" />
+                <Input
+                  v-model="templateObj.name"
+                  size="small"
+                  placeholder="请输入名称"
+                />
               </FormItem>
             </Col>
             <Col span="12">
               <FormItem label="总分" prop="score">
-                <Input v-model="templateObj.score" disabled size="small" placeholder="请输入总分" />
+                <Input
+                  v-model="templateObj.score"
+                  disabled
+                  size="small"
+                  placeholder="请输入总分"
+                />
               </FormItem>
             </Col>
           </Row>
           <FormItem label="说明" prop="description" label-position="top">
-            <Input type="textarea" v-model="templateObj.description" :rows="4" placeholder="请输入说明" />
+            <Input
+              type="textarea"
+              v-model="templateObj.description"
+              :rows="4"
+              placeholder="请输入说明"
+            />
           </FormItem>
           <FormItem label="大题" label-position="top">
             <div>
-              <Button @click="addBigTest" size="small" class="condition-btn">添加</Button>
+              <Button @click="addBigTest" size="small" class="condition-btn"
+                >添加</Button
+              >
               <!-- <Button @click="delBigTest" size="small" class="condition-btn">删除</Button> -->
             </div>
             <Table
@@ -494,8 +685,12 @@
         </Form>
       </div>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="showTemplate = false">取消</Button>
-        <Button type="primary" @click="handleSubmit('templateValidate')">保存</Button>
+        <Button style="margin-right: 8px" @click="showTemplate = false"
+          >取消</Button
+        >
+        <Button type="primary" @click="handleSubmit('templateValidate')"
+          >保存</Button
+        >
       </div>
     </Drawer>
 
@@ -511,19 +706,32 @@
           <Row :gutter="32">
             <Col span="12">
               <FormItem label="名称" prop="name">
-                <Input v-model="bigTestObj.name" size="small" placeholder="请输入名称" />
+                <Input
+                  v-model="bigTestObj.name"
+                  size="small"
+                  placeholder="请输入名称"
+                />
               </FormItem>
             </Col>
             <Col span="12">
               <FormItem label="序号" prop="serialNumber">
-                <Input v-model="bigTestObj.serialNumber" size="small" placeholder="请输入序号" />
+                <Input
+                  v-model="bigTestObj.serialNumber"
+                  size="small"
+                  placeholder="请输入序号"
+                />
               </FormItem>
             </Col>
           </Row>
           <Row :gutter="32">
             <Col span="12">
               <FormItem label="总分" prop="score">
-                <Input v-model="bigTestObj.score" disabled size="small" placeholder="请输入总分" />
+                <Input
+                  v-model="bigTestObj.score"
+                  disabled
+                  size="small"
+                  placeholder="请输入总分"
+                />
               </FormItem>
             </Col>
             <Col span="12">
@@ -537,27 +745,45 @@
                     v-for="item in exercisesTypeDatas"
                     :value="item.value"
                     :key="item"
-                  >{{ item.label }}</Option>
+                    >{{ item.label }}</Option
+                  >
                 </Select>
               </FormItem>
             </Col>
           </Row>
           <FormItem label="说明" prop="description" label-position="top">
-            <Input type="textarea" v-model="bigTestObj.description" :rows="4" placeholder="请输入说明" />
+            <Input
+              type="textarea"
+              v-model="bigTestObj.description"
+              :rows="4"
+              placeholder="请输入说明"
+            />
           </FormItem>
           <FormItem label="小题" label-position="top">
             <div style="height:32px;"></div>
-            <Table size="small" :columns="columns5" :data="bigTestObj.testExerciseTemplateList"></Table>
+            <Table
+              size="small"
+              :columns="columns5"
+              :data="bigTestObj.testExerciseTemplateList"
+            ></Table>
           </FormItem>
           <FormItem label="题库" label-position="top">
             <div style="height:32px;"></div>
-            <Table size="small" :columns="columns4" :data="channelDatas"></Table>
+            <Table
+              size="small"
+              :columns="columns4"
+              :data="channelDatas"
+            ></Table>
           </FormItem>
         </Form>
       </div>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="showBigTest = false">取消</Button>
-        <Button type="primary" @click="handleSubmit('bigtestValidate')">保存</Button>
+        <Button style="margin-right: 8px" @click="showBigTest = false"
+          >取消</Button
+        >
+        <Button type="primary" @click="handleSubmit('bigtestValidate')"
+          >保存</Button
+        >
       </div>
     </Drawer>
 
@@ -570,7 +796,14 @@
         <p>确定删除所选章节吗？</p>
       </div>
       <div slot="footer">
-        <Button type="error" size="large" long :loading="modal_loading" @click="delSubmit">删除</Button>
+        <Button
+          type="error"
+          size="large"
+          long
+          :loading="modal_loading"
+          @click="delSubmit"
+          >删除</Button
+        >
       </div>
     </Modal>
     <Modal v-model="showChannelDelete" width="360">
@@ -582,7 +815,14 @@
         <p>确定删除所选习题吗？</p>
       </div>
       <div slot="footer">
-        <Button type="error" size="large" long :loading="modal_loading" @click="delChannelSubmit">删除</Button>
+        <Button
+          type="error"
+          size="large"
+          long
+          :loading="modal_loading"
+          @click="delChannelSubmit"
+          >删除</Button
+        >
       </div>
     </Modal>
   </div>
@@ -599,7 +839,8 @@ export default {
       headers: null,
       uploadData: {
         file: null,
-        name: ""
+        name: "",
+        type: "normal"
       },
 
       optionType: "文字",
@@ -1047,7 +1288,8 @@ export default {
 
       editor.customConfig.uploadFileName = "file";
       editor.customConfig.uploadImgParams = {
-        name: "aaa.jpg"
+        name: "aaa.jpg",
+        type: "normal"
       };
       editor.customConfig.uploadImgHooks = {
         before: function(xhr, editor, files) {
@@ -1870,8 +2112,7 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
 
 <style lang="less" scoped>
 .manage-content-right-title {

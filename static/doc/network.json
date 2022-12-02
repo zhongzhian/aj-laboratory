@@ -1,0 +1,45 @@
+{
+    "server_host":"写实际本地服务器网址",
+    "use_brower":"推荐使用Chrome浏览器",
+    "wangluotiaojian_yaoqiu":{
+        "gongyouyun":"公有云：*M-*M带宽",
+        "siyouyun":"私有云：*M-*M带宽"
+    },
+    "neirong_zhichi":"仿真内容",
+    "caozuoxitong_yaoqiu":{
+        "xitong_banben":"Windows7及以上（把位加上）",
+        "qita_xitong_banben":"无",
+        "zhichi_yidongduan":"否"
+    },
+    "yingjian_yaoqiu":{
+        "jisuanji":{
+            "zuidi_yaoqiu":{
+                "xitong_banben":"Windows7及以上（把位加上）",
+                "liulanqi":"IE6.0以上",
+                "chuliqi":"Intel 2GHz及以上",
+                "neicun":"2GB 及以上",
+                "yingpankongjian":"40G",
+                "xianka":"分辨率1024x768像素网络：1000Mbps以太网卡",
+                "wangluo":"1000Mbps以太网卡",
+                "xianshiqi":"14英寸以上",
+                "wangsu":"1M以上"
+            },
+            "tuijian_yaoqiu":{
+                "xitong_banben":"Windows7及以上（把位加上）",
+                "liulanqi":"IE8.0",
+                "chuliqi":"Intel 2.2GHz",
+                "neicun":"2GB",
+                "yingpankongjian":"80G",
+                "xianka":"分辨率1280x1024",
+                "wangluo":"1000Mbps以太网卡",
+                "xianshiqi":"14英寸以上",
+                "wangsu":"2M"
+            }
+        },
+        "qita":"无"
+    },
+    "waizhi_yaoqiu":{
+        "jisuanji":"无",
+        "qitazhongduan":"无"
+    }
+}

@@ -2,8 +2,12 @@
  * Created by liekkas on 2017/6/11.
  */
 import axios from "axios";
-import { REST_API } from "../config";
-import { Message } from "iview";
+import {
+  REST_API
+} from "../config";
+import {
+  Message
+} from "iview";
 import store from "../store";
 import router from "../router";
 
@@ -59,11 +63,19 @@ function check(response) {
   if (response.status >= 200 && response.status < 300) {
     if (response.data && response.data.hasOwnProperty("hyz_code")) {
       //简单判断结果是否来自约定的后台服务
-      const { hyz_code, hyz_message, hyz_result } = response.data;
+      const {
+        hyz_code,
+        hyz_message,
+        hyz_result
+      } = response.data;
       if (hyz_code === 20000) {
         if (response.config.showMsg) {
           Message.success(hyz_message);
         }
+        return hyz_result;
+      } else if (hyz_code === 20001) {
+        // Message.error(hyz_message);
+        console.log("httprequest:" + response.config.url + "::20001::" + hyz_message)
         return hyz_result;
       } else if (hyz_code === 50200) {
         Message.error(hyz_message);
@@ -75,7 +87,14 @@ function check(response) {
         throw new Error(hyz_message);
       }
     } else {
-      const { code, message, result } = response.data;
+      const {
+        code,
+        message,
+        result
+      } = response.data;
+      if (!code) {
+        return response.data;
+      }
       if (code === 50401) {
         router.push("/login");
       } else if (code === 20000) {
@@ -83,6 +102,9 @@ function check(response) {
         //   Message.success(message)
         // }
         // return hyz_result;
+      } else if (code === 20001) {
+        // Message.error(hyz_message);
+        console.log("httprequest:" + response.config.url + "::20001::" + message)
       } else if (code === 50200) {
         Message.error(message);
       } else {

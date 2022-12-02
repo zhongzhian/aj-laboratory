@@ -3,10 +3,20 @@
     <div class="layout-row">
       <div class="layout-content2">
         <div>
-          <Form ref="formValidate" :model="userInfop" :rules="ruleValidate" :label-width="200">
+          <Form
+            ref="formValidate"
+            :model="userInfop"
+            :rules="ruleValidate"
+            :label-width="200"
+          >
             <div class="layout-content-title">账号信息</div>
             <FormItem label="用户名" label-position="top">
-              <Input v-model="userInfo.userName" disabled size="small" style="width:400px;" />
+              <Input
+                v-model="userInfo.userName"
+                disabled
+                size="small"
+                style="width:400px;"
+              />
             </FormItem>
             <!-- <FormItem label="密码" prop="ppassword" label-position="top">
               <Input v-model="userInfop.ppassword" size="small" style="width:400px;" />
@@ -19,13 +29,17 @@
                 :data="uploadData"
                 :show-upload-list="false"
                 :on-success="handleSuccess"
-                :format="['jpg','jpeg','png']"
+                :format="['jpg', 'jpeg', 'png']"
                 :max-size="2048"
                 :on-format-error="handleFormatError"
                 :on-exceeded-size="handleMaxSize"
                 :before-upload="handleBeforeUpload"
               >
-                <img v-if="userInfo.userImage" :src="userInfo.userImage" class="form-user-img" />
+                <img
+                  v-if="userInfo.userImage"
+                  :src="userInfo.userImage"
+                  class="form-user-img"
+                />
                 <img
                   v-if="!userInfo.userImage"
                   src="static/images/noperson.png"
@@ -44,38 +58,110 @@
               />
             </FormItem>
             <FormItem label="性别" prop="sex">
-              <Select v-model="userInfo.sex" placeholder="请选择性别" style="width:400px;">
+              <Select
+                v-model="userInfo.sex"
+                placeholder="请选择性别"
+                style="width:400px;"
+              >
                 <Option value="男">男</Option>
                 <Option value="女">女</Option>
               </Select>
             </FormItem>
             <FormItem label="电话" prop="telphone">
-              <Input v-model="userInfo.telphone" placeholder="请输入电话" style="width:400px;"></Input>
+              <Input
+                v-model="userInfo.telphone"
+                placeholder="请输入电话"
+                style="width:400px;"
+              ></Input>
             </FormItem>
             <FormItem label="民族" prop="minzu">
-              <Input v-model="userInfo.minzu" placeholder="请输入民族" style="width:400px;"></Input>
+              <Input
+                v-model="userInfo.minzu"
+                placeholder="请输入民族"
+                style="width:400px;"
+              ></Input>
             </FormItem>
-            <FormItem label="籍贯" prop="nativePlace">
-              <Input v-model="userInfo.nativePlace" placeholder="请输入籍贯" style="width:400px;"></Input>
+            <FormItem label="个人简介" prop="description">
+              <Input
+                v-model="userInfo.nativePlace"
+                placeholder="请输入个人简介"
+                style="width:400px;"
+              ></Input>
             </FormItem>
-            <div class="layout-content-title">学籍信息</div>
-            <FormItem v-if="userInfo.userType === '2'" label="职称" prop="title">
-              <Input v-model="userInfo.title" placeholder="请输入学号" style="width:400px;"></Input>
+            <div v-if="userInfo.userType === '2'" class="layout-content-title">
+              职务信息
+            </div>
+            <div v-if="userInfo.userType === '3'" class="layout-content-title">
+              学籍信息
+            </div>
+            <FormItem
+              v-if="userInfo.userType === '2'"
+              label="职称"
+              prop="title"
+            >
+              <Input
+                v-model="userInfo.title"
+                placeholder="请输入职称"
+                style="width:400px;"
+              ></Input>
             </FormItem>
-            <FormItem v-if="userInfo.userType === '3'" label="学号" prop="userKey">
-              <Input v-model="userInfo.userKey" placeholder="请输入学号" style="width:400px;"></Input>
+            <FormItem
+              v-if="userInfo.userType === '3'"
+              label="学号"
+              prop="userKey"
+            >
+              <Input
+                v-model="userInfo.userKey"
+                placeholder="请输入学号"
+                style="width:400px;"
+              ></Input>
             </FormItem>
             <FormItem label="学院" prop="college">
-              <Input v-model="userInfo.college" placeholder="请输入学院" style="width:400px;"></Input>
+              <Input
+                v-model="userInfo.college"
+                placeholder="请输入学院"
+                style="width:400px;"
+              ></Input>
             </FormItem>
-            <FormItem label="专业" prop="major">
-              <Input v-model="userInfo.major" placeholder="请输入专业" style="width:400px;"></Input>
+            <FormItem
+              v-if="userInfo.userType === '3'"
+              label="专业"
+              prop="major"
+            >
+              <Input
+                v-model="userInfo.major"
+                placeholder="请输入专业"
+                style="width:400px;"
+              ></Input>
             </FormItem>
-            <FormItem v-if="userInfo.userType === '3'" label="年级" prop="grade">
-              <Input v-model="userInfo.grade" placeholder="请输入年级" style="width:400px;"></Input>
+            <FormItem
+              v-if="userInfo.userType === '2'"
+              label="系/所"
+              prop="major"
+            >
+              <Input
+                v-model="userInfo.major"
+                placeholder="请输入系/所"
+                style="width:400px;"
+              ></Input>
+            </FormItem>
+            <FormItem
+              v-if="userInfo.userType === '3'"
+              label="年级"
+              prop="grade"
+            >
+              <Input
+                v-model="userInfo.grade"
+                placeholder="请输入年级"
+                style="width:400px;"
+              ></Input>
             </FormItem>
             <FormItem v-if="userInfo.userType === '3'" label="班" prop="class1">
-              <Input v-model="userInfo.class1" placeholder="请输入班" style="width:400px;"></Input>
+              <Input
+                v-model="userInfo.class1"
+                placeholder="请输入班"
+                style="width:400px;"
+              ></Input>
             </FormItem>
             <FormItem>
               <Button type="primary" @click="infoSubmit">保存</Button>
@@ -99,7 +185,11 @@
                 style="width:400px;"
               />
             </FormItem>
-            <FormItem label="确认新密码" prop="newpassword2" label-position="top">
+            <FormItem
+              label="确认新密码"
+              prop="newpassword2"
+              label-position="top"
+            >
               <Input
                 v-model="userInfop.newpassword2"
                 type="password"
@@ -108,7 +198,9 @@
               />
             </FormItem>
             <FormItem>
-              <Button type="primary" @click="handleSubmit('formValidate')">确定</Button>
+              <Button type="primary" @click="handleSubmit('formValidate')"
+                >确定</Button
+              >
             </FormItem>
           </Form>
         </div>
@@ -131,7 +223,8 @@ export default {
       headers: null,
       uploadData: {
         file: null,
-        name: ""
+        name: "",
+        type: "normal"
       },
       showPhotos: false,
 
@@ -273,8 +366,7 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
 
 <style lang="less" scoped>
 .demo-upload-div {

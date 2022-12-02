@@ -144,7 +144,7 @@
                     v-for="(channel, ckey) in item.signalChannelList"
                     :key="ckey"
                     type="info"
-                    @click="doSent(item, channel)"
+                    @click="wsInit(item, channel)"
                     class="lab-tab3-item-toolbar-btn"
                     ghost
                   >
@@ -166,11 +166,13 @@
               />
             </div>
             <div style="width:100%;height:100%;">
+              <!-- v-show="wstype === 'AI'" -->
               <div
                 v-show="wstype === 'AI'"
                 id="myChart"
                 style="width:1200px;height:400px;"
               ></div>
+              <!-- v-show="wstype === 'DI'" -->
               <div v-show="wstype === 'DI'" class="di-div">
                 <div
                   v-for="(item, key) in diData"
@@ -182,12 +184,14 @@
                   }"
                 ></div>
               </div>
+              <!-- v-show="wstype != 'AI' && wstype != 'DI'" -->
               <div v-show="wstype != 'AI' && wstype != 'DI'" class="spi-div">
                 <div
                   v-for="(item, key) in textData"
                   :key="key"
                   class="spi-div-item"
                 >
+                  <div class="spi-div-item-preword">{{ preword }}</div>
                   {{ item }}
                 </div>
               </div>
@@ -325,12 +329,9 @@ export default {
       wsObj: null,
       wstype: "",
       myChart: null,
-      diData: ["0", "0", "1", "0", "0", "0", "0", "0"],
-      textData: [
-        "asdfdsafdasf",
-        "this.userInfo = this.$store.getters.user;",
-        "this.getSimulationDatas();"
-      ]
+      diData: ["0", "0", "0", "0", "0", "0", "0", "0"],
+      preword: "->",
+      textData: []
     };
   },
   mounted() {
@@ -342,6 +343,10 @@ export default {
       // this.getCourse();
       this.getSimulationDatas();
     }
+  },
+  beforeDestroy() {
+    this.ws.close();
+    this.ws = null;
   },
   methods: {
     setChart(obj) {
@@ -413,8 +418,7 @@ export default {
       this.setChart();
     },
     doClose() {
-      this.wsObj = null;
-      this.wstype = "";
+      this.resetWs();
       this.ws.close();
     },
     orderDevice() {
@@ -435,16 +439,16 @@ export default {
         this.chooseOrderId = item.id;
       }
     },
-    wsInit() {
+    wsInit(device, channel) {
+      this.resetWs();
       this.ws = wsjs.getWebSocket(`${API.wsPath}`);
-      console.log("ws");
-      console.log(this.ws);
       let _this = this;
 
       // this.ws.send(JSON.stringify(obj));
 
       this.ws.onopen = function(event) {
         console.log("webSocket链接已打开...");
+        _this.doSent(device, channel);
       };
 
       //websocket连接错误回调函数
@@ -471,6 +475,17 @@ export default {
           }
         }
       };
+    },
+    resetWs() {
+      this.wsObj = null;
+      this.wstype = "";
+      this.myChart = null;
+      this.diData = ["0", "0", "0", "0", "0", "0", "0", "0"];
+      this.textData = [
+        "asdfdsafdasf",
+        "this.userInfo = this.$store.getters.user;this.userInfo = this.$store.getters.user;this.userInfo = this.$store.getters.user;this.userInfo = this.$store.getters.user;this.userInfo = this.$store.getters.user;",
+        "this.getSimulationDatas();"
+      ];
     },
     getTableDatas() {
       this.axios.get(`${API.index.deviceOrder_getmy}`).then(result => {
@@ -804,9 +819,17 @@ export default {
   padding: 20px;
   background: #242424;
   color: #70ac1f;
+  min-height: 300px;
+
   &-item {
     line-height: 22px;
     font-size: 14px;
+    position: relative;
+    padding-left: 20px;
+    &-preword {
+      position: absolute;
+      left: 0;
+    }
   }
 }
 </style>

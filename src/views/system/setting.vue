@@ -205,7 +205,8 @@ export default {
       headers: null,
       uploadData: {
         file: null,
-        name: ""
+        name: "",
+        type: "normal"
       },
       showPhotos: false,
       showBottomPhotos: false,
