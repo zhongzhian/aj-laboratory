@@ -3,7 +3,8 @@
     <div class="table-condition-btnbar">
       <Form>
         <classselect @classselectchange="classChange"></classselect>
-        <Input v-model="searchName" size="small" placeholder="姓名/学号/教师编号" style="width:200px;" />
+        <Input v-model="searchName" size="small" placeholder="学号/教师编号" style="width:150px;" />
+        <!-- <Input v-model="searchName2" size="small" placeholder="姓名" style="width:150px;" /> -->
         <Button style="margin-left:10px;" @click="getTableDatas" size="small" class="condition-btn">查询</Button>
 
         <!-- <Button @click="getTableDatas" size="small" class="condition-btn"
@@ -12,7 +13,7 @@
         <Button @click="addItem" size="small" class="condition-btn">添加</Button>
         <!-- <Button @click="editItem" size="small" class="condition-btn">编辑</Button> -->
         <Button @click="delItem" size="small" class="condition-btn">删除</Button>
-        <Button @click="getTableDatas" size="small" class="condition-btn">刷新</Button>
+        <!-- <Button @click="getTableDatas" size="small" class="condition-btn">刷新</Button> -->
         <Upload style="display:inline-block" :action="userUploadAction" :headers="headers" :data="uploadData"
           :on-success="handleUserSuccess" :accept="['xls', 'xlsx']" :show-upload-list="showUploadList" name="file">
           <Button class="condition-btn" size="small" icon="ios-cloud-upload-outline">批量导入学生</Button>
@@ -209,6 +210,7 @@
           class1: ""
         },
         searchName: "",
+        searchName2: "",
         pageData1: {
           total: 0,
           current: 1,
@@ -502,24 +504,63 @@
       getTableDatas() {
         let params = {
           page: this.pageData1.current - 1,
-          pageSize: this.pageData1.pageSize
+          pageSize: this.pageData1.pageSize,
+          searchParas: {
+            conditions: [],
+            "logic": "and"
+          }
         };
         if (this.searchName) {
-          params.searchParas = {
-            "conditions": [{
-              "name": "personName",
-              "op": "eq",
-              "type": "string",
-              "value": this.searchName
-            }, {
-              "name": "userKey",
-              "op": "eq",
-              "type": "string",
-              "value": this.searchName
-            }],
-            "logic": "or"
-          }
+          // params.searchParas = {
+          //   "conditions": [{
+          //     "name": "personName",
+          //     "op": "eq",
+          //     "type": "string",
+          //     "value": this.searchName
+          //   }, {
+          //     "name": "userKey",
+          //     "op": "eq",
+          //     "type": "string",
+          //     "value": this.searchName
+          //   }],
+          //   "logic": "or"
+          // }
+          params.searchParas.conditions.push({
+            "name": "userKey",
+            "op": "eq",
+            "type": "string",
+            "value": this.searchName
+          })
         }
+
+        // major: "",
+        //   grade: "",
+        //   class1: ""
+        if (this.classSelectData.major) {
+          params.searchParas.conditions.push({
+            "name": "major",
+            "op": "eq",
+            "type": "string",
+            "value": this.classSelectData.major
+          })
+        }
+        if (this.classSelectData.grade) {
+          params.searchParas.conditions.push({
+            "name": "grade",
+            "op": "eq",
+            "type": "string",
+            "value": this.classSelectData.grade
+          })
+        }
+        if (this.classSelectData.class1) {
+          params.searchParas.conditions.push({
+            "name": "class1",
+            "op": "eq",
+            "type": "string",
+            "value": this.classSelectData.class1
+          })
+        }
+
         this.axios.post(`${API.index.user_list}`, params).then(result => {
           if (result.code === 20000) {
             this.pageData1.total = result.result.totalNum;

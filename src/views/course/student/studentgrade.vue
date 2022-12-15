@@ -1,11 +1,20 @@
 <template>
   <div>
-    <div class="table-condition-btnbar">
-      header
-    </div>
     <template v-if="!showDetail">
-      <div>无待评分</div>
+      <div v-if="data1.length>0" class="student-test-list">
+        <div @click="selectTest(item)" :key="item" v-for="item in data1" class="student-test-item">
+          <Card>
+            <p slot="title">{{ item.name }}</p>
+            <p class="student-test-item-p color-yellow">
+              待评分
+            </p>
+            <p class="student-test-item-p">交卷时间：{{ item.updateTime }}</p>
+          </Card>
+        </div>
+      </div>
+      <div v-else>无待评分</div>
     </template>
+
     <template v-if="showDetail">
       <div style="position: absolute;top: 15px;left: 15px;right: 15px;bottom: 15px;">
         <div class="manage-content-html">
@@ -19,7 +28,7 @@
           </div>
 
           <div class="testinstance-title">{{ testInfo.name }}</div>
-          <div class="testinstance-desc">
+          <!-- <div class="testinstance-desc">
             本实验报告占分
             {{ testInfo.score }}。其中各分项占分：
           </div>
@@ -29,9 +38,9 @@
             </InputNumber>
             <Button v-if="testsub.type != 4" :disabled="!isAdmin" style="margin-left:10px;" class="condition-btn"
               size="small" @click="gradeTest(testsub)">评分</Button>
-          </div>
-          <div :key="item" v-for="(item, index) in templateInfo.testPartInstancePublicVoList"
-            class="course-exam-bigTest">
+          </div> -->
+          <div v-if="item.type===5||item.type===6" :key="item"
+            v-for="(item, index) in templateInfo.testPartInstancePublicVoList" class="course-exam-bigTest">
             <p class="course-exam-bigTest-title">
               {{ item.serialNumber }}.{{ item.name }}
               <span style="font-size:12px;font-weight400;">（{{ item.score }}分）</span>
@@ -91,11 +100,11 @@
                   </template>
                   <!-- 问答题 -->
                   <template v-if="test.exercisesType === 5">
-                    <wenda :testobj="test" :status="testInfo.status" :grade="true"></wenda>
+                    <wenda :isstudent="true" :testobj="test" :status="testInfo.status" :grade="true"></wenda>
                   </template>
                   <!-- 计算题 -->
                   <template v-if="test.exercisesType === 6">
-                    <jisuan :testobj="test" :status="testInfo.status" :grade="true"></jisuan>
+                    <jisuan :isstudent="true" :testobj="test" :status="testInfo.status" :grade="true"></jisuan>
                   </template>
                 </div>
                 <!-- <div class="course-exam-test-result">{{test.correctAnswer}}</div> -->
@@ -146,6 +155,7 @@
           grade: "",
           class1: ""
         },
+        data1: [],
 
         showClose: false,
         searchName: "",
@@ -169,8 +179,8 @@
         // this.getClass1();
         // this.refreshData();
 
-        // this.getMyGrade();
-        this.getOneToGrade();
+        this.getMyGrade();
+        // this.getOneToGrade();
       }
     },
     // beforeDestroy() {
@@ -180,25 +190,13 @@
     methods: {
       submitTest() {
         this.axios
-          .post(`${API.index.test_finish}` + this.testInfo.id)
+          .post(`${API.index.test_studentfinish}` + this.testInfo.id)
           .then(result => {
             if (result.code === 20000) {
-              this.testInfo = result.result;
+              // this.testInfo = result.result;
+              this.testInfo = null;
             }
           });
-      },
-      gradeTest(testsub) {
-        let params = {
-          scored: testsub.scored,
-          testSubsectionInstanceId: testsub.id,
-          type: 2
-        };
-        this.axios.post(`${API.index.test_grade}`, params).then(result => {
-          if (result.code === 20000) {
-            // this.testInfo = result.result;
-            this.$Message.success("评分成功！");
-          }
-        });
       },
       startTest() {
         this.axios
@@ -375,7 +373,11 @@
         let id = this.courseId;
         let url = `${API.index.test_instance_getmygrade}` + id;
         this.axios.get(url).then(result => {
-          if (result.code === 20000) {}
+          if (result.code === 20000) {
+            if (result.result && result.result.length > 0)
+              this.data1 = result.result;
+            // this.selectTest(result.result[0]);
+          }
         });
       },
       getOneToGrade() {

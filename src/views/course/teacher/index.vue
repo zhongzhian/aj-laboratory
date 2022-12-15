@@ -6,6 +6,7 @@
           <div class="notice-content-left-box">
             <p>亲爱的 {{ userInfo.personName || userInfo.userName }}</p>
             <p>欢迎您加入课程，赶快开启学习之旅吧～</p>
+
             <template v-if="courseInfop.isOuter">
               <Button @click="gotoOutPage" class="notice-content-left-box-btn" type="warning">打开课程</Button>
             </template>
@@ -14,6 +15,8 @@
               <Button v-else @click="gotoPage" class="notice-content-left-box-btn"
                 type="warning">开始学习</Button></template>
           </div>
+          <!-- <input type="file" @change="readPdf" /> -->
+          <!-- <Button @click="readPdf" class="notice-content-left-box-btn" type="warning">PDFJS</Button> -->
         </div>
         <div>
           <Form ref="formValidate" :model="courseScore" :rules="ruleValidate" :label-width="200">
@@ -93,6 +96,13 @@
               <div>
                 支持jpg、jpeg、png格式，文件大小不超过2M，尺寸建议300*360
               </div>
+              <!-- <Upload ref="upload" :action="uploadAction" :headers="headers" :data="uploadData"
+                :show-upload-list="false" :on-success="handleSuccess" :format="['jpg', 'jpeg', 'png']" :max-size="2048"
+                :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize"
+                :before-upload="handleBeforeUpload">
+                <img v-if="courseInfop.logo" :src="courseInfop.logo" class="form-course-logoimg" />
+                <img v-if="!courseInfop.logo" src="http://temp.im/300x360" class="form-course-logoimg" />
+              </Upload> -->
               <Upload ref="upload" :action="uploadAction" :headers="headers" :data="uploadData"
                 :show-upload-list="false" :on-success="handleSuccess" :format="['jpg', 'jpeg', 'png']" :max-size="2048"
                 :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize"
@@ -172,6 +182,7 @@
   import jsSHA from "jssha";
   import qs from "qs";
   import richinput from "../component/richInput";
+
 
   export default {
     components: {
@@ -274,8 +285,101 @@
         this.courseScore.courseId = this.courseId;
         this.getCourse();
       }
+      console.log("courseindex PDFJS", PDFJS)
     },
     methods: {
+      readPdf(e) {
+        console.log("start pdf script", e);
+
+        let str = "";
+        let pdfurl = "http://localhost:8080/remoteLaboratory/static/doc/zza.pdf";
+        console.log("pdfurl", pdfurl);
+        let file = e.target.files[0];
+        console.log("file", file);
+
+        let reader = new FileReader();
+        reader.onloadend = function() {
+          var file_result = this.result // ArrayBuffer 数据对象
+          console.log("file_result", file_result);
+          let loadingtask = PDFJS.getDocument(file_result);
+          console.log("loadingtask.promise", loadingtask.promise);
+          loadingtask.promise.then(function(pdf) {
+            console.log("pdf", pdf);
+            for (let i = 1; i <= pdf.numPages; i++) {
+              pdf.getPage(i).then(function(page) {
+                console.log("page", page);
+                page.getTextContent().then(function(textContent) {
+                  console.log("textContent", textContent);
+                  for (let j = 0; j < textContent.items.length; j++) {
+                    str = str + textContent.items[j].str;
+                    console.log(textContent.items[j].str);
+                  }
+                  // parse(str);
+
+                  if (null != textContent.items) {
+                    var page_text = "";
+                    var last_block = null;
+                    for (var k = 0; k < textContent.items.length; k++) {
+                      var block = textContent.items[k];
+                      if (last_block != null && last_block.str[last_block.str.length - 1] != ' ') {
+                        if (block.x < last_block.x)
+                          page_text += "rn";
+                        else if (last_block.y != block.y && (last_block.str.match(
+                            /^(s?[a-zA-Z])$|^(.+s[a-zA-Z])$/) == null))
+                          page_text += ' ';
+                      }
+                      page_text += block.str;
+                      last_block = block;
+                    }
+
+                    textContent != null && console.log("page " + n +
+                      " finished."); //" content: n" + page_text);
+                    layers[n] = page_text + "nn";
+                  }
+                  ++self.complete;
+                  callbackPageDone(self.complete, total);
+                  if (self.complete == total) {
+                    window.setTimeout(function() {
+                      var full_text = "";
+                      var num_pages = Object.keys(layers).length;
+                      for (var j = 1; j <= num_pages; j++)
+                        full_text += layers[j];
+                      callbackAllDone(full_text);
+                    }, 1000);
+                  }
+
+
+
+                });
+              });
+            }
+
+            // console.log("str", str);
+          }).catch((err) => {
+            console.log("loadingtask.promise,err", err);
+          });
+        }
+        let datas = reader.readAsArrayBuffer(file);
+        // let loadingtask = PDFJS.getDocument(datas);
+        // console.log("loadingtask.promise", loadingtask.promise);
+        // loadingtask.promise.then(function(pdf) {
+        //   console.log("pdf", pdf);
+        //   for (let i = 1; i <= pdf.numPages; i++) {
+        //     pdf.getPage(i).then(function(page) {
+        //       console.log("page", page);
+        //       page.getTextContent().then(function(textContent) {
+        //         console.log("textContent", textContent);
+        //         for (let j = 0; j < textContent.items.length; j++) {
+        //           str.push(textContent.items[j].str);
+        //         }
+        //         // parse(str);
+        //       });
+        //     });
+        //   }
+        // }).catch((err) => {
+        //   console.log("loadingtask.promise,err", err);
+        // });
+      },
       handleSubmit(name) {
         let _this = this;
         this.$refs[name].validate(valid => {

@@ -44,13 +44,7 @@
       </template>
     </div>
     <div v-if="!disabled">
-      <Button
-        :loading="loginLoading"
-        size="small"
-        type="primary"
-        @click="valueSubmit"
-        >确定</Button
-      >
+      <Button :loading="loginLoading" size="small" type="primary" @click="valueSubmit">确定</Button>
     </div>
     <div v-if="grade" class="course-component-grade">
       <!-- <div v-if="isPic">
@@ -60,31 +54,19 @@
       <div v-else>正确答案：{{ testobj.correctAnswer }}</div> -->
       <div>
         得分：
-        <template v-if="testobj.scored">
-          <span>{{ testobj.scored }}</span>
-          <Button
-            v-if="!finish"
-            :loading="loginLoading"
-            size="small"
-            type="primary"
-            @click="testobj.scored = ''"
-            >改分</Button
-          >
+        <template v-if="scored">
+          <span>{{ scored }}</span>
+          <Button v-if="!finish" :loading="loginLoading" size="small" type="primary" @click="scored = ''">改分</Button>
         </template>
         <template v-else>
-          <InputNumber
-            :max="testobj.score"
-            :min="0"
-            v-model="score"
-          ></InputNumber>
-          <Button
-            v-if="!finish"
-            :loading="loginLoading"
-            size="small"
-            type="primary"
-            @click="scoreSubmit"
-            >打分</Button
-          >
+          <InputNumber :max="testobj.score" :min="0" v-model="score"></InputNumber>
+          <Button v-if="!finish" :loading="loginLoading" size="small" type="primary" @click="scoreSubmit">打分</Button>
+        </template>
+        <template v-if="!isstudent">
+          <div style="margin-left: 20px;display: inline-block;color:#f90;"
+            v-if="testobj.studentGradeScore != null ||testobj.studentGradeScore != undefined ">
+            学生评分：{{testobj.studentGradeScore}} 分。
+          </div>
         </template>
       </div>
     </div>
@@ -97,7 +79,7 @@
         <div v-else>正确答案：{{ testobj.correctAnswer }}</div> -->
         <div>
           得分：
-          <span>{{ testobj.scored }}</span>
+          <span>{{ scored }}</span>
         </div>
       </div>
     </template>
@@ -105,136 +87,165 @@
 </template>
 
 <script>
-import API from "@/api";
-import richinput from "../component/richInput";
+  import API from "@/api";
+  import richinput from "../component/richInput";
 
-export default {
-  components: { richinput },
-  props: ["testobj", "status", "grade"],
-  data() {
-    return {
-      picBasePath: API.picPath,
-      uploadAction: API.uploadPath + API.index.upload_upload,
-      headers: null,
-      uploadData: {
-        file: null,
-        name: "",
-        type: "normal"
+  export default {
+    components: {
+      richinput
+    },
+    props: ["testobj", "status", "grade", "isstudent"],
+    data() {
+      return {
+        picBasePath: API.picPath,
+        uploadAction: API.uploadPath + API.index.upload_upload,
+        headers: null,
+        uploadData: {
+          file: null,
+          name: "",
+          type: "normal"
+        },
+        loginLoading: false,
+        value1: "",
+        isPic: false,
+        score: 0,
+      };
+    },
+    computed: {
+      disabled() {
+        return this.status > 0;
       },
-      loginLoading: false,
-      value1: "",
-      isPic: false
-    };
-  },
-  computed: {
-    disabled() {
-      return this.status > 0;
+      finish() {
+        return this.status === 2;
+      },
+      isRight() {
+        return this.testobj.correctAnswer === this.testobj.answer;
+      },
+      scored() {
+        return this.isstudent ? this.testobj.studentGradeScore : this.testobj.scored;
+      }
     },
-    finish() {
-      return this.status === 2;
+    mounted() {
+      console.log("this.testobj", this.testobj);
+      this.headers = {
+        Authorization: "Bearer " + this.$store.getters.token
+      };
+      if (this.testobj) {
+        this.isPic = this.testobj.displayType === 2;
+        if (this.testobj.answer) {
+          this.value1 = this.testobj.answer;
+          if (!this.isPic) {
+            this.$refs["comtest_richinput"].setTxt(this.value1);
+          }
+        }
+      }
+      // this.userInfo = this.$store.getters.user;
+      // let courseId = this.$route.query.id;
+      // if (courseId) {
+      //   this.courseId = courseId;
+      //   this.getTableDatas();
+      // }
     },
-    isRight() {
-      return this.testobj.correctAnswer === this.testobj.answer;
-    }
-  },
-  mounted() {
-    console.log("this.testobj", this.testobj);
-    this.headers = {
-      Authorization: "Bearer " + this.$store.getters.token
-    };
-    if (this.testobj) {
-      this.isPic = this.testobj.displayType === 2;
-      if (this.testobj.answer) {
-        this.value1 = this.testobj.answer;
+    methods: {
+      resetscored() {
+        if (this.isstudent) {
+          this.testobj.studentGradeScore = 0;
+        } else {
+          this.testobj.scored = 0;
+        }
+      },
+      valueSubmit() {
         if (!this.isPic) {
-          this.$refs["comtest_richinput"].setTxt(this.value1);
+          this.value1 = this.$refs["comtest_richinput"].getTxt();
         }
-      }
-    }
-    // this.userInfo = this.$store.getters.user;
-    // let courseId = this.$route.query.id;
-    // if (courseId) {
-    //   this.courseId = courseId;
-    //   this.getTableDatas();
-    // }
-  },
-  methods: {
-    valueSubmit() {
-      if (!this.isPic) {
-        this.value1 = this.$refs["comtest_richinput"].getTxt();
-      }
-      let params = {
-        answer: this.value1,
-        testExerciseInstanceId: this.testobj.id
-      };
-      this.loginLoading = true;
-      this.axios.post(`${API.index.test_answer}`, params).then(result => {
-        if (result.code === 20000) {
-          this.loginLoading = false;
-        }
-      });
-    },
-    scoreSubmit() {
-      let params = {
-        scored: this.score,
-        testExerciseInstanceId: this.testobj.id,
-        type: 1
-      };
-      this.loginLoading = true;
-      this.axios.post(`${API.index.test_grade}`, params).then(result => {
-        if (result.code === 20000) {
-          this.testobj = result.result;
-          this.loginLoading = false;
-        }
-      });
-    },
-    handleSuccessXA(res, file, fileList) {
-      if (res.code === 20000) {
-        let splits = res.result.uploadFileName.split("|");
-        let path = splits[1] ? splits[1] : splits[0];
-        file.url = this.picBasePath + path;
-        this.value1 = file.url;
-      } else if (res.code === 50401) {
-        console.log("this.$route.name....", this.$route.name);
-        this.$router.push({
-          name: "login",
-          query: {
-            name: this.$route.name
+        let params = {
+          answer: this.value1,
+          testExerciseInstanceId: this.testobj.id
+        };
+        this.loginLoading = true;
+        this.axios.post(`${API.index.test_answer}`, params).then(result => {
+          if (result.code === 20000) {
+            this.loginLoading = false;
           }
         });
-      } else {
-        this.$Message.error(res.message);
+      },
+      scoreSubmit() {
+        if (this.isstudent) {
+          let params = {
+            scored: this.score,
+            testExerciseInstanceId: this.testobj.id,
+          };
+          this.loginLoading = true;
+          this.axios.post(`${API.index.test_studentgrade}`, params).then(result => {
+            if (result.code === 20000) {
+              this.testobj = result.result;
+              this.loginLoading = false;
+            }
+          });
+        } else {
+          let params = {
+            scored: this.score,
+            testExerciseInstanceId: this.testobj.id,
+            type: 1
+          };
+          this.loginLoading = true;
+          this.axios.post(`${API.index.test_grade}`, params).then(result => {
+            if (result.code === 20000) {
+              this.testobj = result.result;
+              this.loginLoading = false;
+            }
+          });
+        }
+      },
+      handleSuccessXA(res, file, fileList) {
+        if (res.code === 20000) {
+          let splits = res.result.uploadFileName.split("|");
+          let path = splits[1] ? splits[1] : splits[0];
+          file.url = this.picBasePath + path;
+          this.value1 = file.url;
+        } else if (res.code === 50401) {
+          console.log("this.$route.name....", this.$route.name);
+          this.$router.push({
+            name: "login",
+            query: {
+              name: this.$route.name
+            }
+          });
+        } else {
+          this.$Message.error(res.message);
+        }
+      },
+      handleFormatErrorABCD(file) {
+        this.$Notice.warning({
+          title: "文件格式错误",
+          desc: "文件 " + file.name + " 格式错误, 目前仅支持jpg,jpeg,png格式."
+        });
+      },
+      handleMaxSizeABCD(file) {
+        this.$Notice.warning({
+          title: "文件过大",
+          desc: "上传的答案图片不能大于1M."
+        });
+      },
+      handleBeforeUpload(file) {
+        this.uploadData.file = file;
+        this.uploadData.name = file.name;
       }
-    },
-    handleFormatErrorABCD(file) {
-      this.$Notice.warning({
-        title: "文件格式错误",
-        desc: "文件 " + file.name + " 格式错误, 目前仅支持jpg,jpeg,png格式."
-      });
-    },
-    handleMaxSizeABCD(file) {
-      this.$Notice.warning({
-        title: "文件过大",
-        desc: "上传的答案图片不能大于1M."
-      });
-    },
-    handleBeforeUpload(file) {
-      this.uploadData.file = file;
-      this.uploadData.name = file.name;
     }
-  }
-};
+  };
 </script>
 <style></style>
 
 <style lang="less" scoped>
-.course-component-result {
-  padding: 5px;
-}
-.testright {
-  border: solid 1px #58b736;
-}
-.testwrong {
-  border: solid 1px red;
-}
+  .course-component-result {
+    padding: 5px;
+  }
+
+  .testright {
+    border: solid 1px #58b736;
+  }
+
+  .testwrong {
+    border: solid 1px red;
+  }
 </style>

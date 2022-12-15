@@ -43,6 +43,7 @@ export default {
     upload_mylist: `/remoteLaboratory/uploadFile/myList`,
     upload_deleteById: `/remoteLaboratory/uploadFile/deleteById/`,
     upload_delete: `/remoteLaboratory/uploadFile`,
+    upload_pdf2html: `/remoteLaboratory/uploadFile/pdfToHtml`,
 
     course_list: `/remoteLaboratory/course/list`,
     course: `/remoteLaboratory/course`,
@@ -104,6 +105,8 @@ export default {
 
     test_instance_getmygrade: `/remoteLaboratory/testInstance/getMyGrade/`,
     test_instance_getonetograde: `/remoteLaboratory/testInstance/getOneToGrade/`,
+    test_studentgrade: `/remoteLaboratory/testInstance/studentGrade`,
+    test_studentfinish: `/remoteLaboratory/testInstance/studentGradeFinish/`,
 
     course_getmy: `/remoteLaboratory/courseStudyRecord/getMy`,
     course_detail_getmy: `/remoteLaboratory/courseStudyRecord/getMyDetailByCourseId/`,

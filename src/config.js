@@ -4,14 +4,14 @@
 // const basePort = 8000;
 
 // 外网
-// const baseDomain = "47.93.116.221";
-// const baseProtocol = "http";
-// const basePort = 8000;
+const baseDomain = "47.93.116.221";
+const baseProtocol = "http";
+const basePort = 8000;
 
 //内网
-const baseDomain = '192.168.100.1'
-const baseProtocol = 'http'
-const basePort = 8000
+// const baseDomain = '192.168.100.1'
+// const baseProtocol = 'http'
+// const basePort = 8000
 
 export const REST_API =
   process.env.NODE_ENV === "production" ?

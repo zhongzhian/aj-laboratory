@@ -102,7 +102,7 @@ function check(response) {
         //   Message.success(message)
         // }
         // return hyz_result;
-      } else if (code === 20001) {
+      } else if (code === 20001 || code === 40010) {
         // Message.error(hyz_message);
         console.log("httprequest:" + response.config.url + "::20001::" + message)
       } else if (code === 50200) {
